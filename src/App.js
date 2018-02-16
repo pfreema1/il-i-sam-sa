@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Synth from './Synth';
+import Sequencer from './Sequencer';
 import './App.css';
 
 class App extends Component {
   render() {
-    return <Synth />;
+    return <Sequencer />;
   }
 }
 

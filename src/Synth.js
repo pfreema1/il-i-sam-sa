@@ -1,23 +1,7 @@
 import React, { Component } from 'react';
 import Tone from 'tone';
-import styled from 'styled-components';
-
-const Button = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: skyblue;
-  margin: 10px;
-  border-radius: 5px;
-  display: inline-block;
-`;
-
-const PlayButton = styled.div`
-  width: 50px;
-  height: 50px;
-  border-bottom: 25px solid white;
-  border-right: 25px solid white;
-  transform: rotate(-45deg);
-`;
+import Button from './Button';
+import PlayButton from './PlayButton';
 
 class Synth extends Component {
   constructor(props) {
