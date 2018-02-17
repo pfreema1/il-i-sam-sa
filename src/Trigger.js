@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import Tone from 'tone';
 
-const ButtonWrapper = styled.div`
+const TriggerWrapper = styled.div`
   width: 100px;
   height: 100px;
   background-color: ${props => {
@@ -24,39 +26,45 @@ const backgroundColorSetter = (isSelected, barStarter) => {
   }
 };
 
-class Button extends Component {
+class Trigger extends Component {
   constructor(props) {
     super(props);
-
-    console.log('props:  ', props);
 
     this.state = {
       isSelected: false
     };
   }
 
-  handleButtonClick = id => {
+  handleTriggerClick = id => {
     // console.log('clickd!  ', e.target.id);
-    console.log('id  ', id);
+    // console.log('id  ', id);
 
     this.setState({
       isSelected: !this.state.isSelected
     });
 
-    this.props.handleTrigger(id);
+    this.props.dispatch({ type: 'TRIGGER_CLICKED', id });
   };
 
   render() {
     return (
-      <ButtonWrapper
+      <TriggerWrapper
         isSelected={this.state.isSelected}
-        onClick={this.handleButtonClick.bind(null, this.props.id)}
+        onClick={this.handleTriggerClick.bind(null, this.props.id)}
         barStarter={this.props.barStarter}
       />
     );
   }
 }
 
-Button.propTypes = {};
+/*****************************/
 
-export default Button;
+Trigger.propTypes = {};
+
+const mapStateToProps = state => {
+  return {
+    foo: state.foo
+  };
+};
+
+export default connect(mapStateToProps)(Trigger);
