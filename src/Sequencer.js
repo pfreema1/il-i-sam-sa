@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Tone from 'tone';
 import Trigger from './Trigger';
 import PlayButton from './PlayButton';
-import styled from 'styled-components';
 import type { TriggerObject, DispatchObject } from './types';
 import {
   ContextMenu,
@@ -14,13 +13,15 @@ import {
   SubMenu
 } from 'react-contextmenu';
 import './react-contextmenu.css';
+import { Card } from 'material-ui/Card';
 
-const SequencerWrapper = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+const CardStyle = {
+  width: '100vw',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '10px 0 10px 0'
+};
 
 type Props = {
   triggers: TriggerObject[],
@@ -53,7 +54,7 @@ class Sequencer extends Component<Props> {
 
   render() {
     return (
-      <SequencerWrapper>
+      <Card containerStyle={CardStyle}>
         <PlayButton onClick={this.playButtonClicked} />
         {this.props.triggers.map(elem => {
           return (
@@ -84,7 +85,7 @@ class Sequencer extends Component<Props> {
             duration
           </MenuItem>
         </ContextMenu>
-      </SequencerWrapper>
+      </Card>
     );
   }
 }
