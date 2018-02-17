@@ -22,18 +22,18 @@ class Sequencer extends Component {
     //set the transport to repeat
     Tone.Transport.loopEnd = '1m';
     Tone.Transport.loop = true;
-
-    this.state = { isPlaying: false };
   }
 
   playButtonClicked = () => {
-    this.setState({ isPlaying: !this.state.isPlaying }, () => {
-      if (this.state.isPlaying) {
-        Tone.Transport.start('+0.1');
-      } else {
-        Tone.Transport.stop();
-      }
-    });
+    // this.setState({ isPlaying: !this.state.isPlaying }, () => {
+    //   if (this.state.isPlaying) {
+    //     Tone.Transport.start('+0.1');
+    //   } else {
+    //     Tone.Transport.stop();
+    //   }
+    // });
+
+    this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
   };
 
   triggerSynth = time => {
@@ -44,12 +44,12 @@ class Sequencer extends Component {
     return (
       <SequencerWrapper>
         <PlayButton onClick={this.playButtonClicked} />
-        {this.props.triggers.map((elem, index) => {
+        {this.props.triggers.map(elem => {
           return (
             <Trigger
-              id={index}
-              key={index}
-              barStarter={index % 4 === 0 ? true : false}
+              id={elem.id}
+              key={elem.id}
+              barStarter={elem.id % 4 === 0 ? true : false}
             />
           );
         })}
@@ -59,8 +59,6 @@ class Sequencer extends Component {
 }
 
 /*****************************/
-
-Sequencer.propTypes = {};
 
 const mapStateToProps = state => {
   return {
