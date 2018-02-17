@@ -1,9 +1,12 @@
+//@flow
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tone from 'tone';
 import Trigger from './Trigger';
 import PlayButton from './PlayButton';
 import styled from 'styled-components';
+import type { TriggerObject, DispatchObject } from './types';
 
 const SequencerWrapper = styled.div`
   width: 100%;
@@ -12,7 +15,14 @@ const SequencerWrapper = styled.div`
   align-items: center;
 `;
 
-class Sequencer extends Component {
+type Props = {
+  triggers: TriggerObject[],
+  dispatch: (obj: DispatchObject) => void
+};
+
+class Sequencer extends Component<Props> {
+  synth: any;
+
   constructor(props) {
     super(props);
 
@@ -25,14 +35,6 @@ class Sequencer extends Component {
   }
 
   playButtonClicked = () => {
-    // this.setState({ isPlaying: !this.state.isPlaying }, () => {
-    //   if (this.state.isPlaying) {
-    //     Tone.Transport.start('+0.1');
-    //   } else {
-    //     Tone.Transport.stop();
-    //   }
-    // });
-
     this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
   };
 
