@@ -4,6 +4,9 @@ import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 import Tone from 'tone';
 import Sequencer from './Sequencer';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
 
 // const defaultTriggerState = {
@@ -142,7 +145,9 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Sequencer />
+        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+          <Sequencer />
+        </MuiThemeProvider>
       </Provider>
     );
   }

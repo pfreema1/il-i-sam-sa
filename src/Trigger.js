@@ -1,21 +1,17 @@
 // @flow
 
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-import Tone from 'tone';
 import type { TriggerObject, DispatchObject } from './types';
+import RaisedButton from 'material-ui/RaisedButton';
 
-const TriggerWrapper = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: ${props => {
-    return backgroundColorSetter(props.isTriggered, props.barStarter);
-  }};
-  margin: 5px;
-  border-radius: 5px;
-  display: inline-block;
-`;
+const ButtonStyle = {
+  width: '5vw',
+  height: '100px',
+  margin: '5px',
+  borderRadius: '5px',
+  minWidth: '5vw'
+};
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
@@ -56,7 +52,13 @@ class Trigger extends Component<Props, State> {
   render() {
     const { id, triggers } = this.props;
     return (
-      <TriggerWrapper
+      <RaisedButton
+        backgroundColor={backgroundColorSetter(
+          triggers[id].isTriggered,
+          this.props.barStarter
+        )}
+        style={ButtonStyle}
+        // buttonStyle={ButtonStyle}
         isTriggered={triggers[id].isTriggered}
         onClick={this.handleTriggerClick.bind(null, id)}
         barStarter={this.props.barStarter}

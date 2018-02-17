@@ -7,9 +7,16 @@ import Trigger from './Trigger';
 import PlayButton from './PlayButton';
 import styled from 'styled-components';
 import type { TriggerObject, DispatchObject } from './types';
+import {
+  ContextMenu,
+  MenuItem,
+  ContextMenuTrigger,
+  SubMenu
+} from 'react-contextmenu';
+import './react-contextmenu.css';
 
 const SequencerWrapper = styled.div`
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,19 +49,41 @@ class Sequencer extends Component<Props> {
     this.synth.triggerAttackRelease('C2', '48i', time);
   };
 
+  handleMenuItemClick = () => {};
+
   render() {
     return (
       <SequencerWrapper>
         <PlayButton onClick={this.playButtonClicked} />
         {this.props.triggers.map(elem => {
           return (
-            <Trigger
-              id={elem.id}
-              key={elem.id}
-              barStarter={elem.id % 4 === 0 ? true : false}
-            />
+            <ContextMenuTrigger id="triggerMenu" holdToDisplay={1000}>
+              <Trigger
+                id={elem.id}
+                key={elem.id}
+                barStarter={elem.id % 4 === 0 ? true : false}
+              />
+            </ContextMenuTrigger>
           );
         })}
+
+        <ContextMenu id="triggerMenu">
+          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 'note' }}>
+            note
+          </MenuItem>
+          <MenuItem
+            onClick={this.handleMenuItemClick}
+            data={{ item: 'velocity' }}
+          >
+            velocity
+          </MenuItem>
+          <MenuItem
+            onClick={this.handleMenuItemClick}
+            data={{ item: 'duration' }}
+          >
+            duration
+          </MenuItem>
+        </ContextMenu>
       </SequencerWrapper>
     );
   }
