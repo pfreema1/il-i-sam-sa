@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Trigger from './Trigger';
-import PlayButton from './PlayButton';
+
 import type { TriggerObject, DispatchObject } from './types';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import './react-contextmenu.css';
@@ -11,6 +11,7 @@ import { Card } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
+import Synthesizer from './Synthesizer';
 
 const CardStyle = {
   width: '100vw',
@@ -45,10 +46,6 @@ class Sequencer extends Component<State, Props> {
     };
   }
 
-  playButtonClicked = () => {
-    this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
-  };
-
   handleMenuItemClick = (e, data) => {
     console.log('data from menuitemclick:  ', data);
     let triggerBeingEditedId = data.attributes.id;
@@ -75,7 +72,7 @@ class Sequencer extends Component<State, Props> {
   render() {
     return (
       <Card containerStyle={CardStyle}>
-        <PlayButton onClick={this.playButtonClicked} />
+        <Synthesizer />
 
         {this.props.triggers.map(elem => {
           return (

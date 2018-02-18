@@ -8,6 +8,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
+import PlayButton from './PlayButton';
 
 // const defaultTriggerState = {
 //   id: null,
@@ -34,7 +35,7 @@ const returnTriggers = () => {
       scheduleId: null,
       isTriggered: false,
       note: 'C2',
-      duration: '48i',
+      duration: '8i',
       velocity: 1
     };
     tempObj.id = i;
@@ -43,6 +44,19 @@ const returnTriggers = () => {
   }
 
   return tempTriggersArr;
+};
+
+let testState = {
+  isEditingTrigger: false,
+  triggerBeingEditedId: null,
+  sequencerBeingEditedNum: null, //will be a number
+  isPlaying: false,
+  sequencer: [
+    {
+      synthesizer: 3,
+      triggers: returnTriggers()
+    }
+  ]
 };
 
 let initialState = {
@@ -59,16 +73,16 @@ let initialState = {
  **
  ******************************
  ******************************/
-var synth = new Tone.PluckSynth().toMaster();
+var synth = new Tone.FMSynth().toMaster();
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
 
 //this function is called right before the scheduled time
-function triggerSynth(note, duration, time, velocity) {
-  //the time is the sample-accurate time of the event
-  synth.triggerAttackRelease(note, duration, time, velocity);
-}
+// function triggerSynth(note, duration, time, velocity) {
+//   //the time is the sample-accurate time of the event
+//   synth.triggerAttackRelease(note, duration, time, velocity);
+// }
 
 /*****************************
  ******************************
@@ -214,7 +228,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-          <Sequencer />
+          <div>
+            <Sequencer />
+            <PlayButton />
+          </div>
         </MuiThemeProvider>
       </Provider>
     );

@@ -1,11 +1,30 @@
-import styled from 'styled-components';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const PlayButton = styled.div`
-  width: 50px;
-  height: 50px;
-  border-bottom: 25px solid white;
-  border-right: 25px solid white;
-  transform: rotate(-45deg);
-`;
+const PlayButtonStyle = {
+  width: '50px',
+  height: '50px',
+  borderBottom: '25px solid white',
+  borderRight: '25px solid white',
+  transform: 'rotate(-45deg)'
+};
 
-export default PlayButton;
+class PlayButton extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  playButtonClicked = () => {
+    this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
+  };
+
+  render() {
+    return <div style={PlayButtonStyle} onClick={this.playButtonClicked} />;
+  }
+}
+
+/*****************************/
+
+export default connect()(PlayButton);

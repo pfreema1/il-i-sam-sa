@@ -25,6 +25,8 @@ const backgroundColorSetter = (isTriggered, barStarter) => {
   }
 };
 
+/*****************************/
+
 type Props = {
   triggers: TriggerObject[],
   dispatch: (obj: DispatchObject) => void,
@@ -35,6 +37,8 @@ type Props = {
 type State = {
   isTriggered: boolean
 };
+
+/*****************************/
 
 class Trigger extends Component<Props, State> {
   constructor(props: Props) {
@@ -59,10 +63,7 @@ class Trigger extends Component<Props, State> {
         )}
         label=""
         style={ButtonStyle}
-        // buttonStyle={ButtonStyle}
-        // isTriggered={triggers[id].isTriggered}
         onClick={this.handleTriggerClick.bind(null, id)}
-        // barStarter={this.props.barStarter}
       />
     );
   }
