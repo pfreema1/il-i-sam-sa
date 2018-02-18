@@ -47,11 +47,10 @@ const returnTriggers = () => {
 
 let initialState = {
   isEditingTrigger: false,
+  triggerBeingEditedId: null,
   isPlaying: false,
   triggers: returnTriggers()
 };
-
-console.log('initialState:  ', initialState);
 
 /*****************************
  ******************************
@@ -134,6 +133,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isPlaying: !state.isPlaying
+      };
+    }
+    case 'EDITING_TRIGGER': {
+      return {
+        ...state,
+        isEditingTrigger: action.isEditingTrigger,
+        triggerBeingEditedId: action.triggerBeingEditedId
       };
     }
     default:

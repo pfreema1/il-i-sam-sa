@@ -2,34 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tone from 'tone';
 import { Motion, spring } from 'react-motion';
-
-const OneOctaveWrapperStyle = {
-  width: '210px',
-  height: '100px',
-  backgroundColor: 'white',
-  boxSizing: 'border-box',
-  position: 'relative',
-  display: 'inline-block'
-};
-
-const BlackKeyStyle = {
-  width: '30px',
-  height: '60px',
-  background: 'black',
-  border: '1px solid #DDDDDD',
-  boxSizing: 'border-box',
-  position: 'absolute',
-  top: '0'
-};
-
-const WhiteKeyStyle = {
-  width: '30px',
-  height: '100px',
-  background: 'white',
-  border: '1px solid #DDDDDD',
-  display: 'inline-block',
-  boxSizing: 'border-box'
-};
+import OneOctavePiano from './OneOctavePiano';
 
 const PianoWindowStyle = {
   width: '420px',
@@ -60,32 +33,8 @@ const NoteTextStyle = {
 
 const transformEndPointArr = [0, 420, 840, 1260, 1680, 2100];
 
-const OneOctavePiano = props => {
-  const { octaveNum } = props;
-
-  return (
-    <div style={OneOctaveWrapperStyle}>
-      <div id={'C' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'D' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'E' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'F' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'G' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'A' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'B' + octaveNum} style={WhiteKeyStyle} />
-      <div id={'C#' + octaveNum} style={{ ...BlackKeyStyle, left: '15px' }} />
-      <div id={'D#' + octaveNum} style={{ ...BlackKeyStyle, left: '45px' }} />
-      <div id={'F#' + octaveNum} style={{ ...BlackKeyStyle, left: '105px' }} />
-      <div id={'G#' + octaveNum} style={{ ...BlackKeyStyle, left: '135px' }} />
-      <div id={'A#' + octaveNum} style={{ ...BlackKeyStyle, left: '165px' }} />
-    </div>
-  );
-};
-
 const FullPiano = props => {
-  console.log('FullPiano: props:  ', props);
-
   let endPointInPx = transformEndPointArr[props.endPoint] * -1;
-  console.log('endPointInPx:  ', endPointInPx);
 
   return (
     <Motion defaultStyle={{ x: 0 }} style={{ x: spring(endPointInPx) }}>

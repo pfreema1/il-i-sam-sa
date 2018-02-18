@@ -52,23 +52,40 @@ class Sequencer extends Component<State, Props> {
 
   handleMenuItemClick = (e, data) => {
     console.log('data from menuitemclick:  ', data);
+    let triggerBeingEditedId = data.attributes;
 
     this.setState({ isEditingTrigger: true, menuItemClicked: data.item });
+
+    this.props.dispatch({
+      type: 'EDITING_TRIGGER',
+      isEditingTrigger: true,
+      triggerBeingEditedId: triggerBeingEditedId
+    });
   };
 
   handleDialogClose = () => {
     this.setState({ isEditingTrigger: false });
+
+    this.props.dispatch({
+      type: 'EDITING_TRIGGER',
+      isEditingTrigger: false,
+      triggerBeingEditedId: null
+    });
   };
 
   render() {
     return (
       <Card containerStyle={CardStyle}>
         <PlayButton onClick={this.playButtonClicked} />
+
         {this.props.triggers.map(elem => {
           return (
             <ContextMenuTrigger
               key={elem.id}
               id="triggerMenu"
+              //this is passed in as data to MenuItem
+              attributes={elem.id}
+              collect={props => props}
               holdToDisplay={1000}
             >
               <Trigger
