@@ -57,7 +57,7 @@ class Trigger extends Component<Props, State> {
           triggers[id].isTriggered,
           this.props.barStarter
         )}
-        label={''}
+        label=""
         style={ButtonStyle}
         // buttonStyle={ButtonStyle}
         // isTriggered={triggers[id].isTriggered}

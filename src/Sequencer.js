@@ -52,7 +52,7 @@ class Sequencer extends Component<State, Props> {
 
   handleMenuItemClick = (e, data) => {
     console.log('data from menuitemclick:  ', data);
-    let triggerBeingEditedId = data.attributes;
+    let triggerBeingEditedId = data.attributes.id;
 
     this.setState({ isEditingTrigger: true, menuItemClicked: data.item });
 
@@ -84,7 +84,7 @@ class Sequencer extends Component<State, Props> {
               key={elem.id}
               id="triggerMenu"
               //this is passed in as data to MenuItem
-              attributes={elem.id}
+              attributes={{ id: elem.id }}
               collect={props => props}
               holdToDisplay={1000}
             >

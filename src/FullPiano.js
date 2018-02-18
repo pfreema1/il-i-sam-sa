@@ -80,6 +80,11 @@ class FullPiano extends React.Component {
 
 /*****************************/
 
-FullPiano.propTypes = {};
+const mapStateToProps = state => {
+  return {
+    triggerBeingEdited: state.triggerBeingEdited,
+    triggers: state.triggers
+  };
+};
 
-export default FullPiano;
+export default connect(mapStateToProps)(FullPiano);

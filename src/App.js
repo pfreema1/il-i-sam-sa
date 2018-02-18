@@ -142,6 +142,11 @@ const reducer = (state = initialState, action) => {
         triggerBeingEditedId: action.triggerBeingEditedId
       };
     }
+    case 'NOTE_CHANGE': {
+      return {
+        ...state
+      };
+    }
     default:
       return state;
   }
