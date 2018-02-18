@@ -65,9 +65,9 @@ Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
 
 //this function is called right before the scheduled time
-function triggerSynth(time) {
+function triggerSynth(note, duration, time, velocity) {
   //the time is the sample-accurate time of the event
-  synth.triggerAttackRelease('C2', '8n', time);
+  synth.triggerAttackRelease(note, duration, time, velocity);
 }
 
 /*****************************
@@ -110,7 +110,13 @@ const reducer = (state = initialState, action) => {
             let iValue = elem.id * 48;
             elem.isTriggered = true;
             elem.scheduleId = Tone.Transport.schedule(
-              triggerSynth,
+              triggerSynth.bind(
+                null,
+                elem.note,
+                elem.duration,
+                Tone.now,
+                elem.velocity
+              ),
               iValue + 'i'
             );
             console.log('schedule set!');
@@ -142,9 +148,60 @@ const reducer = (state = initialState, action) => {
         triggerBeingEditedId: action.triggerBeingEditedId
       };
     }
-    case 'NOTE_CHANGE': {
+
+    case 'EDIT_TRIGGER_NOTE': {
+      let newTriggers = state.triggers.map(trigger => {
+        if (trigger.id === state.triggerBeingEditedId) {
+          let iValue;
+          if (trigger.isTriggered) {
+            //trigger was already triggered, need to clear the previously scheduled trigger
+            Tone.Transport.clear(trigger.scheduleId);
+
+            iValue = trigger.id * 48;
+
+            //schedule new trigger
+            trigger.scheduleId = Tone.Transport.schedule(
+              triggerSynth(
+                trigger.note,
+                trigger.duration,
+                iValue + 'i',
+                trigger.velocity
+              ),
+              iValue + 'i'
+            );
+            trigger.note = action.newNote;
+
+            return trigger;
+          } else {
+            //case:  trigger wasn't triggered
+            trigger.isTriggered = true;
+
+            iValue = trigger.id * 48;
+
+            trigger.scheduleId = Tone.Transport.schedule(
+              triggerSynth(
+                trigger.note,
+                trigger.duration,
+                iValue + 'i',
+                trigger.velocity
+              ),
+              iValue + 'i'
+            );
+
+            trigger.note = action.newNote;
+
+            return trigger;
+          }
+
+          return trigger;
+        } else {
+          return trigger;
+        }
+      });
+
       return {
-        ...state
+        ...state,
+        triggers: newTriggers
       };
     }
     default:

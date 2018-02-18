@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Tone from 'tone';
 import { Motion, spring } from 'react-motion';
-import OneOctavePiano from './OneOctavePiano';
 import FullPiano from './FullPiano';
 
 const PianoWindowStyle = {

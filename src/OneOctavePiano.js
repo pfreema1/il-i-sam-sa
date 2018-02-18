@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Tone from 'tone';
 
 const OneOctaveWrapperStyle = {
   width: '210px',
@@ -32,38 +31,149 @@ const WhiteKeyStyle = {
 
 /*****************************/
 
-class OneOctavePiano extends React.Component {
+class OneOctavePiano extends Component {
   constructor(props) {
     super(props);
+
+    this.returnCurrentlyTriggeredNote();
 
     this.state = {};
   }
 
+  returnCurrentlyTriggeredNote = () => {
+    let { triggers, triggerBeingEditedId } = this.props;
+    if (
+      triggerBeingEditedId !== null &&
+      triggers[triggerBeingEditedId].isTriggered
+    ) {
+      return triggers[triggerBeingEditedId].note;
+    }
+  };
+
+  handleKeyClick = e => {
+    console.log('id of clicked key:  ', e.target.id);
+
+    this.props.dispatch({ type: 'EDIT_TRIGGER_NOTE', newNote: e.target.id });
+  };
+
   render() {
     const { octaveNum } = this.props;
+    let currentlyTriggeredNote = this.returnCurrentlyTriggeredNote();
 
     return (
       <div style={OneOctaveWrapperStyle}>
-        <div id={'C' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'D' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'E' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'F' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'G' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'A' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'B' + octaveNum} style={WhiteKeyStyle} />
-        <div id={'C#' + octaveNum} style={{ ...BlackKeyStyle, left: '15px' }} />
-        <div id={'D#' + octaveNum} style={{ ...BlackKeyStyle, left: '45px' }} />
+        <div
+          id={'C' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'C' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'D' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'D' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'E' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'E' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'F' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'F' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'G' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'G' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'A' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'A' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'B' + octaveNum}
+          style={{
+            ...WhiteKeyStyle,
+            backgroundColor:
+              currentlyTriggeredNote === 'B' + octaveNum ? '#F6D1A8' : 'white'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'C#' + octaveNum}
+          style={{
+            ...BlackKeyStyle,
+            left: '15px',
+            backgroundColor:
+              currentlyTriggeredNote === 'C#' + octaveNum ? '#F6D1A8' : 'black'
+          }}
+          onClick={this.handleKeyClick}
+        />
+        <div
+          id={'D#' + octaveNum}
+          style={{
+            ...BlackKeyStyle,
+            left: '45px',
+            backgroundColor:
+              currentlyTriggeredNote === 'D#' + octaveNum ? '#F6D1A8' : 'black'
+          }}
+          onClick={this.handleKeyClick}
+        />
         <div
           id={'F#' + octaveNum}
-          style={{ ...BlackKeyStyle, left: '105px' }}
+          style={{
+            ...BlackKeyStyle,
+            left: '105px',
+            backgroundColor:
+              currentlyTriggeredNote === 'F#' + octaveNum ? '#F6D1A8' : 'black'
+          }}
+          onClick={this.handleKeyClick}
         />
         <div
           id={'G#' + octaveNum}
-          style={{ ...BlackKeyStyle, left: '135px' }}
+          style={{
+            ...BlackKeyStyle,
+            left: '135px',
+            backgroundColor:
+              currentlyTriggeredNote === 'G#' + octaveNum ? '#F6D1A8' : 'black'
+          }}
+          onClick={this.handleKeyClick}
         />
         <div
           id={'A#' + octaveNum}
-          style={{ ...BlackKeyStyle, left: '165px' }}
+          style={{
+            ...BlackKeyStyle,
+            left: '165px',
+            backgroundColor:
+              currentlyTriggeredNote === 'A#' + octaveNum ? '#F6D1A8' : 'black'
+          }}
+          onClick={this.handleKeyClick}
         />
       </div>
     );
@@ -74,7 +184,7 @@ class OneOctavePiano extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    triggerBeingEdited: state.triggerBeingEdited,
+    triggerBeingEditedId: state.triggerBeingEditedId,
     triggers: state.triggers
   };
 };

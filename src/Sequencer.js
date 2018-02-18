@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Tone from 'tone';
 import Trigger from './Trigger';
 import PlayButton from './PlayButton';
 import type { TriggerObject, DispatchObject } from './types';

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Tone from 'tone';
 import { Motion, spring } from 'react-motion';
 import OneOctavePiano from './OneOctavePiano';
 
@@ -12,14 +11,15 @@ const NoteTextStyle = {
   position: 'absolute',
   top: '75px',
   color: 'black',
-  opacity: '0.2'
+  opacity: '0.2',
+  pointerEvents: 'none'
 };
 
 const transformEndPointArr = [0, 420, 840, 1260, 1680, 2100];
 
 /*****************************/
 
-class FullPiano extends React.Component {
+class FullPiano extends Component {
   constructor(props) {
     super(props);
 
