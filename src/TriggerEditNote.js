@@ -82,7 +82,6 @@ const FullPiano = props => {
   return (
     <Motion defaultStyle={{ x: 0 }} style={{ x: spring(endPointInPx) }}>
       {interpStyle => {
-        console.log(interpStyle);
         return (
           <div
             style={{
@@ -125,7 +124,7 @@ class TriggerEditNote extends Component {
   };
 
   handleScrollRightClick = () => {
-    if (this.state.currentEndPoint !== 5) {
+    if (this.state.currentEndPoint !== 4) {
       this.setState({ currentEndPoint: this.state.currentEndPoint + 1 });
     }
   };
@@ -133,11 +132,25 @@ class TriggerEditNote extends Component {
   render() {
     return (
       <div style={TriggerEditNoteWrapperStyle}>
-        <div onClick={this.handleScrollLeftClick}>&lt;</div>
+        <div
+          style={{
+            visibility: this.state.currentEndPoint === 0 ? 'hidden' : 'visible'
+          }}
+          onClick={this.handleScrollLeftClick}
+        >
+          &lt;
+        </div>
         <div style={PianoWindowStyle}>
           <FullPiano endPoint={this.state.currentEndPoint} />
         </div>
-        <div onClick={this.handleScrollRightClick}>&gt;</div>
+        <div
+          style={{
+            visibility: this.state.currentEndPoint === 4 ? 'hidden' : 'visible'
+          }}
+          onClick={this.handleScrollRightClick}
+        >
+          &gt;
+        </div>
       </div>
     );
   }
