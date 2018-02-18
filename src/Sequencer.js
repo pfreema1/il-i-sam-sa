@@ -6,14 +6,12 @@ import Tone from 'tone';
 import Trigger from './Trigger';
 import PlayButton from './PlayButton';
 import type { TriggerObject, DispatchObject } from './types';
-import {
-  ContextMenu,
-  MenuItem,
-  ContextMenuTrigger,
-  SubMenu
-} from 'react-contextmenu';
+import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import './react-contextmenu.css';
 import { Card } from 'material-ui/Card';
+import Dialog from 'material-ui/Dialog';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import TriggerEditNote from './TriggerEditNote';
 
 const CardStyle = {
   width: '100vw',
@@ -23,34 +21,44 @@ const CardStyle = {
   padding: '10px 0 10px 0'
 };
 
+/*****************************/
+type State = {
+  isEditingTrigger: boolean,
+  menuItemClicked: number
+};
+
 type Props = {
   triggers: TriggerObject[],
   dispatch: (obj: DispatchObject) => void
 };
 
-class Sequencer extends Component<Props> {
+/*****************************/
+
+class Sequencer extends Component<State, Props> {
   synth: any;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
-    //set up synth
-    this.synth = new Tone.PluckSynth().toMaster();
-
-    //set the transport to repeat
-    Tone.Transport.loopEnd = '1m';
-    Tone.Transport.loop = true;
+    this.state = {
+      isEditingTrigger: false,
+      menuItemClicked: null
+    };
   }
 
   playButtonClicked = () => {
     this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
   };
 
-  triggerSynth = time => {
-    this.synth.triggerAttackRelease('C2', '48i', time);
+  handleMenuItemClick = (e, data) => {
+    console.log('data from menuitemclick:  ', data);
+
+    this.setState({ isEditingTrigger: true, menuItemClicked: data.item });
   };
 
-  handleMenuItemClick = () => {};
+  handleDialogClose = () => {
+    this.setState({ isEditingTrigger: false });
+  };
 
   render() {
     return (
@@ -58,7 +66,11 @@ class Sequencer extends Component<Props> {
         <PlayButton onClick={this.playButtonClicked} />
         {this.props.triggers.map(elem => {
           return (
-            <ContextMenuTrigger id="triggerMenu" holdToDisplay={1000}>
+            <ContextMenuTrigger
+              key={elem.id}
+              id="triggerMenu"
+              holdToDisplay={1000}
+            >
               <Trigger
                 id={elem.id}
                 key={elem.id}
@@ -69,22 +81,29 @@ class Sequencer extends Component<Props> {
         })}
 
         <ContextMenu id="triggerMenu">
-          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 'note' }}>
+          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 0 }}>
             note
           </MenuItem>
-          <MenuItem
-            onClick={this.handleMenuItemClick}
-            data={{ item: 'velocity' }}
-          >
+          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 1 }}>
             velocity
           </MenuItem>
-          <MenuItem
-            onClick={this.handleMenuItemClick}
-            data={{ item: 'duration' }}
-          >
+          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 2 }}>
             duration
           </MenuItem>
         </ContextMenu>
+
+        <Dialog
+          open={this.state.isEditingTrigger}
+          onRequestClose={this.handleDialogClose}
+        >
+          <Tabs initialSelectedIndex={this.state.menuItemClicked}>
+            <Tab label="note">
+              <TriggerEditNote />
+            </Tab>
+            <Tab label="velocity">velocity stuff here</Tab>
+            <Tab label="duration">duration stuff here</Tab>
+          </Tabs>
+        </Dialog>
       </Card>
     );
   }

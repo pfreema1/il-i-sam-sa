@@ -57,11 +57,12 @@ class Trigger extends Component<Props, State> {
           triggers[id].isTriggered,
           this.props.barStarter
         )}
+        label={''}
         style={ButtonStyle}
         // buttonStyle={ButtonStyle}
-        isTriggered={triggers[id].isTriggered}
+        // isTriggered={triggers[id].isTriggered}
         onClick={this.handleTriggerClick.bind(null, id)}
-        barStarter={this.props.barStarter}
+        // barStarter={this.props.barStarter}
       />
     );
   }

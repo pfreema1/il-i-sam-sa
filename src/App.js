@@ -46,6 +46,7 @@ const returnTriggers = () => {
 };
 
 let initialState = {
+  isEditingTrigger: false,
   isPlaying: false,
   triggers: returnTriggers()
 };
@@ -60,6 +61,9 @@ console.log('initialState:  ', initialState);
  ******************************
  ******************************/
 var synth = new Tone.PluckSynth().toMaster();
+//set the transport to repeat
+Tone.Transport.loopEnd = '1m';
+Tone.Transport.loop = true;
 
 //this function is called right before the scheduled time
 function triggerSynth(time) {
