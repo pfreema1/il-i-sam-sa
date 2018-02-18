@@ -72,10 +72,11 @@ class OneOctavePiano extends React.Component {
 
 /*****************************/
 
-// const mapStateToProps = state => {
-//   return {
+const mapStateToProps = state => {
+  return {
+    triggerBeingEdited: state.triggerBeingEdited,
+    triggers: state.triggers
+  };
+};
 
-//   };
-// };
-
-export default OneOctavePiano;
+export default connect(mapStateToProps)(OneOctavePiano);
