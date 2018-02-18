@@ -109,16 +109,14 @@ const reducer = (state = initialState, action) => {
             //turn isTriggered to true, and save id of Transport.schedule
             let iValue = elem.id * 48;
             elem.isTriggered = true;
-            elem.scheduleId = Tone.Transport.schedule(
-              triggerSynth.bind(
-                null,
+            elem.scheduleId = Tone.Transport.schedule(time => {
+              synth.triggerAttackRelease(
                 elem.note,
                 elem.duration,
-                Tone.now,
+                time,
                 elem.velocity
-              ),
-              iValue + 'i'
-            );
+              );
+            }, iValue + 'i');
             console.log('schedule set!');
 
             return elem;
@@ -160,15 +158,14 @@ const reducer = (state = initialState, action) => {
             iValue = trigger.id * 48;
 
             //schedule new trigger
-            trigger.scheduleId = Tone.Transport.schedule(
-              triggerSynth(
+            trigger.scheduleId = Tone.Transport.schedule(time => {
+              synth.triggerAttackRelease(
                 trigger.note,
                 trigger.duration,
-                iValue + 'i',
+                time,
                 trigger.velocity
-              ),
-              iValue + 'i'
-            );
+              );
+            }, iValue + 'i');
             trigger.note = action.newNote;
 
             return trigger;
@@ -178,15 +175,14 @@ const reducer = (state = initialState, action) => {
 
             iValue = trigger.id * 48;
 
-            trigger.scheduleId = Tone.Transport.schedule(
-              triggerSynth(
+            trigger.scheduleId = Tone.Transport.schedule(time => {
+              synth.triggerAttackRelease(
                 trigger.note,
                 trigger.duration,
-                iValue + 'i',
+                time,
                 trigger.velocity
-              ),
-              iValue + 'i'
-            );
+              );
+            }, iValue + 'i');
 
             trigger.note = action.newNote;
 
