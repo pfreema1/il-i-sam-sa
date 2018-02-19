@@ -35,13 +35,21 @@ class OneOctavePiano extends Component {
   constructor(props) {
     super(props);
 
+    /*
+    triggerBeingEditedId: state.triggerBeingEditedId,
+    sequencerBeingEditedId: state.sequencerBeingEditedId,
+    sequencers: state.sequencers
+    */
+
     this.returnCurrentlyTriggeredNote();
 
     this.state = {};
   }
 
   returnCurrentlyTriggeredNote = () => {
-    let { triggers, triggerBeingEditedId } = this.props;
+    let { sequencerBeingEditedId, triggerBeingEditedId } = this.props;
+    let triggers = this.props.sequencers[sequencerBeingEditedId].triggers;
+
     if (
       triggerBeingEditedId !== null &&
       triggers[triggerBeingEditedId].isTriggered
@@ -185,7 +193,8 @@ class OneOctavePiano extends Component {
 const mapStateToProps = state => {
   return {
     triggerBeingEditedId: state.triggerBeingEditedId,
-    triggers: state.triggers
+    sequencerBeingEditedId: state.sequencerBeingEditedId,
+    sequencers: state.sequencers
   };
 };
 

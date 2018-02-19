@@ -141,31 +141,36 @@ const reducer = (state = initialState, action) => {
       let { triggerId, sequencerId } = action;
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
-        if (trigger.id === triggerId) {
-          if (trigger.isTriggered) {
-            //turn isTriggered to false, and clear id of previous Transport.schedule
-            trigger.isTriggered = false;
-            Tone.Transport.clear(trigger.scheduleId);
-            trigger.scheduleId = null;
+        /******SUPER IMPORTANT!!! */
+        // since trigger is an object, we can't just modify the object directly
+        // because that will only modify the existing object
+        let tempTrigger = Object.assign({}, trigger);
 
-            return trigger;
+        if (tempTrigger.id === triggerId) {
+          if (tempTrigger.isTriggered) {
+            //turn isTriggered to false, and clear id of previous Transport.schedule
+            tempTrigger.isTriggered = false;
+            Tone.Transport.clear(tempTrigger.scheduleId);
+            tempTrigger.scheduleId = null;
+
+            return tempTrigger;
           } else {
             //turn isTriggered to true, and save id of Transport.schedule
-            let iValue = trigger.id * 48;
-            trigger.isTriggered = true;
-            trigger.scheduleId = Tone.Transport.schedule(time => {
+            let iValue = tempTrigger.id * 48;
+            tempTrigger.isTriggered = true;
+            tempTrigger.scheduleId = Tone.Transport.schedule(time => {
               state.sequencers[sequencerId].synthesizerRef.triggerAttackRelease(
-                trigger.note,
-                trigger.duration,
+                tempTrigger.note,
+                tempTrigger.duration,
                 time,
-                trigger.velocity
+                tempTrigger.velocity
               );
             }, iValue + 'i');
 
-            return trigger;
+            return tempTrigger;
           }
         } else {
-          return trigger;
+          return tempTrigger;
         }
       });
 
@@ -191,7 +196,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isEditingTrigger: action.isEditingTrigger,
-        triggerBeingEditedId: action.triggerBeingEditedId
+        triggerBeingEditedId: action.triggerBeingEditedId,
+        sequencerBeingEditedId: action.sequencerBeingEditedId
       };
     }
 

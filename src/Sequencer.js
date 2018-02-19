@@ -39,7 +39,8 @@ class Sequencer extends Component {
     this.props.dispatch({
       type: 'EDITING_TRIGGER',
       isEditingTrigger: true,
-      triggerBeingEditedId: triggerBeingEditedId
+      triggerBeingEditedId: triggerBeingEditedId,
+      sequencerBeingEditedId: this.props.sequencerId
     });
   };
 
@@ -49,7 +50,8 @@ class Sequencer extends Component {
     this.props.dispatch({
       type: 'EDITING_TRIGGER',
       isEditingTrigger: false,
-      triggerBeingEditedId: null
+      triggerBeingEditedId: null,
+      sequencerBeingEditedId: null
     });
   };
 

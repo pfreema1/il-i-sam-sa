@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "immutability-helper": "^2.6.5",
     "material-auto-rotating-carousel": "^1.7.0",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
