@@ -60,7 +60,7 @@ class Sequencer extends Component {
 
     return (
       <Card containerStyle={CardStyle}>
-        <Synthesizer />
+        <Synthesizer sequencerId={this.props.sequencerId} />
 
         {sequencerToRender.triggers.map(elem => {
           return (

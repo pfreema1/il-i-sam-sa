@@ -40,6 +40,37 @@ const returnTriggers = () => {
 /*****************************
  ******************************
  **
+ **		returnNewSynth
+ **
+ ******************************
+ ******************************/
+
+const returnNewSynth = synthNum => {
+  switch (synthNum) {
+    case 1:
+      return new Tone.AMSynth().toMaster();
+    case 2:
+      return new Tone.DuoSynth().toMaster();
+    case 3:
+      return new Tone.FMSynth().toMaster();
+    case 4:
+      return new Tone.MembraneSynth().toMaster();
+    case 5:
+      return new Tone.MetalSynth().toMaster();
+    case 6:
+      return new Tone.MonoSynth().toMaster();
+    case 7:
+      return new Tone.NoiseSynth().toMaster();
+    case 8:
+      return new Tone.PluckSynth().toMaster();
+    default:
+      return null;
+  }
+};
+
+/*****************************
+ ******************************
+ **
  **		setupSequencer
  **      -returns new sequencers object
  ******************************
@@ -49,7 +80,7 @@ const setupSequencer = (newSynthNum, currSequencers) => {
   //update sequencersIdArr
   currSequencers[sequencerId] = {
     synthesizer: newSynthNum,
-    synthesizerRef: new Tone.FMSynth().toMaster(), //this will have to be dynamically applied according to 'newSynthNum'
+    synthesizerRef: returnNewSynth(newSynthNum),
     triggers: returnTriggers()
   };
 
@@ -128,7 +159,7 @@ const handlePlayButtonClick = play => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
-      let newSequencers = setupSequencer(2, {});
+      let newSequencers = setupSequencer(3, {});
       let newSequencersIdArr = returnNewSequencersIdArr(newSequencers);
 
       return {
@@ -200,7 +231,30 @@ const reducer = (state = initialState, action) => {
         sequencerBeingEditedId: action.sequencerBeingEditedId
       };
     }
+    case 'EDITING_SYNTHESIZER': {
+      return {
+        ...state,
+        sequencerBeingEditedId: action.sequencerBeingEditedId
+      };
+    }
+    case 'SYNTHESIZER_CHANGED': {
+      let sequencerId = state.sequencerBeingEditedId;
+      //change synthesizer number, and synthesizerRef, and dispose old synth
+      //-dispose
+      // state.sequencers[sequencerId].synthesizerRef.dispose();
 
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            synthesizer: action.newSynthNum,
+            synthesizerRef: returnNewSynth(action.newSynthNum)
+          }
+        }
+      };
+    }
     case 'EDIT_TRIGGER_NOTE': {
       let sequencerId = state.sequencerBeingEditedId;
 
@@ -208,12 +262,10 @@ const reducer = (state = initialState, action) => {
         let tempTrigger = Object.assign({}, trigger);
 
         if (tempTrigger.id === state.triggerBeingEditedId) {
-          let iValue;
+          let iValue = tempTrigger.id * 48;
           if (tempTrigger.isTriggered) {
             //trigger was already triggered, need to clear the previously scheduled trigger
             Tone.Transport.clear(tempTrigger.scheduleId);
-
-            iValue = tempTrigger.id * 48;
 
             //schedule new trigger
             tempTrigger.scheduleId = Tone.Transport.schedule(time => {
@@ -231,8 +283,6 @@ const reducer = (state = initialState, action) => {
             //case:  trigger wasn't triggered
             tempTrigger.isTriggered = true;
 
-            iValue = tempTrigger.id * 48;
-
             tempTrigger.scheduleId = Tone.Transport.schedule(time => {
               state.sequencers[sequencerId].synthesizerRef.triggerAttackRelease(
                 tempTrigger.note,
@@ -246,8 +296,6 @@ const reducer = (state = initialState, action) => {
 
             return tempTrigger;
           }
-
-          return tempTrigger;
         } else {
           return tempTrigger;
         }

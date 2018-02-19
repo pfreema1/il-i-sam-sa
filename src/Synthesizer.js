@@ -17,18 +17,33 @@ class Synthesizer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { synthEditOpen: false, chosenSynth: '5' };
+    this.state = {
+      synthEditOpen: false,
+      chosenSynth: props.sequencers[props.sequencerId].synthesizer
+    };
   }
 
   handleClick = () => {
     this.setState({ synthEditOpen: true });
+
+    this.props.dispatch({
+      type: 'EDITING_SYNTHESIZER',
+      sequencerBeingEditedId: this.props.sequencerId
+    });
   };
 
   handleDialogClose = () => {
     this.setState({ synthEditOpen: false });
+
+    this.props.dispatch({
+      type: 'EDITING_SYNTHESIZER',
+      sequencerBeingEditedId: null
+    });
   };
 
-  handleSynthChange = () => {};
+  handleSynthChange = (event, index, value) => {
+    this.props.dispatch({ type: 'SYNTHESIZER_CHANGED', newSynthNum: value });
+  };
 
   render() {
     return (
@@ -58,7 +73,6 @@ class Synthesizer extends Component {
             <MenuItem value={6} primaryText="MonoSynth" />
             <MenuItem value={7} primaryText="NoiseSynth" />
             <MenuItem value={8} primaryText="PluckSynth" />
-            <MenuItem value={9} primaryText="PolySynth" />
           </SelectField>
         </Dialog>
       </div>
@@ -68,4 +82,11 @@ class Synthesizer extends Component {
 
 /*****************************/
 
-export default Synthesizer;
+const mapStateToProps = state => {
+  return {
+    sequencerBeingEditedId: state.sequencerBeingEditedId,
+    sequencers: state.sequencers
+  };
+};
+
+export default connect(mapStateToProps)(Synthesizer);
