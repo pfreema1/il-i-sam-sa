@@ -1,10 +1,7 @@
-//@flow
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Trigger from './Trigger';
 
-import type { TriggerObject, DispatchObject } from './types';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import './react-contextmenu.css';
 import { Card } from 'material-ui/Card';
@@ -21,20 +18,7 @@ const CardStyle = {
   padding: '10px 0 10px 0'
 };
 
-/*****************************/
-type State = {
-  isEditingTrigger: boolean,
-  menuItemClicked: number
-};
-
-type Props = {
-  triggers: TriggerObject[],
-  dispatch: (obj: DispatchObject) => void
-};
-
-/*****************************/
-
-class Sequencer extends Component<State, Props> {
+class Sequencer extends Component {
   synth: any;
 
   constructor(props: Props) {
@@ -70,11 +54,13 @@ class Sequencer extends Component<State, Props> {
   };
 
   render() {
+    let sequencerToRender = this.props.sequencers[this.props.sequencerId];
+
     return (
       <Card containerStyle={CardStyle}>
         <Synthesizer />
 
-        {this.props.triggers.map(elem => {
+        {sequencerToRender.triggers.map(elem => {
           return (
             <ContextMenuTrigger
               key={elem.id}
@@ -85,6 +71,7 @@ class Sequencer extends Component<State, Props> {
               holdToDisplay={1000}
             >
               <Trigger
+                sequencerId={this.props.sequencerId}
                 id={elem.id}
                 key={elem.id}
                 barStarter={elem.id % 4 === 0 ? true : false}
@@ -126,7 +113,7 @@ class Sequencer extends Component<State, Props> {
 
 const mapStateToProps = state => {
   return {
-    triggers: state.triggers
+    sequencers: state.sequencers
   };
 };
 

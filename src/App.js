@@ -10,15 +10,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
 import PlayButton from './PlayButton';
 
-// const defaultTriggerState = {
-//   id: null,
-//   scheduleId: null,
-//   isTriggered: false,
-//   note: 'C2',
-//   duration: '48i',
-//   velocity: 1
-// };
-
 /*****************************
  ******************************
  **
@@ -35,7 +26,7 @@ const returnTriggers = () => {
       scheduleId: null,
       isTriggered: false,
       note: 'C2',
-      duration: '8i',
+      duration: '48i',
       velocity: 1
     };
     tempObj.id = i;
@@ -46,25 +37,52 @@ const returnTriggers = () => {
   return tempTriggersArr;
 };
 
-let testState = {
-  isEditingTrigger: false,
-  triggerBeingEditedId: null,
-  sequencerBeingEditedNum: null, //will be a number
-  isPlaying: false,
-  sequencer: [
-    {
-      synthesizer: 3,
-      triggers: returnTriggers()
-    }
-  ]
+/*****************************
+ ******************************
+ **
+ **		setupSequencer
+ **      -returns new sequencers object
+ ******************************
+ ******************************/
+const setupSequencer = (newSynthNum, currSequencers) => {
+  let sequencerId = 'seq' + Date.now();
+  //update sequencersIdArr
+  currSequencers[sequencerId] = {
+    synthesizer: newSynthNum,
+    synthesizerRef: new Tone.FMSynth().toMaster(), //this will have to be dynamically applied according to 'newSynthNum'
+    triggers: returnTriggers()
+  };
+
+  return currSequencers;
+};
+
+const returnNewSequencersIdArr = sequencersObj => {
+  return Object.keys(sequencersObj);
 };
 
 let initialState = {
   isEditingTrigger: false,
   triggerBeingEditedId: null,
+  sequencerBeingEditedId: null,
   isPlaying: false,
-  triggers: returnTriggers()
+  sequencersIdArr: [],
+  sequencers: {}
 };
+
+// let testState = {
+//   isEditingTrigger: false,
+//   triggerBeingEditedId: null,
+//   sequencerBeingEditedId: null,
+//   isPlaying: false,
+//   sequencerIdArr: [seq124445],
+//   sequencers: {
+//     seq124445: {
+//       synthesizer: 2,
+//       synthesizerRef: new Tone.FMSynth().toMaster(),
+//       triggers: returnTriggers()
+//     }
+//   }
+// };
 
 /*****************************
  ******************************
@@ -73,7 +91,7 @@ let initialState = {
  **
  ******************************
  ******************************/
-var synth = new Tone.FMSynth().toMaster();
+// var synth = new Tone.FMSynth().toMaster();
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
@@ -109,42 +127,206 @@ const handlePlayButtonClick = play => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'TRIGGER_CLICKED': {
-      let newTriggers = state.triggers.map(elem => {
-        if (elem.id === action.id) {
-          if (elem.isTriggered) {
-            //turn isTriggered to false, and clear id of previous Transport.schedule
-            elem.isTriggered = false;
-            Tone.Transport.clear(elem.scheduleId);
-            elem.scheduleId = null;
-
-            return elem;
-          } else {
-            //turn isTriggered to true, and save id of Transport.schedule
-            let iValue = elem.id * 48;
-            elem.isTriggered = true;
-            elem.scheduleId = Tone.Transport.schedule(time => {
-              synth.triggerAttackRelease(
-                elem.note,
-                elem.duration,
-                time,
-                elem.velocity
-              );
-            }, iValue + 'i');
-            console.log('schedule set!');
-
-            return elem;
-          }
-        } else {
-          return elem;
-        }
-      });
-      console.log('before returning in reducer: newTriggers:  ', newTriggers);
+    case 'INITIALIZE': {
+      let newSequencers = setupSequencer(2, state.sequencers);
+      let newSequencersIdArr = returnNewSequencersIdArr(newSequencers);
 
       return {
         ...state,
-        triggers: newTriggers
+        sequencersIdArr: newSequencersIdArr,
+        sequencers: newSequencers
       };
+    }
+    case 'TRIGGER_CLICKED': {
+      //   let { triggerId, sequencerId } = action;
+
+      //   //this is basically a map for objects
+      //   let newSequencersObj = Object.keys(state.sequencers).reduce(
+      //     (prev, currKey) => {
+      //       // prev refers to the current new object, it is built up by
+      //       // returning it on each iteration through the original objects' keys
+      //       console.log('DEBUG:  ', prev[sequencerId].triggers);
+
+      //       if (currKey === sequencerId) {
+      //         if (prev[sequencerId].triggers[triggerId].isTriggered) {
+      //           //turn isTriggered to false, and clear id of previous Transport.schedule
+      //           prev[sequencerId].triggers[triggerId].isTriggered = false;
+      //           Tone.Transport.clear(
+      //             prev[sequencerId].triggers[triggerId].scheduleId
+      //           );
+      //           prev[sequencerId].triggers[triggerId].scheduleId = null;
+      //         } else {
+      //           //turn isTriggered to true, and save id of Transport.schedule
+      //           let iValue = triggerId * 48;
+      //           prev[sequencerId].triggers[triggerId].isTriggered = true;
+      //           prev[sequencerId].triggers[
+      //             triggerId
+      //           ].scheduleId = Tone.Transport.schedule(time => {
+      //             state.sequencers[
+      //               sequencerId
+      //             ].synthesizerRef.triggerAttackRelease(
+      //               prev[sequencerId].triggers[triggerId].note,
+      //               prev[sequencerId].triggers[triggerId].duration,
+      //               time,
+      //               prev[sequencerId].triggers[triggerId].velocity
+      //             );
+      //           }, iValue + 'i');
+      //         }
+      //       }
+
+      //       return prev;
+      //     },
+      //     state.sequencers
+      //   );
+
+      //   return {
+      //     ...state,
+      //     sequencers: { ...newSequencersObj }
+      //   };
+
+      /*****************************/
+      //getting - action.triggerId, action.sequencerId
+      // let { triggerId, sequencerId } = action;
+
+      // let tempTrigger = state.sequencers[sequencerId].triggers[triggerId];
+      // if (tempTrigger.isTriggered) {
+      //   //turn isTriggered to false, and clear id of previous Transport.schedule
+      //   tempTrigger.isTriggered = false;
+      //   Tone.Transport.clear(tempTrigger.scheduleId);
+      //   tempTrigger.scheduleId = null;
+      // } else {
+      //   //turn isTriggered to true, and save id of Transport.schedule
+      //   let iValue = triggerId * 48; // ??
+      //   tempTrigger.isTriggered = true;
+      //   tempTrigger.scheduleId = Tone.Transport.schedule(time => {
+      //     state.sequencers[sequencerId].synthesizerRef.triggerAttackRelease(
+      //       tempTrigger.note,
+      //       tempTrigger.duration,
+      //       time,
+      //       tempTrigger.velocity
+      //     );
+      //   }, iValue + 'i');
+      // }
+
+      // console.log(
+      //   'SEQUENCddfERERERER:  ',
+      //   state.sequencers[sequencerId].triggers
+      // );
+      // return {
+      //   ...state,
+      //   sequencers: {
+      //     ...state.sequencers,
+      //     [sequencerId]: {
+      //       ...state.sequencers[sequencerId],
+      //       triggers: state.sequencers[sequencerId].triggers.map(trigger => {
+      //         if (trigger.id === triggerId) {
+      //           return tempTrigger;
+      //         } else {
+      //           return trigger;
+      //         }
+      //       })
+      //     }
+      //   }
+      // };
+
+      /*****************************/
+      // yet another try - change stuff inside map
+      let { triggerId, sequencerId } = action;
+
+      let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
+        if (trigger.id === triggerId) {
+          if (trigger.isTriggered) {
+            //turn isTriggered to false, and clear id of previous Transport.schedule
+            trigger.isTriggered = false;
+            Tone.Transport.clear(trigger.scheduleId);
+            trigger.scheduleId = null;
+            return trigger;
+          } else {
+            //turn isTriggered to true, and save id of Transport.schedule
+            let iValue = trigger.id * 48;
+            trigger.isTriggered = true;
+            trigger.scheduleId = Tone.Transport.schedule(time => {
+              state.sequencers[sequencerId].synthesizerRef.triggerAttackRelease(
+                trigger.note,
+                trigger.duration,
+                time,
+                trigger.velocity
+              );
+            }, iValue + 'i');
+
+            return trigger;
+          }
+        } else {
+          return trigger;
+        }
+      });
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
+      };
+
+      // return {
+      //   ...state,
+      //   sequencers: {
+      //     ...state.sequencers,
+      //     [state.sequencers[sequencerId]]: {
+      //       ...state.sequencers[sequencerId],
+      //       triggers: [
+      //         ...state.sequencers[sequencerId].triggers,
+      //         (state.sequencers[sequencerId].triggers[triggerId]: tempTrigger)
+      //       ]
+      //     }
+      //   }
+      // };
+
+      /*****************************/
+      //find sequencer we are working with
+      // let newSequencersArr = state.sequencers.map(sequencer => {
+      //   if (action.sequencerId === sequencer.sequencerId) {
+      //     let newTriggers = state.triggers.map(trigger => {
+      //       if (trigger.id === action.id) {
+      // if (trigger.isTriggered) {
+      //   //turn isTriggered to false, and clear id of previous Transport.schedule
+      //   trigger.isTriggered = false;
+      //   Tone.Transport.clear(trigger.scheduleId);
+      //   trigger.scheduleId = null;
+
+      //   return trigger;
+      // } else {
+      //   //turn isTriggered to true, and save id of Transport.schedule
+      //   let iValue = trigger.id * 48;
+      //   trigger.isTriggered = true;
+      //   trigger.scheduleId = Tone.Transport.schedule(time => {
+      //     sequencer.synthesizerRef.triggerAttackRelease(
+      //       trigger.note,
+      //       trigger.duration,
+      //       time,
+      //       trigger.velocity
+      //     );
+      //   }, iValue + 'i');
+
+      //   return trigger;
+      // }
+      //       } else {
+      //         return trigger;
+      //       }
+      //     });
+      //   } else {
+      //     return sequencer;
+      //   }
+      // });
+
+      // return {
+      //   ...state,
+      //   sequencers: newSequencersArr
+      // };
     }
     case 'PLAY_BUTTON_CLICKED': {
       handlePlayButtonClick(!state.isPlaying);
@@ -172,14 +354,14 @@ const reducer = (state = initialState, action) => {
             iValue = trigger.id * 48;
 
             //schedule new trigger
-            trigger.scheduleId = Tone.Transport.schedule(time => {
-              synth.triggerAttackRelease(
-                trigger.note,
-                trigger.duration,
-                time,
-                trigger.velocity
-              );
-            }, iValue + 'i');
+            // trigger.scheduleId = Tone.Transport.schedule(time => {
+            //   synth.triggerAttackRelease(
+            //     trigger.note,
+            //     trigger.duration,
+            //     time,
+            //     trigger.velocity
+            //   );
+            // }, iValue + 'i');
             trigger.note = action.newNote;
 
             return trigger;
@@ -189,14 +371,14 @@ const reducer = (state = initialState, action) => {
 
             iValue = trigger.id * 48;
 
-            trigger.scheduleId = Tone.Transport.schedule(time => {
-              synth.triggerAttackRelease(
-                trigger.note,
-                trigger.duration,
-                time,
-                trigger.velocity
-              );
-            }, iValue + 'i');
+            // trigger.scheduleId = Tone.Transport.schedule(time => {
+            //   synth.triggerAttackRelease(
+            //     trigger.note,
+            //     trigger.duration,
+            //     time,
+            //     trigger.velocity
+            //   );
+            // }, iValue + 'i');
 
             trigger.note = action.newNote;
 
@@ -223,13 +405,15 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer, applyMiddleware(logger));
 
+store.dispatch({ type: 'INITIALIZE' });
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <div>
-            <Sequencer />
+            <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />
             <PlayButton />
           </div>
         </MuiThemeProvider>

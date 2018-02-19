@@ -1,8 +1,5 @@
-// @flow
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import type { TriggerObject, DispatchObject } from './types';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const ButtonStyle = {
@@ -25,40 +22,32 @@ const backgroundColorSetter = (isTriggered, barStarter) => {
   }
 };
 
-/*****************************/
-
-type Props = {
-  triggers: TriggerObject[],
-  dispatch: (obj: DispatchObject) => void,
-  barStarter: boolean,
-  id: number
-};
-
-type State = {
-  isTriggered: boolean
-};
-
-/*****************************/
-
-class Trigger extends Component<Props, State> {
+class Trigger extends Component {
   constructor(props: Props) {
     super(props);
 
+    const { sequencerId, id, sequencers } = props;
+
     this.state = {
-      isTriggered: props.triggers[props.id].isTriggered
+      isTriggered: sequencers[sequencerId].triggers[id].isTriggered
     };
   }
 
   handleTriggerClick = id => {
-    this.props.dispatch({ type: 'TRIGGER_CLICKED', id });
+    this.props.dispatch({
+      type: 'TRIGGER_CLICKED',
+      triggerId: id,
+      sequencerId: this.props.sequencerId
+    });
   };
 
   render() {
-    const { id, triggers } = this.props;
+    const { sequencerId, id, sequencers } = this.props;
+
     return (
       <RaisedButton
         backgroundColor={backgroundColorSetter(
-          triggers[id].isTriggered,
+          sequencers[sequencerId].triggers[id].isTriggered,
           this.props.barStarter
         )}
         label=""
@@ -73,7 +62,7 @@ class Trigger extends Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    triggers: state.triggers
+    sequencers: state.sequencers
   };
 };
 
