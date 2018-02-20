@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const ButtonStyle = {
-  width: '5vw',
-  height: '100px',
-  margin: '5px',
+const ButtonContainerStyle = {
+  width: '100%',
+  height: '100%',
+
   borderRadius: '5px',
-  minWidth: '5vw'
+  zIndex: '200'
 };
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
@@ -51,7 +51,13 @@ class Trigger extends Component {
           this.props.barStarter
         )}
         label=""
-        style={ButtonStyle}
+        style={{
+          ...ButtonContainerStyle,
+          width: this.props.width,
+          height: this.props.height,
+          minWidth: '',
+          backgroundColor: 'yellow'
+        }}
         onClick={this.handleTriggerClick.bind(null, id)}
       />
     );

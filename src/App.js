@@ -24,13 +24,15 @@ const returnTriggers = () => {
   for (let i = 0; i < 16; i++) {
     let tempObj = {
       id: null,
+      timingValue: i * 48,
       scheduleId: null,
       isTriggered: false,
       note: null,
-      duration: '48i',
+      duration: '192i', //full = 192
       velocity: 1,
       isSliced: false,
-      sliceAmount: 0
+      sliceAmount: 0,
+      slicedTriggers: []
     };
     tempObj.id = i;
 
@@ -38,6 +40,19 @@ const returnTriggers = () => {
   }
 
   return tempTriggersArr;
+};
+
+const returnSingleSlicedTrigger = () => {
+  return {
+    id: null,
+    scheduleId: null,
+    isTriggered: false,
+    note: null,
+    duration: '192i', //full = 192
+    velocity: 1,
+    isSliced: false,
+    sliceAmount: 0
+  };
 };
 
 /*****************************
@@ -94,17 +109,17 @@ const returnNewSynth = synthNum => {
  **		setupSequencer
  **      -returns new sequencers object
  ******************************/
-const setupSequencer = (newSynthNum, currSequencers) => {
-  let sequencerId = 'seq' + Date.now();
-  //update sequencersIdArr
-  currSequencers[sequencerId] = {
-    synthesizer: newSynthNum,
-    synthesizerRef: returnNewSynth(newSynthNum),
-    triggers: returnTriggers()
-  };
+// const setupSequencer = (newSynthNum, currSequencers) => {
+//   let sequencerId = 'seq' + Date.now();
+//   //update sequencersIdArr
+//   currSequencers[sequencerId] = {
+//     synthesizer: newSynthNum,
+//     synthesizerRef: returnNewSynth(newSynthNum),
+//     triggers: returnTriggers()
+//   };
 
-  return currSequencers;
-};
+//   return currSequencers;
+// };
 
 const setupAmenSequencers = () => {
   let sequencers = {};
@@ -129,8 +144,6 @@ const setupAmenSequencers = () => {
     synthesizerRef: returnNewSynth(12),
     triggers: returnTriggers()
   };
-
-  console.log('sequencers in setup:  ', sequencers);
 
   return sequencers;
 };
@@ -192,11 +205,9 @@ const returnClearedTrigger = trigger => {
 
 //default note is C2
 const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
-  let iValue = trigger.id * 48;
+  let iValue = trigger.timingValue;
 
   trigger.isTriggered = true;
-
-  console.log('isSample:  ', isSample);
 
   if (isSample) {
     trigger.scheduleId = Tone.Transport.schedule(time => {
@@ -231,8 +242,6 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
       let sequencers = setupAmenSequencers();
-
-      console.log('sequencers******:  ', sequencers);
 
       let newSequencersIdArr = returnNewSequencersIdArr(sequencers);
 
@@ -370,6 +379,56 @@ const reducer = (state = initialState, action) => {
               action.newNote
             );
           }
+        } else {
+          return tempTrigger;
+        }
+      });
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
+      };
+    }
+    case 'TRIGGER_SLICED': {
+      // clear
+      let sequencerId = action.sequencerBeingEditedId;
+      let triggerId = action.triggerBeingEditedId;
+
+      let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
+        let tempTrigger = { ...trigger };
+
+        if (tempTrigger.id === triggerId) {
+          tempTrigger.isSliced = true;
+          tempTrigger.sliceAmount = tempTrigger.sliceAmount + 1;
+
+          const numOfSlicedTriggers = tempTrigger.sliceAmount * 4;
+          const iValueScale = 48 / numOfSlicedTriggers;
+
+          let tempSlicedTriggersArr = [];
+
+          //add on new sliced triggers to triggers array
+          for (let i = 0; i < numOfSlicedTriggers; i++) {
+            console.log('pushing new trigger on!  ');
+            // push new triggers onto newTriggers array
+            let tempSlicedTrigger = returnSingleSlicedTrigger();
+            tempSlicedTrigger.id = 'trigger' + triggerId + 'slice' + i;
+            tempSlicedTrigger.timingValue =
+              i * iValueScale +
+              state.sequencers[sequencerId].triggers[triggerId].timingValue;
+
+            tempSlicedTriggersArr = tempSlicedTriggersArr.concat(
+              tempSlicedTrigger
+            );
+          }
+          tempTrigger.slicedTriggers = tempSlicedTriggersArr;
+
+          return tempTrigger;
         } else {
           return tempTrigger;
         }

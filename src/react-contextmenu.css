@@ -13,6 +13,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 250ms ease !important;
+  z-index: 300;
 }
 
 .react-contextmenu.react-contextmenu--visible {
@@ -76,4 +77,10 @@
 .example-multiple-targets::after {
   content: attr(data-count);
   display: block;
+}
+
+.react-contextmenu-wrapper {
+  width: 5vw;
+  height: 5vw;
+  /* background-color: white; */
 }

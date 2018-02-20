@@ -8,7 +8,7 @@ import { Card } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
-import Synthesizer from './Synthesizer';
+// import Synthesizer from './Synthesizer';
 
 const CardStyle = {
   width: '100vw',
@@ -17,6 +17,17 @@ const CardStyle = {
   alignItems: 'center',
   padding: '10px 0 10px 0'
 };
+
+const slicedTriggerContainerStyle = {
+  backgroundColor: '#A7C9DF',
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between'
+};
+
+/*****************************/
 
 class Sequencer extends Component {
   synth: any;
@@ -68,34 +79,79 @@ class Sequencer extends Component {
     });
   };
 
+  returnSlicedTrigger = trigger => {
+    //get how many triggers we need
+    let numOfSlicedTriggers =
+      this.props.sequencers[this.props.sequencerId].triggers[trigger.id]
+        .sliceAmount * 4;
+    let arrayOfWidths = [];
+    let heightStr = 100 / (numOfSlicedTriggers / 2) - 5 + '%';
+    for (let i = 0; i < numOfSlicedTriggers; i++) {
+      arrayOfWidths.push(Math.floor(100 / (numOfSlicedTriggers / 2)) - 5);
+    }
+
+    return (
+      <ContextMenuTrigger
+        key={trigger.id}
+        id={'triggerMenu' + this.props.sequencerId}
+        //this is passed in as data to MenuItem
+        attributes={{ id: trigger.id }}
+        collect={props => props}
+        holdToDisplay={1000}
+      >
+        <div style={slicedTriggerContainerStyle}>
+          {arrayOfWidths.map((width, index) => {
+            let widthStr = width + '%';
+            let newId = 'slice-' + index;
+
+            return (
+              <Trigger
+                sequencerId={this.props.sequencerId}
+                id={newId}
+                key={trigger.id}
+                width={widthStr}
+                height={heightStr}
+                barStarter={trigger.id % 4 === 0 ? true : false}
+              />
+            );
+          })}
+        </div>
+      </ContextMenuTrigger>
+    );
+  };
+
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
     return (
       <Card containerStyle={CardStyle}>
-        {/*<Synthesizer sequencerId={this.props.sequencerId} />*/}
-
         {sequencerToRender.triggers.map(trigger => {
-          return (
-            <ContextMenuTrigger
-              key={trigger.id}
-              id="triggerMenu"
-              //this is passed in as data to MenuItem
-              attributes={{ id: trigger.id }}
-              collect={props => props}
-              holdToDisplay={1000}
-            >
-              <Trigger
-                sequencerId={this.props.sequencerId}
-                id={trigger.id}
+          if (trigger.isSliced) {
+            return this.returnSlicedTrigger(trigger);
+          } else {
+            return (
+              <ContextMenuTrigger
                 key={trigger.id}
-                barStarter={trigger.id % 4 === 0 ? true : false}
-              />
-            </ContextMenuTrigger>
-          );
+                id={'triggerMenu' + this.props.sequencerId}
+                //this is passed in as data to MenuItem
+                attributes={{ id: trigger.id }}
+                collect={props => props}
+                holdToDisplay={1000}
+              >
+                <Trigger
+                  sequencerId={this.props.sequencerId}
+                  id={trigger.id}
+                  key={trigger.id}
+                  width={'100%'}
+                  height={'100%'}
+                  barStarter={trigger.id % 48 === 0 ? true : false}
+                />
+              </ContextMenuTrigger>
+            );
+          }
         })}
 
-        <ContextMenu id="triggerMenu">
+        <ContextMenu id={'triggerMenu' + this.props.sequencerId}>
           <MenuItem onClick={this.handleMenuItemClick} data={{ item: 0 }}>
             note
           </MenuItem>
