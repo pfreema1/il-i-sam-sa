@@ -28,7 +28,9 @@ const returnTriggers = () => {
       isTriggered: false,
       note: null,
       duration: '48i',
-      velocity: 1
+      velocity: 1,
+      isSliced: false,
+      sliceAmount: 0
     };
     tempObj.id = i;
 
@@ -145,10 +147,6 @@ let initialState = {
   sequencersIdArr: [],
   sequencers: {}
 };
-
-var buffer = new Tone.Buffer(kick1, () => {
-  console.log('buffer is now available, whatever that means');
-});
 
 // let testState = {
 //   isEditingTrigger: false,

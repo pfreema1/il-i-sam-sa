@@ -55,6 +55,19 @@ class Sequencer extends Component {
     });
   };
 
+  handleSliceMenuItemClick = (e, data) => {
+    console.log('sliced!');
+
+    let triggerBeingEditedId = data.attributes.id;
+
+    this.props.dispatch({
+      type: 'TRIGGER_SLICED',
+      isEditingTrigger: false,
+      triggerBeingEditedId: triggerBeingEditedId,
+      sequencerBeingEditedId: this.props.sequencerId
+    });
+  };
+
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
@@ -91,6 +104,9 @@ class Sequencer extends Component {
           </MenuItem>
           <MenuItem onClick={this.handleMenuItemClick} data={{ item: 2 }}>
             duration
+          </MenuItem>
+          <MenuItem onClick={this.handleSliceMenuItemClick} data={{ item: 3 }}>
+            slice
           </MenuItem>
         </ContextMenu>
 
