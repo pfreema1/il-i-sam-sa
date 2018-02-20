@@ -9,6 +9,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
 import PlayButton from './PlayButton';
+import kick1 from './samples/kick1.wav';
 
 /*****************************
  **
@@ -59,6 +60,11 @@ const returnNewSynth = synthNum => {
       return new Tone.NoiseSynth().toMaster();
     case 8:
       return new Tone.PluckSynth().toMaster();
+    case 9: {
+      let ref = new Tone.Player(kick1).toMaster();
+      ref.retrigger = true;
+      return ref;
+    }
     default:
       return null;
   }
@@ -93,6 +99,10 @@ let initialState = {
   sequencersIdArr: [],
   sequencers: {}
 };
+
+var buffer = new Tone.Buffer(kick1, () => {
+  console.log('buffer is now available, whatever that means');
+});
 
 // let testState = {
 //   isEditingTrigger: false,
@@ -136,19 +146,32 @@ const returnClearedTrigger = trigger => {
 };
 
 //default note is C2
-const returnSetTrigger = (trigger, synthesizerRef, note = 'C2') => {
+const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
   let iValue = trigger.id * 48;
 
   trigger.isTriggered = true;
-  trigger.scheduleId = Tone.Transport.schedule(time => {
-    synthesizerRef.triggerAttackRelease(
-      trigger.note,
-      trigger.duration,
-      time,
-      trigger.velocity
-    );
-  }, iValue + 'i');
-  trigger.note = note;
+
+  console.log('isSample:  ', isSample);
+
+  if (isSample) {
+    trigger.scheduleId = Tone.Transport.schedule(time => {
+      synthesizerRef.start(
+        time,
+        0, //offset
+        trigger.duration
+      );
+    }, iValue + 'i');
+  } else {
+    trigger.scheduleId = Tone.Transport.schedule(time => {
+      synthesizerRef.triggerAttackRelease(
+        trigger.note,
+        trigger.duration,
+        time,
+        trigger.velocity
+      );
+    }, iValue + 'i');
+    trigger.note = note;
+  }
 
   return trigger;
 };
@@ -162,7 +185,7 @@ const returnSetTrigger = (trigger, synthesizerRef, note = 'C2') => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
-      let newSequencers = setupSequencer(3, {});
+      let newSequencers = setupSequencer(9, {});
       let newSequencersIdArr = returnNewSequencersIdArr(newSequencers);
 
       return {
@@ -173,6 +196,8 @@ const reducer = (state = initialState, action) => {
     }
     case 'TRIGGER_CLICKED': {
       let { triggerId, sequencerId } = action;
+      let isSample =
+        state.sequencers[sequencerId].synthesizer === 9 ? true : false;
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         /******SUPER IMPORTANT!!! */
@@ -186,7 +211,9 @@ const reducer = (state = initialState, action) => {
           } else {
             return returnSetTrigger(
               tempTrigger,
-              state.sequencers[sequencerId].synthesizerRef
+              state.sequencers[sequencerId].synthesizerRef,
+              'C2',
+              isSample
             );
           }
         } else {
