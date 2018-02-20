@@ -10,6 +10,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
 import PlayButton from './PlayButton';
 import kick1 from './samples/kick1.wav';
+import snare1 from './samples/snare1.wav';
+import closedHiHat1 from './samples/closedHiHat1.wav';
 
 /*****************************
  **
@@ -61,9 +63,24 @@ const returnNewSynth = synthNum => {
     case 8:
       return new Tone.PluckSynth().toMaster();
     case 9: {
-      let ref = new Tone.Player(kick1).toMaster();
-      ref.retrigger = true;
-      return ref;
+      let kickRef = new Tone.Player(kick1).toMaster();
+      kickRef.retrigger = true;
+      return kickRef;
+    }
+    case 10: {
+      let kickRef = new Tone.Player(kick1).toMaster();
+      kickRef.retrigger = true;
+      return kickRef;
+    }
+    case 11: {
+      let snareRef = new Tone.Player(snare1).toMaster();
+      snareRef.retrigger = true;
+      return snareRef;
+    }
+    case 12: {
+      let closeHiHatRef = new Tone.Player(closedHiHat1).toMaster();
+      closeHiHatRef.retrigger = true;
+      return closeHiHatRef;
     }
     default:
       return null;
@@ -85,6 +102,35 @@ const setupSequencer = (newSynthNum, currSequencers) => {
   };
 
   return currSequencers;
+};
+
+const setupAmenSequencers = () => {
+  let sequencers = {};
+  let kickSequencerId = 'seqKick' + Date.now();
+  let snareSequencerId = 'seqSnare' + Date.now();
+  let hiHatSequencerId = 'seqHiHat' + Date.now();
+
+  sequencers[kickSequencerId] = {
+    synthesizer: 10,
+    synthesizerRef: returnNewSynth(10),
+    triggers: returnTriggers()
+  };
+
+  sequencers[snareSequencerId] = {
+    synthesizer: 11,
+    synthesizerRef: returnNewSynth(11),
+    triggers: returnTriggers()
+  };
+
+  sequencers[hiHatSequencerId] = {
+    synthesizer: 12,
+    synthesizerRef: returnNewSynth(12),
+    triggers: returnTriggers()
+  };
+
+  console.log('sequencers in setup:  ', sequencers);
+
+  return sequencers;
 };
 
 const returnNewSequencersIdArr = sequencersObj => {
@@ -122,6 +168,7 @@ var buffer = new Tone.Buffer(kick1, () => {
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
+Tone.Transport.bpm.value = 200;
 
 /*****************************
  **
@@ -185,19 +232,22 @@ const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
-      let newSequencers = setupSequencer(9, {});
-      let newSequencersIdArr = returnNewSequencersIdArr(newSequencers);
+      let sequencers = setupAmenSequencers();
+
+      console.log('sequencers******:  ', sequencers);
+
+      let newSequencersIdArr = returnNewSequencersIdArr(sequencers);
 
       return {
         ...state,
         sequencersIdArr: newSequencersIdArr,
-        sequencers: newSequencers
+        sequencers: { ...sequencers }
       };
     }
     case 'TRIGGER_CLICKED': {
       let { triggerId, sequencerId } = action;
       let isSample =
-        state.sequencers[sequencerId].synthesizer === 9 ? true : false;
+        state.sequencers[sequencerId].synthesizer > 8 ? true : false;
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         /******SUPER IMPORTANT!!! */
@@ -355,6 +405,8 @@ class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <div>
+            <Sequencer sequencerId={store.getState().sequencersIdArr[2]} />
+            <Sequencer sequencerId={store.getState().sequencersIdArr[1]} />
             <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />
             <PlayButton />
           </div>
