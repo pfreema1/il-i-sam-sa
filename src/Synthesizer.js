@@ -42,6 +42,7 @@ class Synthesizer extends Component {
   };
 
   handleSynthChange = (event, index, value) => {
+    this.setState({ chosenSynth: value });
     this.props.dispatch({ type: 'SYNTHESIZER_CHANGED', newSynthNum: value });
   };
 

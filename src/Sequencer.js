@@ -62,21 +62,21 @@ class Sequencer extends Component {
       <Card containerStyle={CardStyle}>
         <Synthesizer sequencerId={this.props.sequencerId} />
 
-        {sequencerToRender.triggers.map(elem => {
+        {sequencerToRender.triggers.map(trigger => {
           return (
             <ContextMenuTrigger
-              key={elem.id}
+              key={trigger.id}
               id="triggerMenu"
               //this is passed in as data to MenuItem
-              attributes={{ id: elem.id }}
+              attributes={{ id: trigger.id }}
               collect={props => props}
               holdToDisplay={1000}
             >
               <Trigger
                 sequencerId={this.props.sequencerId}
-                id={elem.id}
-                key={elem.id}
-                barStarter={elem.id % 4 === 0 ? true : false}
+                id={trigger.id}
+                key={trigger.id}
+                barStarter={trigger.id % 4 === 0 ? true : false}
               />
             </ContextMenuTrigger>
           );

@@ -228,18 +228,45 @@ const reducer = (state = initialState, action) => {
     }
     case 'SYNTHESIZER_CHANGED': {
       let sequencerId = state.sequencerBeingEditedId;
-      //change synthesizer number, and synthesizerRef, and dispose old synth
-      //-dispose
-      // state.sequencers[sequencerId].synthesizerRef.dispose();
+
+      //dispose old synth
+      state.sequencers[sequencerId].synthesizerRef.dispose();
+
+      //create new object with same values as old but new reference
+      let tempSequencerObj = { ...state.sequencers[sequencerId] };
+
+      //change synthesizer number
+      tempSequencerObj.synthesizer = action.newSynthNum;
+
+      //change synthesizerRef
+      tempSequencerObj.synthesizerRef = returnNewSynth(action.newSynthNum);
+
+      //iterate through triggers and reschedule
+      tempSequencerObj.triggers = tempSequencerObj.triggers.map(trigger => {
+        let tempTrigger = { ...trigger };
+
+        if (tempTrigger.isTriggered) {
+          tempTrigger = returnClearedTrigger(tempTrigger);
+
+          //we are using original 'trigger' object to pass in the note
+          tempTrigger = returnSetTrigger(
+            tempTrigger,
+            tempSequencerObj.synthesizerRef,
+            trigger.note
+          );
+
+          return tempTrigger;
+        } else {
+          return trigger;
+        }
+      });
 
       return {
         ...state,
         sequencers: {
           ...state.sequencers,
           [sequencerId]: {
-            ...state.sequencers[sequencerId],
-            synthesizer: action.newSynthNum,
-            synthesizerRef: returnNewSynth(action.newSynthNum)
+            ...tempSequencerObj
           }
         }
       };
@@ -251,7 +278,6 @@ const reducer = (state = initialState, action) => {
         let tempTrigger = { ...trigger }; //create new object to avoid mutating original
 
         if (tempTrigger.id === state.triggerBeingEditedId) {
-          let iValue = tempTrigger.id * 48;
           if (tempTrigger.isTriggered) {
             //trigger was already triggered, need to clear the previously scheduled trigger
             Tone.Transport.clear(tempTrigger.scheduleId);
@@ -263,7 +289,6 @@ const reducer = (state = initialState, action) => {
             );
           } else {
             //case:  trigger wasn't triggered
-
             return returnSetTrigger(
               tempTrigger,
               state.sequencers[sequencerId].synthesizerRef,
