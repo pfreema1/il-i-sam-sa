@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import './Trigger.css';
 
 const ButtonContainerStyle = {
-  width: '100%',
-  height: '100%',
-
+  width: '5vw', //'100%',
+  height: '100px', //'100%',
+  minWidth: '5vw', //previously nothing
   borderRadius: '5px'
   // zIndex: '200'
 };
@@ -97,6 +98,7 @@ class Trigger extends Component {
           minWidth: '',
           backgroundColor: 'yellow'
         }}
+        className="trigger-button"
         onClick={this.handleTriggerClick.bind(null, id)}
       />
     );
