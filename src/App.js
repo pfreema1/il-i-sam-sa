@@ -251,7 +251,7 @@ const reducer = (state = initialState, action) => {
         sequencers: { ...sequencers }
       };
     }
-    case 'TRIGGER_CLICKED': {
+    case 'PARENT_TRIGGER_CLICKED': {
       let { triggerId, sequencerId } = action;
       let isSample =
         state.sequencers[sequencerId].synthesizer > 8 ? true : false;
@@ -277,6 +277,69 @@ const reducer = (state = initialState, action) => {
           return tempTrigger;
         }
       });
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
+      };
+    }
+    case 'SLICEE_TRIGGER_CLICKED': {
+      let { triggerId, sequencerId, parentTriggerId } = action;
+      let synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
+
+      let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
+        let tempTrigger = { ...trigger };
+
+        if (tempTrigger.id === parentTriggerId) {
+          // found parent trigger - iterate through sliced triggers
+          let tempSlicedTriggersArr = tempTrigger.slicedTriggers.map(
+            (slicedTrigger, index) => {
+              let tempSlicedTrigger = { ...slicedTrigger };
+
+              // console.log('tempSlicedTrigger.id:  ', tempSlicedTrigger.id);
+              // console.log('triggerId:  ', triggerId);
+
+              if (index === triggerId) {
+                // found slicee trigger
+                tempSlicedTrigger = returnSetTrigger(
+                  tempSlicedTrigger,
+                  synthesizerRef,
+                  '',
+                  true
+                );
+
+                console.log(
+                  '*****before returning processed slicee:  ',
+                  tempSlicedTrigger
+                );
+
+                return tempSlicedTrigger;
+              } else {
+                return tempSlicedTrigger;
+              }
+            }
+          );
+
+          console.log(
+            '****before returning: tempSlicedTriggersArr:  ',
+            tempSlicedTriggersArr
+          );
+
+          tempTrigger.slicedTriggers = tempSlicedTriggersArr;
+
+          return tempTrigger;
+        } else {
+          return tempTrigger;
+        }
+      });
+
+      console.log('**** before returning: newTriggers:  ', newTriggers);
 
       return {
         ...state,

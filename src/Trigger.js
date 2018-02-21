@@ -48,11 +48,20 @@ class Trigger extends Component {
   }
 
   handleTriggerClick = id => {
-    this.props.dispatch({
-      type: 'TRIGGER_CLICKED',
-      triggerId: id,
-      sequencerId: this.props.sequencerId
-    });
+    if (this.props.isSlicee) {
+      this.props.dispatch({
+        type: 'SLICEE_TRIGGER_CLICKED',
+        triggerId: id,
+        sequencerId: this.props.sequencerId,
+        parentTriggerId: this.props.parentTriggerId
+      });
+    } else {
+      this.props.dispatch({
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: id,
+        sequencerId: this.props.sequencerId
+      });
+    }
   };
 
   render() {

@@ -108,11 +108,11 @@ class Sequencer extends Component {
                 sequencerId={this.props.sequencerId}
                 parentTriggerId={trigger.id}
                 id={index}
-                key={trigger.id}
+                key={index}
                 width={widthStr}
                 height={heightStr}
                 isSlicee={true}
-                barStarter={trigger.id % 4 === 0 ? true : false}
+                barStarter={index % 4 === 0 ? true : false}
               />
             );
           })}
