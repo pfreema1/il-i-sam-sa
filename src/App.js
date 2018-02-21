@@ -623,6 +623,11 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+    case 'CHANGE_NOTE_DURATION': {
+      return {
+        ...state
+      };
+    }
     default:
       return state;
   }

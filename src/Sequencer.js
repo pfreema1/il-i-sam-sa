@@ -8,6 +8,7 @@ import { Card } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
+import Duration from './Duration';
 // import Synthesizer from './Synthesizer';
 
 const CardStyle = {
@@ -194,7 +195,9 @@ class Sequencer extends Component {
               <TriggerEditNote />
             </Tab>
             <Tab label="velocity">velocity stuff here</Tab>
-            <Tab label="duration">duration stuff here</Tab>
+            <Tab label="duration">
+              <Duration />
+            </Tab>
           </Tabs>
         </Dialog>
       </Card>

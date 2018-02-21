@@ -1,0 +1,16 @@
+.duration-container {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.duration-slider {
+  width: 50%;
+}
+
+.duration-slider > div {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
