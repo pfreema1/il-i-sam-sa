@@ -147,7 +147,7 @@ class Sequencer extends Component {
                   width={'100%'}
                   height={'100%'}
                   isSlicee={false}
-                  barStarter={trigger.id % 48 === 0 ? true : false}
+                  barStarter={trigger.id % 4 === 0 ? true : false}
                 />
               </ContextMenuTrigger>
             );

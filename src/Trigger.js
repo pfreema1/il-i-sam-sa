@@ -12,17 +12,11 @@ const ButtonContainerStyle = {
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
-    console.log('returning: isTriggered');
-
     return '#BEEBD1';
   } else {
     if (barStarter) {
-      console.log('returning: barStarter');
-
       return '#6863B2';
     } else {
-      console.log('returning: last else');
-
       return '#405790';
     }
   }
