@@ -1,3 +1,7 @@
 .trigger-button button div {
-  height: 100%;
+  height: 100% !important;
+}
+
+.trigger-button button {
+  height: 100% !important;
 }
