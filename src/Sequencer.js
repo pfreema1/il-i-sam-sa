@@ -19,7 +19,7 @@ const CardStyle = {
 };
 
 const slicedTriggerContainerStyle = {
-  backgroundColor: '#A7C9DF',
+  // backgroundColor: '#A7C9DF',
   width: '100%',
   height: '100%',
   display: 'flex',
@@ -79,15 +79,25 @@ class Sequencer extends Component {
     });
   };
 
+  handleUnSliceMenuItemClick = (e, data) => {
+    let triggerBeingEditedId = data.attributes.id;
+
+    this.props.dispatch({
+      type: 'TRIGGER_UNSLICED',
+      triggerBeingEditedId: triggerBeingEditedId,
+      sequencerBeingEditedId: this.props.sequencerId
+    });
+  };
+
   returnSlicedTriggers = trigger => {
     //get how many triggers we need
     let numOfSlicedTriggers =
       this.props.sequencers[this.props.sequencerId].triggers[trigger.id]
         .sliceAmount * 4;
     let arrayOfWidths = [];
-    let heightStr = 100 / (numOfSlicedTriggers / 2) - 5 + '%';
+    let heightStr = 100 / (numOfSlicedTriggers / 2) + '%';
     for (let i = 0; i < numOfSlicedTriggers; i++) {
-      arrayOfWidths.push(Math.floor(100 / (numOfSlicedTriggers / 2)) - 5);
+      arrayOfWidths.push(Math.floor(100 / (numOfSlicedTriggers / 2)));
     }
 
     return (
@@ -166,6 +176,12 @@ class Sequencer extends Component {
           </MenuItem>
           <MenuItem onClick={this.handleSliceMenuItemClick} data={{ item: 3 }}>
             slice
+          </MenuItem>
+          <MenuItem
+            onClick={this.handleUnSliceMenuItemClick}
+            data={{ item: 4 }}
+          >
+            un-slice
           </MenuItem>
         </ContextMenu>
 

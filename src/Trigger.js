@@ -4,11 +4,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import './Trigger.css';
 
 const ButtonContainerStyle = {
-  width: '5vw', //'100%',
-  height: '100px', //'100%',
-  minWidth: '5vw', //previously nothing
+  width: '5vw',
+  height: '100px',
   borderRadius: '5px'
-  // zIndex: '200'
 };
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
@@ -82,7 +80,7 @@ class Trigger extends Component {
   };
 
   render() {
-    const { sequencerId, id, sequencers } = this.props;
+    const { sequencerId, id, sequencers, isSlicee } = this.props;
 
     return (
       <RaisedButton
@@ -98,7 +96,7 @@ class Trigger extends Component {
           minWidth: '',
           backgroundColor: 'yellow'
         }}
-        className="trigger-button"
+        className={'trigger-button ' + (isSlicee ? 'slicee' : '')}
         onClick={this.handleTriggerClick.bind(null, id)}
       />
     );

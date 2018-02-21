@@ -559,6 +559,70 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+    case 'TRIGGER_UNSLICED': {
+      let sequencerId = action.sequencerBeingEditedId;
+      let triggerId = action.triggerBeingEditedId;
+      let slicedTriggers =
+        state.sequencers[sequencerId].triggers[triggerId].slicedTriggers;
+
+      // *** be sure to decrease sliceAmount at some point!
+
+      //check if unable to unslice further
+      if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
+        console.log('cant unslice anymore bro!');
+        return {
+          ...state
+        };
+      }
+
+      //iterate through current slicedTriggers and clear the scheduled notes
+      for (let i = 0; i < slicedTriggers.length; i++) {
+        if (slicedTriggers[i].scheduleId) {
+          Tone.Transport.clear(slicedTriggers[i].scheduleId);
+        }
+      }
+
+      let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
+        let parentTrigger = { ...trigger };
+
+        if (parentTrigger.id === triggerId) {
+          // case: we are on the correct parent trigger
+
+          //decrease sliceAmount
+          parentTrigger.sliceAmount = parentTrigger.sliceAmount - 1;
+
+          if (parentTrigger.sliceAmount === 0) {
+            parentTrigger.isSliced = false;
+          }
+
+          const newNumOfSlicedTriggers = parentTrigger.sliceAmount * 4;
+          let tempSlicedTriggersArr = [];
+
+          //create new empty array for new slicedTriggers
+          for (let i = 0; i < newNumOfSlicedTriggers; i++) {
+            let tempTrigger = returnSingleSlicedTrigger();
+            tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempTrigger);
+          }
+
+          parentTrigger.slicedTriggers = tempSlicedTriggersArr;
+
+          return parentTrigger;
+        } else {
+          return parentTrigger;
+        }
+      });
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
+      };
+    }
     default:
       return state;
   }

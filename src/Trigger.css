@@ -5,3 +5,8 @@
 .trigger-button button {
   height: 100% !important;
 }
+
+.slicee {
+  border: 1px solid black;
+  height: unset !important;
+}
