@@ -29,12 +29,6 @@ class Trigger extends Component {
     const { sequencerId, id, sequencers, parentTriggerId } = props;
 
     if (props.isSlicee) {
-      console.log(
-        'sequencers[sequencerId].triggers[parentTriggerId]:  ',
-        sequencers[sequencerId].triggers[parentTriggerId]
-      );
-
-      console.log('id:  ', id);
       this.state = {
         isTriggered:
           sequencers[sequencerId].triggers[parentTriggerId].slicedTriggers[id]
