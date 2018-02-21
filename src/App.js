@@ -306,18 +306,17 @@ const reducer = (state = initialState, action) => {
               // console.log('triggerId:  ', triggerId);
 
               if (index === triggerId) {
-                // found slicee trigger
-                tempSlicedTrigger = returnSetTrigger(
-                  tempSlicedTrigger,
-                  synthesizerRef,
-                  '',
-                  true
-                );
-
-                console.log(
-                  '*****before returning processed slicee:  ',
-                  tempSlicedTrigger
-                );
+                // found slicee trigger - determine if we need to set or clear
+                if (tempSlicedTrigger.isTriggered) {
+                  tempSlicedTrigger = returnClearedTrigger(tempSlicedTrigger);
+                } else {
+                  tempSlicedTrigger = returnSetTrigger(
+                    tempSlicedTrigger,
+                    synthesizerRef,
+                    '',
+                    true
+                  );
+                }
 
                 return tempSlicedTrigger;
               } else {
