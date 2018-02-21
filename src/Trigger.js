@@ -6,17 +6,23 @@ const ButtonContainerStyle = {
   width: '100%',
   height: '100%',
 
-  borderRadius: '5px',
-  zIndex: '200'
+  borderRadius: '5px'
+  // zIndex: '200'
 };
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
+    console.log('returning: isTriggered');
+
     return '#BEEBD1';
   } else {
     if (barStarter) {
+      console.log('returning: barStarter');
+
       return '#6863B2';
     } else {
+      console.log('returning: last else');
+
       return '#405790';
     }
   }
@@ -45,6 +51,22 @@ class Trigger extends Component {
     //     ? sequencers[sequencerId].triggers[FOO].slicedTriggers[id].isTriggered
     //     : sequencers[sequencerId].triggers[id].isTriggered
     // };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { sequencerId, id, sequencers, parentTriggerId } = nextProps;
+
+    if (nextProps.isSlicee) {
+      this.setState({
+        isTriggered:
+          sequencers[sequencerId].triggers[parentTriggerId].slicedTriggers[id]
+            .isTriggered
+      });
+    } else {
+      this.setState({
+        isTriggered: sequencers[sequencerId].triggers[id].isTriggered
+      });
+    }
   }
 
   handleTriggerClick = id => {

@@ -470,6 +470,9 @@ const reducer = (state = initialState, action) => {
           tempTrigger.isSliced = true;
           tempTrigger.sliceAmount = tempTrigger.sliceAmount + 1;
 
+          //clear previous trigger
+          tempTrigger = returnClearedTrigger(tempTrigger);
+
           const numOfSlicedTriggers = tempTrigger.sliceAmount * 4;
           const iValueScale = 48 / numOfSlicedTriggers;
 
