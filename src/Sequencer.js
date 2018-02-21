@@ -79,7 +79,7 @@ class Sequencer extends Component {
     });
   };
 
-  returnSlicedTrigger = trigger => {
+  returnSlicedTriggers = trigger => {
     //get how many triggers we need
     let numOfSlicedTriggers =
       this.props.sequencers[this.props.sequencerId].triggers[trigger.id]
@@ -102,15 +102,16 @@ class Sequencer extends Component {
         <div style={slicedTriggerContainerStyle}>
           {arrayOfWidths.map((width, index) => {
             let widthStr = width + '%';
-            let newId = 'slice-' + index;
 
             return (
               <Trigger
                 sequencerId={this.props.sequencerId}
-                id={newId}
+                parentTriggerId={trigger.id}
+                id={index}
                 key={trigger.id}
                 width={widthStr}
                 height={heightStr}
+                isSlicee={true}
                 barStarter={trigger.id % 4 === 0 ? true : false}
               />
             );
@@ -127,7 +128,7 @@ class Sequencer extends Component {
       <Card containerStyle={CardStyle}>
         {sequencerToRender.triggers.map(trigger => {
           if (trigger.isSliced) {
-            return this.returnSlicedTrigger(trigger);
+            return this.returnSlicedTriggers(trigger);
           } else {
             return (
               <ContextMenuTrigger
@@ -141,9 +142,11 @@ class Sequencer extends Component {
                 <Trigger
                   sequencerId={this.props.sequencerId}
                   id={trigger.id}
+                  parentTriggerId={null}
                   key={trigger.id}
                   width={'100%'}
                   height={'100%'}
+                  isSlicee={false}
                   barStarter={trigger.id % 48 === 0 ? true : false}
                 />
               </ContextMenuTrigger>

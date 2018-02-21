@@ -26,11 +26,31 @@ class Trigger extends Component {
   constructor(props: Props) {
     super(props);
 
-    const { sequencerId, id, sequencers } = props;
+    const { sequencerId, id, sequencers, parentTriggerId } = props;
 
-    this.state = {
-      isTriggered: sequencers[sequencerId].triggers[id].isTriggered
-    };
+    if (props.isSlicee) {
+      console.log(
+        'sequencers[sequencerId].triggers[parentTriggerId]:  ',
+        sequencers[sequencerId].triggers[parentTriggerId]
+      );
+
+      console.log('id:  ', id);
+      this.state = {
+        isTriggered:
+          sequencers[sequencerId].triggers[parentTriggerId].slicedTriggers[id]
+            .isTriggered
+      };
+    } else {
+      this.state = {
+        isTriggered: sequencers[sequencerId].triggers[id].isTriggered
+      };
+    }
+
+    // this.state = {
+    //   isTriggered: props.isSliced
+    //     ? sequencers[sequencerId].triggers[FOO].slicedTriggers[id].isTriggered
+    //     : sequencers[sequencerId].triggers[id].isTriggered
+    // };
   }
 
   handleTriggerClick = id => {
@@ -47,7 +67,7 @@ class Trigger extends Component {
     return (
       <RaisedButton
         backgroundColor={backgroundColorSetter(
-          sequencers[sequencerId].triggers[id].isTriggered,
+          this.state.isTriggered,
           this.props.barStarter
         )}
         label=""
