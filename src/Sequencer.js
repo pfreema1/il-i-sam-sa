@@ -9,6 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
 import Duration from './Duration';
+import './Sequencer.css';
 // import Synthesizer from './Synthesizer';
 
 const CardStyle = {
@@ -190,6 +191,7 @@ class Sequencer extends Component {
           open={this.state.isEditingTrigger}
           onRequestClose={this.handleDialogClose}
           autoScrollBodyContent={true}
+          className="dialog-root"
         >
           <Tabs initialSelectedIndex={this.state.menuItemClicked}>
             <Tab label="note">

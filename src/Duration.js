@@ -26,9 +26,6 @@ class Duration extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('RUNNING COMPONENT WILL RECEIVE PROPS');
-    console.log('******nextProps:  ', nextProps);
-
     if (nextProps.triggerBeingEditedId) {
       this.setupDurationUI(nextProps);
     }
@@ -62,18 +59,11 @@ class Duration extends Component {
       return this.convertDurationStrToPercentNum(trigger.duration);
     });
 
-    console.log('before setting state: triggersToRender', triggersToRender);
-
-    this.setState(
-      {
-        durationValAsPercentArr: durationValAsPercentArr,
-        triggersToRender: triggersToRender,
-        isSlicee: isSlicee
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      durationValAsPercentArr: durationValAsPercentArr,
+      triggersToRender: triggersToRender,
+      isSlicee: isSlicee
+    });
   };
 
   convertDurationStrToPercentNum = durationStr => {
@@ -94,14 +84,7 @@ class Duration extends Component {
   };
 
   renderSliders = () => {
-    console.log('renderSliders() RUNNING');
-
     const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
-
-    console.log(
-      'at top of renderSliders: triggersToRender:  ',
-      triggersToRender
-    );
 
     return (
       <div>

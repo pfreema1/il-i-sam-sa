@@ -1,0 +1,4 @@
+/* this is here to fix a repositioning bug when dialog was clicked */
+.dialog-root {
+  padding-top: 0 !important;
+}
