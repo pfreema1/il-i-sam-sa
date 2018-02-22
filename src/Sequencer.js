@@ -189,6 +189,7 @@ class Sequencer extends Component {
         <Dialog
           open={this.state.isEditingTrigger}
           onRequestClose={this.handleDialogClose}
+          autoScrollBodyContent={true}
         >
           <Tabs initialSelectedIndex={this.state.menuItemClicked}>
             <Tab label="note">

@@ -9,6 +9,31 @@ class MockTrigger extends Component {
     this.state = {};
   }
 
+  handleClick = () => {
+    //need this info to trigger note on/off
+    //  triggerBeingEditedId
+    // isSlicee
+    // sequencerBeingEditedId
+    const { triggerBeingEditedId, sequencerBeingEditedId, id } = this.props;
+
+    if (this.props.isSlicee) {
+      //dispatch slicee trigger click
+      this.props.dispatch({
+        type: 'SLICEE_TRIGGER_CLICKED',
+        triggerId: id,
+        sequencerId: sequencerBeingEditedId,
+        parentTriggerId: triggerBeingEditedId
+      });
+    } else {
+      //dispatch normal trigger click
+      this.props.dispatch({
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: triggerBeingEditedId,
+        sequencerId: sequencerBeingEditedId
+      });
+    }
+  };
+
   render() {
     let { barStarter, isTriggered } = this.props;
 
@@ -17,11 +42,22 @@ class MockTrigger extends Component {
         className={
           'mock-trigger ' +
           (barStarter ? 'bar-starter ' : '') +
-          (isTriggered ? '' : 'disabled')
+          (isTriggered ? 'is-triggered' : 'disabled')
         }
+        onClick={this.handleClick}
       />
     );
   }
 }
 
-export default MockTrigger;
+/*****************************/
+
+const mapStateToProps = state => {
+  return {
+    sequencers: state.sequencers,
+    triggerBeingEditedId: state.triggerBeingEditedId,
+    sequencerBeingEditedId: state.sequencerBeingEditedId
+  };
+};
+
+export default connect(mapStateToProps)(MockTrigger);

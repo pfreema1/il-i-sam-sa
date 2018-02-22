@@ -59,6 +59,8 @@ class Duration extends Component {
           <MockTrigger
             barStarter={triggerBeingEditedId % 4 === 0 ? true : false}
             isTriggered={isTriggered}
+            id={triggerBeingEditedId}
+            isSlicee={false}
           />
           <Slider
             className="duration-slider"
@@ -75,6 +77,38 @@ class Duration extends Component {
       );
     } else {
       //iterate through the sliced triggers and make a representation of them with slider
+      let slicedTriggers =
+        sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
+          .slicedTriggers;
+
+      return (
+        <div>
+          {slicedTriggers.map((trigger, index) => {
+            return (
+              <div key={index} className="duration-container">
+                <MockTrigger
+                  barStarter={index % 4 === 0 ? true : false}
+                  isTriggered={trigger.isTriggered}
+                  id={index}
+                  isSlicee={true}
+                />
+
+                <Slider
+                  className="duration-slider"
+                  min={0}
+                  max={100}
+                  disabled={!trigger.isTriggered}
+                  //   onDragStop={this.setNewDuration}
+                  //   defaultValue={this.state.durationPercentage}
+                  //   onChange={this.handleSliderChange}
+                  step={1}
+                />
+                <div>Percentage text here</div>
+              </div>
+            );
+          })}
+        </div>
+      );
     }
   };
 
