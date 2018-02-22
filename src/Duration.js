@@ -72,15 +72,41 @@ class Duration extends Component {
     return IValueNum / 192 * 100;
   };
 
-  handleDragStop = (e, value) => {
-    console.log('value in setNewDuration:  ', value);
-    console.log('diddling id:  ', e.target.id);
+  // function sig:  function(event: object) => void
+  // binded value and triggerId (prepended)
+  handleDragStop = (value, triggerId, e) => {
+    // convert value to duration string
+    let newDurationStr = Math.round(value * 0.01 * 192) + 'i';
 
-    this.props.dispatch({ type: 'CHANGE_NOTE_DURATION' });
+    console.log('****values being passed into reducer');
+    console.log('triggerId:  ', triggerId);
+    console.log('newDurationStr:  ', newDurationStr);
+    console.log('isSlicee:  ', this.state.isSlicee);
+    console.log('parentTriggerId:  ', this.props.triggerBeingEditedId);
+
+    this.props.dispatch({
+      type: 'CHANGE_NOTE_DURATION',
+      triggerId: triggerId,
+      newDurationStr: newDurationStr,
+      isSlicee: this.state.isSlicee,
+      parentTriggerId: this.props.triggerBeingEditedId
+    });
   };
 
-  handleSliderChange = (e, value) => {
-    console.log('diddling id:  ', e.target.id);
+  // function sig:  function(event: object, newValue: number) => void
+  // binded triggerId (its prepended)
+  handleSliderChange = (triggerId, e, value) => {
+    // console.log('handleSliderChange: triggerId:  ', triggerId);
+    // console.log('handleSliderChange: e:  ', e);
+    // console.log('value:  ', value);
+
+    let newDurationArr = [...this.state.durationValAsPercentArr];
+
+    newDurationArr[triggerId] = value;
+
+    this.setState({
+      durationValAsPercentArr: newDurationArr
+    });
   };
 
   renderSliders = () => {
@@ -106,12 +132,26 @@ class Duration extends Component {
                 min={0}
                 max={100}
                 disabled={!trigger.isTriggered}
-                onDragStop={this.handleDragStop}
+                onDragStop={
+                  isSlicee
+                    ? this.handleDragStop.bind(
+                        null,
+                        this.state.durationValAsPercentArr[index],
+                        index
+                      )
+                    : this.handleDragStop.bind(
+                        null,
+                        this.state.durationValAsPercentArr[index],
+                        this.props.triggerBeingEditedId
+                      )
+                }
                 defaultValue={durationValAsPercentArr[index]}
-                onChange={this.handleSliderChange}
+                onChange={this.handleSliderChange.bind(null, index)}
                 step={1}
               />
-              <div>Percentage text here</div>
+              <div className={trigger.isTriggered ? '' : 'not-triggered'}>
+                {durationValAsPercentArr[index] + '%'}
+              </div>
             </div>
           );
         })}

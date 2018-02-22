@@ -624,8 +624,74 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'CHANGE_NOTE_DURATION': {
+      let { triggerId, newDurationStr, isSlicee, parentTriggerId } = action;
+      let sequencerRef = state.sequencers[state.sequencerBeingEditedId];
+      let sequencerId = state.sequencerBeingEditedId;
+      let synthesizerRef = sequencerRef.synthesizerRef;
+
+      //clear previously scheduled note
+      if (isSlicee) {
+        Tone.Transport.clear(
+          sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
+            .scheduleId
+        );
+      } else {
+        Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
+      }
+
+      //create new parent triggers array and schedule new trigger
+      let newTriggers = sequencerRef.triggers.map(trigger => {
+        let tempTrigger = { ...trigger };
+
+        if (isSlicee) {
+          if (tempTrigger.id === parentTriggerId) {
+            //found parent trigger - iterate through sliced triggers
+            let tempSlicedTriggersArr = tempTrigger.slicedTriggers.map(
+              (slicedTrigger, index) => {
+                let tempSlicedTrigger = { ...slicedTrigger };
+
+                if (index === triggerId) {
+                  // found slicee trigger - schedule new trigger
+                  tempSlicedTrigger.duration = newDurationStr;
+                  tempSlicedTrigger = returnSetTrigger(
+                    tempSlicedTrigger,
+                    synthesizerRef,
+                    '',
+                    true
+                  );
+                }
+
+                return tempSlicedTrigger;
+              }
+            );
+
+            tempTrigger.slicedTriggers = tempSlicedTriggersArr;
+          }
+        } else {
+          if (tempTrigger.id === triggerId) {
+            //found correct trigger - shedule new trigger
+            tempTrigger.duration = newDurationStr;
+            tempTrigger = returnSetTrigger(
+              tempTrigger,
+              synthesizerRef,
+              '',
+              true
+            );
+          }
+        }
+
+        return tempTrigger;
+      });
+
       return {
-        ...state
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
       };
     }
     default:
