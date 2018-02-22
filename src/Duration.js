@@ -15,34 +15,27 @@ class Duration extends Component {
         .duration;
 
     this.state = {
-      durationPercentage: this.convertDurationToPercent(currentDurationString)
+      durationValAsPercentArr: [],
+      triggersToRender: [],
+      isSlicee: null
     };
   }
 
-  convertDurationToPercent = durationStr => {
-    let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1));
+  componentDidMount() {
+    this.setupDurationUI(this.props);
+  }
 
-    console.log('IValueNum:  ', IValueNum);
+  componentWillReceiveProps(nextProps) {
+    console.log('RUNNING COMPONENT WILL RECEIVE PROPS');
+    console.log('******nextProps:  ', nextProps);
 
-    return IValueNum / 192 * 100;
-  };
+    if (nextProps.triggerBeingEditedId) {
+      this.setupDurationUI(nextProps);
+    }
+  }
 
-  setNewDuration = (e, value) => {
-    console.log('value in setNewDuration:  ', value);
-    this.props.dispatch({ type: 'CHANGE_NOTE_DURATION' });
-  };
-
-  handleSliderChange = (e, value) => {
-    // value = parseInt(value * 100);
-    this.setState({ durationPercentage: value });
-  };
-
-  renderSliders = () => {
-    const {
-      sequencers,
-      triggerBeingEditedId,
-      sequencerBeingEditedId
-    } = this.props;
+  setupDurationUI = props => {
+    const { sequencers, triggerBeingEditedId, sequencerBeingEditedId } = props;
 
     let isSlicee;
     let triggersToRender = [];
@@ -52,15 +45,63 @@ class Duration extends Component {
         .isSliced
     ) {
       isSlicee = false;
-      triggersToRender.push(
+
+      triggersToRender = triggersToRender.concat(
         sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
       );
     } else {
       isSlicee = true;
-      triggersToRender =
+      triggersToRender = triggersToRender.concat(
         sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
-          .slicedTriggers;
+          .slicedTriggers
+      );
     }
+
+    //create array of duration values
+    const durationValAsPercentArr = triggersToRender.map((trigger, index) => {
+      return this.convertDurationStrToPercentNum(trigger.duration);
+    });
+
+    console.log('before setting state: triggersToRender', triggersToRender);
+
+    this.setState(
+      {
+        durationValAsPercentArr: durationValAsPercentArr,
+        triggersToRender: triggersToRender,
+        isSlicee: isSlicee
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
+
+  convertDurationStrToPercentNum = durationStr => {
+    let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1));
+
+    return IValueNum / 192 * 100;
+  };
+
+  handleDragStop = (e, value) => {
+    console.log('value in setNewDuration:  ', value);
+    console.log('diddling id:  ', e.target.id);
+
+    this.props.dispatch({ type: 'CHANGE_NOTE_DURATION' });
+  };
+
+  handleSliderChange = (e, value) => {
+    console.log('diddling id:  ', e.target.id);
+  };
+
+  renderSliders = () => {
+    console.log('renderSliders() RUNNING');
+
+    const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
+
+    console.log(
+      'at top of renderSliders: triggersToRender:  ',
+      triggersToRender
+    );
 
     return (
       <div>
@@ -75,13 +116,16 @@ class Duration extends Component {
               />
 
               <Slider
-                className="duration-slider"
+                className={
+                  'duration-slider ' +
+                  (trigger.isTriggered ? '' : 'not-triggered')
+                }
                 min={0}
                 max={100}
                 disabled={!trigger.isTriggered}
-                onDragStop={this.setNewDuration.bind(null)}
-                //   defaultValue={this.state.durationPercentage}
-                //   onChange={this.handleSliderChange}
+                onDragStop={this.handleDragStop}
+                defaultValue={durationValAsPercentArr[index]}
+                onChange={this.handleSliderChange}
                 step={1}
               />
               <div>Percentage text here</div>
@@ -98,7 +142,7 @@ class Duration extends Component {
     return (
       <div>
         <h1>Set Trigger Duration</h1>
-        {triggerBeingEditedId && this.renderSliders()}
+        {this.renderSliders()}
       </div>
     );
   }

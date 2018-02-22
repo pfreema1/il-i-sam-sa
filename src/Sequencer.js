@@ -43,7 +43,7 @@ class Sequencer extends Component {
   }
 
   handleMenuItemClick = (e, data) => {
-    console.log('data from menuitemclick:  ', data);
+    // console.log('data from menuitemclick:  ', data);
     let triggerBeingEditedId = data.attributes.id;
 
     this.setState({ isEditingTrigger: true, menuItemClicked: data.item });

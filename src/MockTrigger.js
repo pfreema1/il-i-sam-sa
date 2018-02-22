@@ -6,7 +6,17 @@ class MockTrigger extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      barStarter: props.barStarter,
+      isTriggered: props.isTriggered
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      barStarter: nextProps.barStarter,
+      isTriggered: nextProps.isTriggered
+    });
   }
 
   handleClick = () => {
@@ -35,7 +45,7 @@ class MockTrigger extends Component {
   };
 
   render() {
-    let { barStarter, isTriggered } = this.props;
+    let { barStarter, isTriggered } = this.state;
 
     return (
       <div
