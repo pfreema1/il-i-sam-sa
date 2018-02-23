@@ -273,8 +273,6 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PARENT_TRIGGER_CLICKED': {
-      console.log('hi there:  ', Tone.Transport._timeline);
-
       let { triggerId, sequencerId } = action;
       let isSample =
         state.sequencers[sequencerId].synthesizer > 8 ? true : false;
@@ -703,7 +701,22 @@ const reducer = (state = initialState, action) => {
 
 /*****************************/
 
-const store = createStore(reducer, applyMiddleware(logger));
+const timelineLogger = ({ getState }) => {
+  return next => action => {
+    const returnValue = next(action);
+    const Timeline = { ...Tone.Transport._timeline };
+    const actionType = String(action.type);
+    // const message = `action ${actionType}`;
+
+    console.log(`%c TIMELINE`, `color: #ff8000`, Timeline);
+
+    return returnValue;
+  };
+};
+
+/*****************************/
+
+const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
 
 store.dispatch({ type: 'INITIALIZE' });
 
