@@ -205,10 +205,7 @@ const returnClearedTrigger = trigger => {
 
 //default note is C2
 const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
-  console.log('BEFOFOFOFOFOFOF');
   let iValue = trigger.timingValue;
-
-  console.log('INSIDE RETURNSETTRIGGER: iValue:  ', iValue);
 
   trigger.isTriggered = true;
 
@@ -349,11 +346,6 @@ const reducer = (state = initialState, action) => {
             }
           );
 
-          console.log(
-            '****before returning: tempSlicedTriggersArr:  ',
-            tempSlicedTriggersArr
-          );
-
           tempTrigger.slicedTriggers = tempSlicedTriggersArr;
 
           return tempTrigger;
@@ -361,8 +353,6 @@ const reducer = (state = initialState, action) => {
           return tempTrigger;
         }
       });
-
-      console.log('**** before returning: newTriggers:  ', newTriggers);
 
       return {
         ...state,
@@ -567,11 +557,13 @@ const reducer = (state = initialState, action) => {
       let slicedTriggers =
         state.sequencers[sequencerId].triggers[triggerId].slicedTriggers;
 
+      console.log('slicedTriggers:  ', slicedTriggers);
+
       // *** be sure to decrease sliceAmount at some point!
 
       //check if unable to unslice further
       if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
-        console.log('cant unslice anymore bro!');
+        console.log('cant unslice anymore!');
         return {
           ...state
         };
@@ -579,7 +571,9 @@ const reducer = (state = initialState, action) => {
 
       //iterate through current slicedTriggers and clear the scheduled notes
       for (let i = 0; i < slicedTriggers.length; i++) {
-        if (slicedTriggers[i].scheduleId) {
+        console.log('inside for loop:  ', slicedTriggers[i]);
+
+        if (slicedTriggers[i].scheduleId !== null) {
           Tone.Transport.clear(slicedTriggers[i].scheduleId);
         }
       }
