@@ -26,7 +26,10 @@ class Duration extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.triggerBeingEditedId) {
+    console.log('componentWillReceiveProps running in Duration:  ', nextProps);
+
+    // bugfix!  make sure to check =/!= to null instead of just checking falsy (id of 0 will make bugs!)
+    if (nextProps.triggerBeingEditedId !== null) {
       this.setupDurationUI(nextProps);
     }
   }

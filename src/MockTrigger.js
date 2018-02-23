@@ -20,10 +20,6 @@ class MockTrigger extends Component {
   }
 
   handleClick = () => {
-    //need this info to trigger note on/off
-    //  triggerBeingEditedId
-    // isSlicee
-    // sequencerBeingEditedId
     const { triggerBeingEditedId, sequencerBeingEditedId, id } = this.props;
 
     if (this.props.isSlicee) {
