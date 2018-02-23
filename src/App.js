@@ -273,6 +273,8 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PARENT_TRIGGER_CLICKED': {
+      console.log('hi there:  ', Tone.Transport._timeline);
+
       let { triggerId, sequencerId } = action;
       let isSample =
         state.sequencers[sequencerId].synthesizer > 8 ? true : false;
