@@ -205,7 +205,10 @@ const returnClearedTrigger = trigger => {
 
 //default note is C2
 const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
+  console.log('BEFOFOFOFOFOFOF');
   let iValue = trigger.timingValue;
+
+  console.log('INSIDE RETURNSETTRIGGER: iValue:  ', iValue);
 
   trigger.isTriggered = true;
 
@@ -513,7 +516,6 @@ const reducer = (state = initialState, action) => {
 
           //add on new sliced triggers to triggers array
           for (let i = 0; i < numOfSlicedTriggers; i++) {
-            console.log('pushing new trigger on!  ');
             // push new triggers onto newTriggers array
             let tempSlicedTrigger = returnSingleSlicedTrigger();
             tempSlicedTrigger.id = 'trigger' + triggerId + 'slice' + i;
@@ -601,15 +603,20 @@ const reducer = (state = initialState, action) => {
           //create new empty array for new slicedTriggers
           for (let i = 0; i < newNumOfSlicedTriggers; i++) {
             let tempTrigger = returnSingleSlicedTrigger();
+
+            //add timingValue property
+            tempTrigger.timingValue =
+              parentTrigger.id * 48 + 48 / newNumOfSlicedTriggers * i;
+
+            //may need to add id here?
+
             tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempTrigger);
           }
 
           parentTrigger.slicedTriggers = tempSlicedTriggersArr;
-
-          return parentTrigger;
-        } else {
-          return parentTrigger;
         }
+
+        return parentTrigger;
       });
 
       return {
