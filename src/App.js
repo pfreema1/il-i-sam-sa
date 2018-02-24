@@ -706,8 +706,6 @@ const timelineLogger = ({ getState }) => {
   return next => action => {
     const returnValue = next(action);
     const Timeline = { ...Tone.Transport._timeline };
-    const actionType = String(action.type);
-    // const message = `action ${actionType}`;
 
     console.log(`%c TIMELINE`, `color: #ff8000`, Timeline);
 

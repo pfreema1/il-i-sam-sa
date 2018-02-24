@@ -8,12 +8,6 @@ class Duration extends Component {
   constructor(props) {
     super(props);
 
-    let { sequencers, triggerBeingEditedId, sequencerBeingEditedId } = props;
-
-    let currentDurationString =
-      sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
-        .duration;
-
     this.state = {
       durationValAsPercentArr: [],
       triggersToRender: [],
@@ -68,7 +62,7 @@ class Duration extends Component {
   };
 
   convertDurationStrToPercentNum = durationStr => {
-    let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1));
+    let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1), 10);
 
     return IValueNum / 192 * 100;
   };
@@ -161,8 +155,6 @@ class Duration extends Component {
   };
 
   render() {
-    let { triggerBeingEditedId } = this.props;
-
     return (
       <div>
         <h1>Set Trigger Duration</h1>

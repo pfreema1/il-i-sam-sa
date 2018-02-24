@@ -80,7 +80,7 @@ class Trigger extends Component {
   };
 
   render() {
-    const { sequencerId, id, sequencers, isSlicee } = this.props;
+    const { id, isSlicee } = this.props;
 
     return (
       <RaisedButton

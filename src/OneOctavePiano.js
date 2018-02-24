@@ -49,7 +49,7 @@ class OneOctavePiano extends Component {
   returnCurrentlyTriggeredNote = () => {
     let { sequencerBeingEditedId, triggerBeingEditedId } = this.props;
 
-    if (sequencerBeingEditedId) {
+    if (sequencerBeingEditedId !== null) {
       let triggers = this.props.sequencers[sequencerBeingEditedId].triggers;
       if (
         triggerBeingEditedId !== null &&
