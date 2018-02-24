@@ -135,7 +135,7 @@ let initialState = {
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
-Tone.Transport.bpm.value = 200;
+Tone.Transport.bpm.value = 100;
 
 const handlePlayButtonClick = play => {
   if (play) {
@@ -203,6 +203,16 @@ const returnArrayOfCurrentlyTriggeredTimeValues = parentTrigger => {
   }
 };
 
+const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
+  if (trigger.isTriggered) {
+    trigger = returnClearedTrigger(trigger);
+  } else {
+    trigger = returnSetTrigger(trigger, synthesizerRef, '', true);
+  }
+
+  return trigger;
+};
+
 /*****************************
  **
  **		reducer
@@ -224,29 +234,17 @@ const reducer = (state = initialState, action) => {
     }
     case 'PARENT_TRIGGER_CLICKED': {
       let { triggerId, sequencerId } = action;
-      let isSample =
-        state.sequencers[sequencerId].synthesizer > 8 ? true : false;
+
+      let synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
-        /******SUPER IMPORTANT!!! */
-        // since trigger is an object, we can't just modify the object directly
-        // because that will only modify the existing object
-        let tempTrigger = { ...trigger }; //Object.assign({}, trigger);
+        let tempTrigger = { ...trigger };
 
         if (tempTrigger.id === triggerId) {
-          if (tempTrigger.isTriggered) {
-            return returnClearedTrigger(tempTrigger);
-          } else {
-            return returnSetTrigger(
-              tempTrigger,
-              state.sequencers[sequencerId].synthesizerRef,
-              'C2',
-              isSample
-            );
-          }
-        } else {
-          return tempTrigger;
+          tempTrigger = returnHandledSampleTrigger(tempTrigger, synthesizerRef);
         }
+
+        return tempTrigger;
       });
 
       return {
@@ -273,26 +271,14 @@ const reducer = (state = initialState, action) => {
             (slicedTrigger, index) => {
               let tempSlicedTrigger = { ...slicedTrigger };
 
-              // console.log('tempSlicedTrigger.id:  ', tempSlicedTrigger.id);
-              // console.log('triggerId:  ', triggerId);
-
               if (index === triggerId) {
-                // found slicee trigger - determine if we need to set or clear
-                if (tempSlicedTrigger.isTriggered) {
-                  tempSlicedTrigger = returnClearedTrigger(tempSlicedTrigger);
-                } else {
-                  tempSlicedTrigger = returnSetTrigger(
-                    tempSlicedTrigger,
-                    synthesizerRef,
-                    '',
-                    true
-                  );
-                }
-
-                return tempSlicedTrigger;
-              } else {
-                return tempSlicedTrigger;
+                tempSlicedTrigger = returnHandledSampleTrigger(
+                  tempSlicedTrigger,
+                  synthesizerRef
+                );
               }
+
+              return tempSlicedTrigger;
             }
           );
 
