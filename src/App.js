@@ -213,6 +213,23 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
   return trigger;
 };
 
+const retriggerScheduledTriggers = (
+  timeValuesTriggered,
+  tempSlicedTrigger,
+  synthesizerRef
+) => {
+  for (let i = 0; i < timeValuesTriggered.length; i++) {
+    if (tempSlicedTrigger.timingValue === timeValuesTriggered[i]) {
+      tempSlicedTrigger = returnSetTrigger(
+        tempSlicedTrigger,
+        synthesizerRef,
+        'C2',
+        true
+      );
+    }
+  }
+};
+
 /*****************************
  **
  **		reducer
@@ -449,20 +466,11 @@ const reducer = (state = initialState, action) => {
               i * iValueScale +
               state.sequencers[sequencerId].triggers[triggerId].timingValue;
 
-            //if the tempSlicedTrigger.timingValue is inside the currentlyTriggeredTimeValuesArr, set the trigger
-            for (let i = 0; i < currentlyTriggeredTimeValuesArr.length; i++) {
-              if (
-                tempSlicedTrigger.timingValue ===
-                currentlyTriggeredTimeValuesArr[i]
-              ) {
-                tempSlicedTrigger = returnSetTrigger(
-                  tempSlicedTrigger,
-                  synthesizerRef,
-                  'C2',
-                  true
-                );
-              }
-            }
+            retriggerScheduledTriggers(
+              currentlyTriggeredTimeValuesArr,
+              tempSlicedTrigger,
+              synthesizerRef
+            );
 
             tempSlicedTriggersArr = tempSlicedTriggersArr.concat(
               tempSlicedTrigger
@@ -507,8 +515,6 @@ const reducer = (state = initialState, action) => {
 
       //iterate through current slicedTriggers and clear the scheduled notes
       for (let i = 0; i < slicedTriggers.length; i++) {
-        console.log('inside for loop:  ', slicedTriggers[i]);
-
         if (slicedTriggers[i].scheduleId !== null) {
           Tone.Transport.clear(slicedTriggers[i].scheduleId);
         }
