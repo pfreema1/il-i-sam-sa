@@ -230,6 +230,61 @@ const retriggerScheduledTriggers = (
   }
 };
 
+const clearAllSlicedTriggers = parentTrigger => {
+  for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
+    Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
+  }
+};
+
+const returnSlicedParentTrigger = (
+  parentTrigger,
+  triggerId,
+  state,
+  sequencerId,
+  synthesizerRef
+) => {
+  let currentlyTriggeredTimeValuesArr = returnArrayOfCurrentlyTriggeredTimeValues(
+    parentTrigger
+  );
+
+  //clear parent trigger
+  parentTrigger = returnClearedTrigger(parentTrigger);
+  //clear all slicedTriggers
+  clearAllSlicedTriggers(parentTrigger);
+  // for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
+  //   Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
+  // }
+
+  parentTrigger.isSliced = true;
+  parentTrigger.sliceAmount = parentTrigger.sliceAmount + 1;
+
+  const numOfSlicedTriggers = parentTrigger.sliceAmount * 4;
+  const iValueScale = 48 / numOfSlicedTriggers;
+
+  let tempSlicedTriggersArr = [];
+
+  //add on new sliced triggers to triggers array
+  for (let i = 0; i < numOfSlicedTriggers; i++) {
+    // push new triggers onto newTriggers array
+    let tempSlicedTrigger = returnSingleSlicedTrigger();
+    tempSlicedTrigger.id = 'trigger' + triggerId + 'slice' + i;
+    tempSlicedTrigger.timingValue =
+      i * iValueScale +
+      state.sequencers[sequencerId].triggers[triggerId].timingValue;
+
+    retriggerScheduledTriggers(
+      currentlyTriggeredTimeValuesArr,
+      tempSlicedTrigger,
+      synthesizerRef
+    );
+
+    tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempSlicedTrigger);
+  }
+  parentTrigger.slicedTriggers = tempSlicedTriggersArr;
+
+  return parentTrigger;
+};
+
 /*****************************
  **
  **		reducer
@@ -434,54 +489,16 @@ const reducer = (state = initialState, action) => {
         let parentTrigger = { ...trigger };
 
         if (parentTrigger.id === triggerId) {
-          //case:  we are on the correct parent trigger
-          let currentlyTriggeredTimeValuesArr = returnArrayOfCurrentlyTriggeredTimeValues(
-            parentTrigger
+          parentTrigger = returnSlicedParentTrigger(
+            parentTrigger,
+            triggerId,
+            state,
+            sequencerId,
+            synthesizerRef
           );
-
-          //clear parent trigger
-          parentTrigger = returnClearedTrigger(parentTrigger);
-          //clear all slicedTriggers
-          for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
-            Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
-          }
-
-          parentTrigger.isSliced = true;
-          parentTrigger.sliceAmount = parentTrigger.sliceAmount + 1;
-
-          //clear previous trigger
-          // parentTrigger = returnClearedTrigger(parentTrigger);
-
-          const numOfSlicedTriggers = parentTrigger.sliceAmount * 4;
-          const iValueScale = 48 / numOfSlicedTriggers;
-
-          let tempSlicedTriggersArr = [];
-
-          //add on new sliced triggers to triggers array
-          for (let i = 0; i < numOfSlicedTriggers; i++) {
-            // push new triggers onto newTriggers array
-            let tempSlicedTrigger = returnSingleSlicedTrigger();
-            tempSlicedTrigger.id = 'trigger' + triggerId + 'slice' + i;
-            tempSlicedTrigger.timingValue =
-              i * iValueScale +
-              state.sequencers[sequencerId].triggers[triggerId].timingValue;
-
-            retriggerScheduledTriggers(
-              currentlyTriggeredTimeValuesArr,
-              tempSlicedTrigger,
-              synthesizerRef
-            );
-
-            tempSlicedTriggersArr = tempSlicedTriggersArr.concat(
-              tempSlicedTrigger
-            );
-          }
-          parentTrigger.slicedTriggers = tempSlicedTriggersArr;
-
-          return parentTrigger;
-        } else {
-          return parentTrigger;
         }
+
+        return parentTrigger;
       });
 
       return {
