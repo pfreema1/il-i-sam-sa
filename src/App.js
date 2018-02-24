@@ -236,6 +236,25 @@ const clearAllSlicedTriggers = parentTrigger => {
   }
 };
 
+const returnEmptySlicedTriggersArr = parentTrigger => {
+  let tempSlicedTriggersArr = [];
+  const newNumOfSlicedTriggers = parentTrigger.sliceAmount * 4;
+
+  for (let i = 0; i < newNumOfSlicedTriggers; i++) {
+    let tempTrigger = returnSingleSlicedTrigger();
+
+    //add timingValue property
+    tempTrigger.timingValue =
+      parentTrigger.id * 48 + 48 / newNumOfSlicedTriggers * i;
+
+    //********** may need to add id here **********
+
+    tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempTrigger);
+  }
+
+  return tempSlicedTriggersArr;
+};
+
 const returnSlicedTriggersArr = (
   parentTrigger,
   triggerId,
@@ -536,10 +555,6 @@ const reducer = (state = initialState, action) => {
       let slicedTriggers =
         state.sequencers[sequencerId].triggers[triggerId].slicedTriggers;
 
-      console.log('slicedTriggers:  ', slicedTriggers);
-
-      // *** be sure to decrease sliceAmount at some point!
-
       //check if unable to unslice further
       if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
         console.log('cant unslice anymore!');
@@ -548,41 +563,22 @@ const reducer = (state = initialState, action) => {
         };
       }
 
-      //iterate through current slicedTriggers and clear the scheduled notes
-      for (let i = 0; i < slicedTriggers.length; i++) {
-        if (slicedTriggers[i].scheduleId !== null) {
-          Tone.Transport.clear(slicedTriggers[i].scheduleId);
-        }
-      }
+      clearAllSlicedTriggers(state.sequencers[sequencerId].triggers[triggerId]);
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         let parentTrigger = { ...trigger };
 
         if (parentTrigger.id === triggerId) {
           // case: we are on the correct parent trigger
-
-          //decrease sliceAmount
           parentTrigger.sliceAmount = parentTrigger.sliceAmount - 1;
 
           if (parentTrigger.sliceAmount === 0) {
             parentTrigger.isSliced = false;
           }
 
-          const newNumOfSlicedTriggers = parentTrigger.sliceAmount * 4;
-          let tempSlicedTriggersArr = [];
-
-          //create new empty array for new slicedTriggers
-          for (let i = 0; i < newNumOfSlicedTriggers; i++) {
-            let tempTrigger = returnSingleSlicedTrigger();
-
-            //add timingValue property
-            tempTrigger.timingValue =
-              parentTrigger.id * 48 + 48 / newNumOfSlicedTriggers * i;
-
-            //may need to add id here?
-
-            tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempTrigger);
-          }
+          let tempSlicedTriggersArr = returnEmptySlicedTriggersArr(
+            parentTrigger
+          );
 
           parentTrigger.slicedTriggers = tempSlicedTriggersArr;
         }
