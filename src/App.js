@@ -13,12 +13,6 @@ import kick1 from './samples/kick1.wav';
 import snare1 from './samples/snare1.wav';
 import closedHiHat1 from './samples/closedHiHat1.wav';
 
-/*****************************
- **
- **		set up default state
- **
- ******************************/
-
 const returnTriggers = () => {
   let tempTriggersArr = [];
   for (let i = 0; i < 16; i++) {
@@ -54,12 +48,6 @@ const returnSingleSlicedTrigger = () => {
     sliceAmount: 0
   };
 };
-
-/*****************************
- **
- **		returnNewSynth
- **
- ******************************/
 
 const returnNewSynth = synthNum => {
   switch (synthNum) {
@@ -104,23 +92,6 @@ const returnNewSynth = synthNum => {
   }
 };
 
-/*****************************
- **
- **		setupSequencer
- **      -returns new sequencers object
- ******************************/
-// const setupSequencer = (newSynthNum, currSequencers) => {
-//   let sequencerId = 'seq' + Date.now();
-//   //update sequencersIdArr
-//   currSequencers[sequencerId] = {
-//     synthesizer: newSynthNum,
-//     synthesizerRef: returnNewSynth(newSynthNum),
-//     triggers: returnTriggers()
-//   };
-
-//   return currSequencers;
-// };
-
 const setupAmenSequencers = () => {
   let sequencers = {};
   let kickSequencerId = 'seqKick' + Date.now();
@@ -161,31 +132,11 @@ let initialState = {
   sequencers: {}
 };
 
-// let testState = {
-//   isEditingTrigger: false,
-//   triggerBeingEditedId: null,
-//   sequencerBeingEditedId: null,
-//   isPlaying: false,
-//   sequencerIdArr: [seq124445],
-//   sequencers: {
-//     seq124445: {
-//       synthesizer: 2,
-//       synthesizerRef: new Tone.FMSynth().toMaster(),
-//       triggers: returnTriggers()
-//     }
-//   }
-// };
-
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 200;
 
-/*****************************
- **
- **		handlePlayButtonClick
- **
- ******************************/
 const handlePlayButtonClick = play => {
   if (play) {
     Tone.Transport.start('+0.1');
@@ -203,7 +154,6 @@ const returnClearedTrigger = trigger => {
   return trigger;
 };
 
-//default note is C2
 const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
   let iValue = trigger.timingValue;
 
