@@ -583,8 +583,6 @@ const reducer = (state = initialState, action) => {
     case 'TRIGGER_UNSLICED': {
       let sequencerId = action.sequencerBeingEditedId;
       let triggerId = action.triggerBeingEditedId;
-      let slicedTriggers =
-        state.sequencers[sequencerId].triggers[triggerId].slicedTriggers;
 
       //check if unable to unslice further
       if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
@@ -629,14 +627,6 @@ const reducer = (state = initialState, action) => {
         parentTriggerId,
         triggerId
       );
-      // if (isSlicee) {
-      //   Tone.Transport.clear(
-      //     sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
-      //       .scheduleId
-      //   );
-      // } else {
-      //   Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
-      // }
 
       //create new parent triggers array and schedule new trigger
       let newTriggers = sequencerRef.triggers.map(trigger => {

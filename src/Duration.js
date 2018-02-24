@@ -64,7 +64,9 @@ class Duration extends Component {
   convertDurationStrToPercentNum = durationStr => {
     let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1), 10);
 
-    return IValueNum / 192 * 100;
+    // console.log('hi there:  ', IValueNum / 192 * 100);
+
+    return Math.round(IValueNum / 192 * 100);
   };
 
   // function sig:  function(event: object) => void
@@ -144,7 +146,12 @@ class Duration extends Component {
                 onChange={this.handleSliderChange.bind(null, index)}
                 step={1}
               />
-              <div className={trigger.isTriggered ? '' : 'not-triggered'}>
+              <div
+                className={
+                  'duration-percentage-container ' +
+                  (trigger.isTriggered ? '' : 'not-triggered')
+                }
+              >
                 {durationValAsPercentArr[index] + '%'}
               </div>
             </div>

@@ -20,3 +20,7 @@
 .not-triggered {
   opacity: 0.2;
 }
+
+.duration-percentage-container {
+  width: 50px;
+}
