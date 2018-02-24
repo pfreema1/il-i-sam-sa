@@ -236,34 +236,19 @@ const clearAllSlicedTriggers = parentTrigger => {
   }
 };
 
-const returnSlicedParentTrigger = (
+const returnSlicedTriggersArr = (
   parentTrigger,
   triggerId,
   state,
   sequencerId,
+  currentlyTriggeredTimeValuesArr,
   synthesizerRef
 ) => {
-  let currentlyTriggeredTimeValuesArr = returnArrayOfCurrentlyTriggeredTimeValues(
-    parentTrigger
-  );
-
-  //clear parent trigger
-  parentTrigger = returnClearedTrigger(parentTrigger);
-  //clear all slicedTriggers
-  clearAllSlicedTriggers(parentTrigger);
-  // for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
-  //   Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
-  // }
-
-  parentTrigger.isSliced = true;
-  parentTrigger.sliceAmount = parentTrigger.sliceAmount + 1;
-
   const numOfSlicedTriggers = parentTrigger.sliceAmount * 4;
   const iValueScale = 48 / numOfSlicedTriggers;
 
   let tempSlicedTriggersArr = [];
 
-  //add on new sliced triggers to triggers array
   for (let i = 0; i < numOfSlicedTriggers; i++) {
     // push new triggers onto newTriggers array
     let tempSlicedTrigger = returnSingleSlicedTrigger();
@@ -280,6 +265,39 @@ const returnSlicedParentTrigger = (
 
     tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempSlicedTrigger);
   }
+
+  return tempSlicedTriggersArr;
+};
+
+const returnSlicedParentTrigger = (
+  parentTrigger,
+  triggerId,
+  state,
+  sequencerId,
+  synthesizerRef
+) => {
+  let currentlyTriggeredTimeValuesArr = returnArrayOfCurrentlyTriggeredTimeValues(
+    parentTrigger
+  );
+
+  //clear parent trigger
+  parentTrigger = returnClearedTrigger(parentTrigger);
+
+  clearAllSlicedTriggers(parentTrigger);
+
+  parentTrigger.isSliced = true;
+  parentTrigger.sliceAmount = parentTrigger.sliceAmount + 1;
+
+  //create new sliced triggers array
+  let tempSlicedTriggersArr = returnSlicedTriggersArr(
+    parentTrigger,
+    triggerId,
+    state,
+    sequencerId,
+    currentlyTriggeredTimeValuesArr,
+    synthesizerRef
+  );
+
   parentTrigger.slicedTriggers = tempSlicedTriggersArr;
 
   return parentTrigger;
