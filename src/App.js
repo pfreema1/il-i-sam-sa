@@ -288,6 +288,21 @@ const returnSlicedTriggersArr = (
   return tempSlicedTriggersArr;
 };
 
+const returnDeSlicedParentTrigger = parentTrigger => {
+  // case: we are on the correct parent trigger
+  parentTrigger.sliceAmount = parentTrigger.sliceAmount - 1;
+
+  if (parentTrigger.sliceAmount === 0) {
+    parentTrigger.isSliced = false;
+  }
+
+  let tempSlicedTriggersArr = returnEmptySlicedTriggersArr(parentTrigger);
+
+  parentTrigger.slicedTriggers = tempSlicedTriggersArr;
+
+  return parentTrigger;
+};
+
 const returnSlicedParentTrigger = (
   parentTrigger,
   triggerId,
@@ -569,18 +584,7 @@ const reducer = (state = initialState, action) => {
         let parentTrigger = { ...trigger };
 
         if (parentTrigger.id === triggerId) {
-          // case: we are on the correct parent trigger
-          parentTrigger.sliceAmount = parentTrigger.sliceAmount - 1;
-
-          if (parentTrigger.sliceAmount === 0) {
-            parentTrigger.isSliced = false;
-          }
-
-          let tempSlicedTriggersArr = returnEmptySlicedTriggersArr(
-            parentTrigger
-          );
-
-          parentTrigger.slicedTriggers = tempSlicedTriggersArr;
+          parentTrigger = returnDeSlicedParentTrigger(parentTrigger);
         }
 
         return parentTrigger;
