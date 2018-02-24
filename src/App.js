@@ -236,6 +236,22 @@ const clearAllSlicedTriggers = parentTrigger => {
   }
 };
 
+const clearPreviouslyScheduledTrigger = (
+  isSlicee,
+  sequencerRef,
+  parentTriggerId,
+  triggerId
+) => {
+  if (isSlicee) {
+    Tone.Transport.clear(
+      sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
+        .scheduleId
+    );
+  } else {
+    Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
+  }
+};
+
 const returnEmptySlicedTriggersArr = parentTrigger => {
   let tempSlicedTriggersArr = [];
   const newNumOfSlicedTriggers = parentTrigger.sliceAmount * 4;
@@ -607,15 +623,20 @@ const reducer = (state = initialState, action) => {
       let sequencerId = state.sequencerBeingEditedId;
       let synthesizerRef = sequencerRef.synthesizerRef;
 
-      //clear previously scheduled note
-      if (isSlicee) {
-        Tone.Transport.clear(
-          sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
-            .scheduleId
-        );
-      } else {
-        Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
-      }
+      clearPreviouslyScheduledTrigger(
+        isSlicee,
+        sequencerRef,
+        parentTriggerId,
+        triggerId
+      );
+      // if (isSlicee) {
+      //   Tone.Transport.clear(
+      //     sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
+      //       .scheduleId
+      //   );
+      // } else {
+      //   Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
+      // }
 
       //create new parent triggers array and schedule new trigger
       let newTriggers = sequencerRef.triggers.map(trigger => {
