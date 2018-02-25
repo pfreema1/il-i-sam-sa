@@ -4,7 +4,7 @@ import Slider from 'material-ui/Slider';
 import './Velocity.css';
 import MockTrigger from './MockTrigger';
 
-class Velocity extends React.Component {
+class Velocity extends Component {
   constructor(props) {
     super(props);
 
@@ -58,7 +58,16 @@ class Velocity extends React.Component {
   };
 
   handleDragStop = (value, triggerId, e) => {
+    value = value * 0.01; //convert back to 0 - 1 scale
+
     console.log('value on dragStop:  ', value);
+    this.props.dispatch({
+      type: 'CHANGE_NOTE_VELOCITY',
+      triggerId: triggerId,
+      newVelocity: value,
+      isSlicee: this.state.isSlicee,
+      parentTriggerId: this.props.triggerBeingEditedId
+    });
   };
 
   handleSliderChange = (triggerId, e, value) => {

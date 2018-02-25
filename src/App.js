@@ -68,23 +68,23 @@ const returnNewSynth = synthNum => {
     case 8:
       return new Tone.PluckSynth().toMaster();
     case 9: {
-      let kickRef = new Tone.Player(kick1).toMaster();
-      kickRef.retrigger = true;
+      let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
+      // kickRef.retrigger = true;
       return kickRef;
     }
     case 10: {
-      let kickRef = new Tone.Player(kick1).toMaster();
-      kickRef.retrigger = true;
+      let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
+      // kickRef.retrigger = true;
       return kickRef;
     }
     case 11: {
-      let snareRef = new Tone.Player(snare1).toMaster();
-      snareRef.retrigger = true;
+      let snareRef = new Tone.Sampler({ C2: snare1 }).toMaster();
+      // snareRef.retrigger = true;
       return snareRef;
     }
     case 12: {
-      let closeHiHatRef = new Tone.Player(closedHiHat1).toMaster();
-      closeHiHatRef.retrigger = true;
+      let closeHiHatRef = new Tone.Sampler({ C2: closedHiHat1 }).toMaster();
+      // closeHiHatRef.retrigger = true;
       return closeHiHatRef;
     }
     default:
@@ -154,17 +154,24 @@ const returnClearedTrigger = trigger => {
   return trigger;
 };
 
-const returnSetTrigger = (trigger, synthesizerRef, note = 'C2', isSample) => {
+const returnSetTrigger = (
+  trigger,
+  synthesizerRef,
+  note = 'C2',
+  velocity = 1,
+  isSample
+) => {
   let iValue = trigger.timingValue;
 
   trigger.isTriggered = true;
 
   if (isSample) {
     trigger.scheduleId = Tone.Transport.schedule(time => {
-      synthesizerRef.start(
+      synthesizerRef.triggerAttackRelease(
+        note,
+        trigger.duration,
         time,
-        0, //offset
-        trigger.duration
+        velocity
       );
     }, iValue + 'i');
   } else {
@@ -207,7 +214,7 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
   if (trigger.isTriggered) {
     trigger = returnClearedTrigger(trigger);
   } else {
-    trigger = returnSetTrigger(trigger, synthesizerRef, '', true);
+    trigger = returnSetTrigger(trigger, synthesizerRef, 'C2', 1, true);
   }
 
   return trigger;
@@ -224,6 +231,7 @@ const retriggerScheduledTriggers = (
         tempSlicedTrigger,
         synthesizerRef,
         'C2',
+        1,
         true
       );
     }
@@ -488,7 +496,9 @@ const reducer = (state = initialState, action) => {
           tempTrigger = returnSetTrigger(
             tempTrigger,
             tempSequencerObj.synthesizerRef,
-            trigger.note
+            trigger.note,
+            1,
+            false
           );
 
           return tempTrigger;
@@ -521,14 +531,18 @@ const reducer = (state = initialState, action) => {
             return returnSetTrigger(
               tempTrigger,
               state.sequencers[sequencerId].synthesizerRef,
-              action.newNote
+              action.newNote,
+              1,
+              false
             );
           } else {
             //case:  trigger wasn't triggered
             return returnSetTrigger(
               tempTrigger,
               state.sequencers[sequencerId].synthesizerRef,
-              action.newNote
+              action.newNote,
+              1,
+              false
             );
           }
         } else {
@@ -616,10 +630,10 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'CHANGE_NOTE_DURATION': {
-      let { triggerId, newDurationStr, isSlicee, parentTriggerId } = action;
-      let sequencerRef = state.sequencers[state.sequencerBeingEditedId];
-      let sequencerId = state.sequencerBeingEditedId;
-      let synthesizerRef = sequencerRef.synthesizerRef;
+      const { triggerId, newDurationStr, isSlicee, parentTriggerId } = action;
+      const sequencerRef = state.sequencers[state.sequencerBeingEditedId];
+      const sequencerId = state.sequencerBeingEditedId;
+      const synthesizerRef = sequencerRef.synthesizerRef;
 
       clearPreviouslyScheduledTrigger(
         isSlicee,
@@ -645,7 +659,8 @@ const reducer = (state = initialState, action) => {
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
-                    '',
+                    'C2',
+                    1,
                     true
                   );
                 }
@@ -663,7 +678,80 @@ const reducer = (state = initialState, action) => {
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
-              '',
+              'C2',
+              1,
+              true
+            );
+          }
+        }
+
+        return tempTrigger;
+      });
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...state.sequencers[sequencerId],
+            triggers: newTriggers
+          }
+        }
+      };
+    }
+    case 'CHANGE_NOTE_VELOCITY': {
+      const { triggerId, parentTriggerId, isSlicee, newVelocity } = action;
+      const sequencerRef = state.sequencers[state.sequencerBeingEditedId];
+      const sequencerId = state.sequencerBeingEditedId;
+      const synthesizerRef = sequencerRef.synthesizerRef;
+
+      clearPreviouslyScheduledTrigger(
+        isSlicee,
+        sequencerRef,
+        parentTriggerId,
+        triggerId
+      );
+
+      //create new parent triggers array and schedule new trigger
+      let newTriggers = sequencerRef.triggers.map(trigger => {
+        let tempTrigger = { ...trigger };
+
+        if (isSlicee) {
+          if (tempTrigger.id === parentTriggerId) {
+            //found parent trigger - iterate through sliced triggers
+            let tempSlicedTriggersArr = tempTrigger.slicedTriggers.map(
+              (slicedTrigger, index) => {
+                let tempSlicedTrigger = { ...slicedTrigger };
+
+                if (index === triggerId) {
+                  // found slicee trigger - schedule new trigger
+                  // tempSlicedTrigger.duration = newDurationStr;
+                  tempSlicedTrigger = returnSetTrigger(
+                    tempSlicedTrigger,
+                    synthesizerRef,
+                    'C2',
+                    newVelocity,
+                    true
+                  );
+                }
+
+                return tempSlicedTrigger;
+              }
+            );
+
+            tempTrigger.slicedTriggers = tempSlicedTriggersArr;
+          }
+        } else {
+          if (tempTrigger.id === triggerId) {
+            //found correct trigger - shedule new trigger
+            // tempTrigger.duration = newDurationStr;
+            console.log('newVelocity:  ', newVelocity);
+
+            tempTrigger = returnSetTrigger(
+              tempTrigger,
+              synthesizerRef,
+              'C2',
+              newVelocity,
               true
             );
           }
