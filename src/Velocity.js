@@ -1,32 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
-import './Duration.css';
+import './Velocity.css';
 import MockTrigger from './MockTrigger';
 
-class Duration extends Component {
+class Velocity extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      durationValAsPercentArr: [],
+      velocityValAsPercentArr: [],
       triggersToRender: [],
       isSlicee: null
     };
   }
 
   componentDidMount() {
-    this.setupDurationUI(this.props);
+    this.setupVelocityUI(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    // bugfix!  make sure to check =/!= to null instead of just checking falsy (id of 0 will make bugs!)
     if (nextProps.triggerBeingEditedId !== null) {
-      this.setupDurationUI(nextProps);
+      this.setupVelocityUI(nextProps);
     }
   }
 
-  setupDurationUI = props => {
+  setupVelocityUI = props => {
     const { sequencers, triggerBeingEditedId, sequencerBeingEditedId } = props;
     const parentTrigger =
       sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId];
@@ -42,59 +41,45 @@ class Duration extends Component {
       triggersToRender = triggersToRender.concat(parentTrigger.slicedTriggers);
     }
 
-    //create array of duration values
-    const durationValAsPercentArr = triggersToRender.map((trigger, index) => {
-      return this.convertDurationStrToPercentNum(trigger.duration);
+    //create array of velocity values
+    const velocityValAsPercentArr = triggersToRender.map((trigger, index) => {
+      return this.convertVelocityToPercentNum(trigger.velocity);
     });
 
     this.setState({
-      durationValAsPercentArr: durationValAsPercentArr,
+      velocityValAsPercentArr: velocityValAsPercentArr,
       triggersToRender: triggersToRender,
       isSlicee: isSlicee
     });
   };
 
-  convertDurationStrToPercentNum = durationStr => {
-    let IValueNum = parseInt(durationStr.slice(0, durationStr.length - 1), 10);
-
-    return Math.round(IValueNum / 192 * 100);
+  convertVelocityToPercentNum = velocityNum => {
+    return velocityNum * 100;
   };
 
-  // function sig:  function(event: object) => void
-  // binded value and triggerId (prepended)
   handleDragStop = (value, triggerId, e) => {
-    // convert value to duration string
-    let newDurationStr = Math.round(value * 0.01 * 192) + 'i';
-
-    this.props.dispatch({
-      type: 'CHANGE_NOTE_DURATION',
-      triggerId: triggerId,
-      newDurationStr: newDurationStr,
-      isSlicee: this.state.isSlicee,
-      parentTriggerId: this.props.triggerBeingEditedId
-    });
+    console.log('value on dragStop:  ', value);
   };
 
-  // function sig:  function(event: object, newValue: number) => void
-  // binded triggerId (its prepended)
   handleSliderChange = (triggerId, e, value) => {
-    let newDurationArr = [...this.state.durationValAsPercentArr];
+    let newVelocityArr = [...this.state.velocityValAsPercentArr];
+    console.log('This value should be x out of 100:  ', value);
 
-    newDurationArr[triggerId] = value;
+    newVelocityArr[triggerId] = value;
 
     this.setState({
-      durationValAsPercentArr: newDurationArr
+      velocityValAsPercentArr: newVelocityArr
     });
   };
 
   renderSliders = () => {
-    const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
+    const { triggersToRender, isSlicee, velocityValAsPercentArr } = this.state;
 
     return (
       <div>
         {triggersToRender.map((trigger, index) => {
           return (
-            <div key={index} className="duration-container">
+            <div key={index} className="velocity-container">
               <MockTrigger
                 barStarter={index % 4 === 0 ? true : false}
                 isTriggered={trigger.isTriggered}
@@ -104,7 +89,7 @@ class Duration extends Component {
 
               <Slider
                 className={
-                  'duration-slider ' +
+                  'velocity-slider ' +
                   (trigger.isTriggered ? '' : 'not-triggered')
                 }
                 min={0}
@@ -114,26 +99,26 @@ class Duration extends Component {
                   isSlicee
                     ? this.handleDragStop.bind(
                         null,
-                        this.state.durationValAsPercentArr[index],
+                        this.state.velocityValAsPercentArr[index],
                         index
                       )
                     : this.handleDragStop.bind(
                         null,
-                        this.state.durationValAsPercentArr[index],
+                        this.state.velocityValAsPercentArr[index],
                         this.props.triggerBeingEditedId
                       )
                 }
-                defaultValue={durationValAsPercentArr[index]}
+                defaultValue={velocityValAsPercentArr[index]}
                 onChange={this.handleSliderChange.bind(null, index)}
                 step={1}
               />
               <div
                 className={
-                  'duration-percentage-container ' +
+                  'velocity-percentage-container ' +
                   (trigger.isTriggered ? '' : 'not-triggered')
                 }
               >
-                {durationValAsPercentArr[index] + '%'}
+                {velocityValAsPercentArr[index] + '%'}
               </div>
             </div>
           );
@@ -145,7 +130,7 @@ class Duration extends Component {
   render() {
     return (
       <div>
-        <h1>Set Trigger Duration</h1>
+        <h1>Set Trigger Velocity</h1>
         {this.renderSliders()}
       </div>
     );
@@ -162,4 +147,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Duration);
+export default connect(mapStateToProps)(Velocity);

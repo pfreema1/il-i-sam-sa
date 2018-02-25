@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Trigger from './Trigger';
-
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import './react-contextmenu.css';
 import { Card } from 'material-ui/Card';
@@ -10,7 +9,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
 import Duration from './Duration';
 import './Sequencer.css';
-// import Synthesizer from './Synthesizer';
+import Velocity from './Velocity';
 
 const CardStyle = {
   width: '100vw',
@@ -32,9 +31,7 @@ const slicedTriggerContainerStyle = {
 /*****************************/
 
 class Sequencer extends Component {
-  synth: any;
-
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -44,7 +41,6 @@ class Sequencer extends Component {
   }
 
   handleMenuItemClick = (e, data) => {
-    // console.log('data from menuitemclick:  ', data);
     let triggerBeingEditedId = data.attributes.id;
 
     this.setState({ isEditingTrigger: true, menuItemClicked: data.item });
@@ -197,7 +193,9 @@ class Sequencer extends Component {
             <Tab label="note">
               <TriggerEditNote />
             </Tab>
-            <Tab label="velocity">velocity stuff here</Tab>
+            <Tab label="velocity">
+              <Velocity />
+            </Tab>
             <Tab label="duration">
               <Duration />
             </Tab>
