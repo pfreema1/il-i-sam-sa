@@ -21,7 +21,7 @@ const returnTriggers = () => {
       timingValue: i * 48,
       scheduleId: null,
       isTriggered: false,
-      note: null,
+      note: 'C2',
       duration: '192i', //full = 192
       velocity: 1,
       isSliced: false,
@@ -41,7 +41,7 @@ const returnSingleSlicedTrigger = () => {
     id: null,
     scheduleId: null,
     isTriggered: false,
-    note: null,
+    note: 'C2',
     duration: '192i', //full = 192
     velocity: 1,
     isSliced: false,
@@ -149,7 +149,7 @@ const returnClearedTrigger = trigger => {
   trigger.isTriggered = false;
   Tone.Transport.clear(trigger.scheduleId);
   trigger.scheduleId = null;
-  trigger.note = null;
+  trigger.note = 'C2';
 
   return trigger;
 };
@@ -197,6 +197,22 @@ const returnTriggerAttributes = trigger => {
     duration: trigger.duration,
     velocity: trigger.velocity
   };
+};
+
+const playClickedTrigger = (
+  triggerRef,
+  sequencerId,
+  synthesizerRef,
+  parentTriggerId,
+  triggerId,
+  isSlicee
+) => {
+  synthesizerRef.triggerAttackRelease(
+    triggerRef.note,
+    triggerRef.duration,
+    undefined,
+    triggerRef.velocity
+  );
 };
 
 const returnArrayOfCurrentlyTriggered = parentTrigger => {
@@ -259,7 +275,6 @@ const retriggerScheduledTriggers = (
       tempSlicedTrigger.note = currentlyTriggeredTriggersObjArr[i].note;
       tempSlicedTrigger.duration = currentlyTriggeredTriggersObjArr[i].duration;
       tempSlicedTrigger.velocity = currentlyTriggeredTriggersObjArr[i].velocity;
-      debugger;
       tempSlicedTrigger = returnSetTrigger(
         tempSlicedTrigger,
         synthesizerRef,
@@ -335,7 +350,6 @@ const returnSlicedTriggersArr = (
     tempSlicedTrigger.timingValue =
       i * iValueScale +
       state.sequencers[sequencerId].triggers[triggerId].timingValue;
-    debugger;
     retriggerScheduledTriggers(
       currentlyTriggeredTriggersObjArr,
       tempSlicedTrigger,
@@ -373,7 +387,6 @@ const returnSlicedParentTrigger = (
   let currentlyTriggeredTriggersObjArr = returnArrayOfCurrentlyTriggered(
     parentTrigger
   );
-  debugger;
   //clear parent trigger
   parentTrigger = returnClearedTrigger(parentTrigger);
 
@@ -426,6 +439,17 @@ const reducer = (state = initialState, action) => {
 
         if (tempTrigger.id === triggerId) {
           tempTrigger = returnHandledSampleTrigger(tempTrigger, synthesizerRef);
+
+          tempTrigger.isTriggered
+            ? playClickedTrigger(
+                tempTrigger,
+                sequencerId,
+                synthesizerRef,
+                null,
+                triggerId,
+                false
+              )
+            : null;
         }
 
         return tempTrigger;
@@ -460,6 +484,18 @@ const reducer = (state = initialState, action) => {
                   tempSlicedTrigger,
                   synthesizerRef
                 );
+
+                //this running twice?
+                tempSlicedTrigger.isTriggered
+                  ? playClickedTrigger(
+                      tempSlicedTrigger,
+                      sequencerId,
+                      synthesizerRef,
+                      parentTriggerId,
+                      triggerId,
+                      true
+                    )
+                  : null;
               }
 
               return tempSlicedTrigger;
