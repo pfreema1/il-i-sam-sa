@@ -123,7 +123,7 @@ const returnNewSequencersIdArr = sequencersObj => {
   return Object.keys(sequencersObj);
 };
 
-let initialState = {
+const initialState = {
   isEditingTrigger: false,
   triggerBeingEditedId: null,
   sequencerBeingEditedId: null,
@@ -158,6 +158,7 @@ const returnSetTrigger = (
   trigger,
   synthesizerRef,
   note = 'C2',
+  duration = '192i',
   velocity = 1,
   isSample
 ) => {
@@ -167,46 +168,61 @@ const returnSetTrigger = (
 
   if (isSample) {
     trigger.scheduleId = Tone.Transport.schedule(time => {
-      synthesizerRef.triggerAttackRelease(
-        note,
-        trigger.duration,
-        time,
-        velocity
-      );
+      synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
     }, iValue + 'i');
   } else {
-    trigger.scheduleId = Tone.Transport.schedule(time => {
-      synthesizerRef.triggerAttackRelease(
-        trigger.note,
-        trigger.duration,
-        time,
-        trigger.velocity
-      );
-    }, iValue + 'i');
-    trigger.note = note;
+    // trigger.scheduleId = Tone.Transport.schedule(time => {
+    //   synthesizerRef.triggerAttackRelease(
+    //     trigger.note,
+    //     duration,
+    //     time,
+    //     trigger.velocity
+    //   );
+    // }, iValue + 'i');
+    // trigger.note = note;
   }
+
+  //set triggers' attributes
+  trigger.note = note;
+  trigger.duration = duration;
+  trigger.velocity = velocity;
 
   return trigger;
 };
 
-const returnArrayOfCurrentlyTriggeredTimeValues = parentTrigger => {
+const returnTriggerAttributes = trigger => {
+  return {
+    timingValue: trigger.timingValue,
+    note: trigger.note,
+    duration: trigger.duration,
+    velocity: trigger.velocity
+  };
+};
+
+const returnArrayOfCurrentlyTriggered = parentTrigger => {
+  // get note, duration, velocity, and timevalue
+  let arrayOfCurrentlyTriggeredAttrs = [];
   if (!parentTrigger.isSliced) {
-    //case:  this is the first slice
+    //case: this is the first slice
+
+    let tempTriggerAttrObj = {};
     if (parentTrigger.isTriggered) {
-      return [parentTrigger.timingValue];
-    } else {
-      return [];
+      tempTriggerAttrObj = returnTriggerAttributes(parentTrigger);
+      return arrayOfCurrentlyTriggeredAttrs.concat(tempTriggerAttrObj);
     }
   } else {
-    //case: parentTrigger has already been sliced
-    //iterate through slicedTriggers and get the timing values
-    return parentTrigger.slicedTriggers
-      .filter(slicedTrigger => {
+    //case:  parentTrigger has already been sliced
+    //iterate through slicedTriggers and get the attributes
+    let currentlyTriggered = parentTrigger.slicedTriggers.filter(
+      slicedTrigger => {
         return slicedTrigger.isTriggered;
-      })
-      .map(slicedTrigger => {
-        return slicedTrigger.timingValue;
-      });
+      }
+    );
+    arrayOfCurrentlyTriggeredAttrs = currentlyTriggered.map(slicedTrigger => {
+      return returnTriggerAttributes(slicedTrigger);
+    });
+
+    return arrayOfCurrentlyTriggeredAttrs;
   }
 };
 
@@ -214,24 +230,40 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
   if (trigger.isTriggered) {
     trigger = returnClearedTrigger(trigger);
   } else {
-    trigger = returnSetTrigger(trigger, synthesizerRef, 'C2', 1, true);
+    trigger = returnSetTrigger(
+      trigger,
+      synthesizerRef,
+      'C2',
+      trigger.duration,
+      trigger.velocity,
+      true
+    );
   }
 
   return trigger;
 };
 
 const retriggerScheduledTriggers = (
-  timeValuesTriggered,
+  currentlyTriggeredTriggersObjArr,
   tempSlicedTrigger,
   synthesizerRef
 ) => {
-  for (let i = 0; i < timeValuesTriggered.length; i++) {
-    if (tempSlicedTrigger.timingValue === timeValuesTriggered[i]) {
+  for (let i = 0; i < currentlyTriggeredTriggersObjArr.length; i++) {
+    if (
+      tempSlicedTrigger.timingValue ===
+      currentlyTriggeredTriggersObjArr[i].timingValue
+    ) {
+      //need to apply previous triggers' note, duration, and velocity here
+      tempSlicedTrigger.note = currentlyTriggeredTriggersObjArr[i].note;
+      tempSlicedTrigger.duration = currentlyTriggeredTriggersObjArr[i].duration;
+      tempSlicedTrigger.velocity = currentlyTriggeredTriggersObjArr[i].velocity;
+      debugger;
       tempSlicedTrigger = returnSetTrigger(
         tempSlicedTrigger,
         synthesizerRef,
         'C2',
-        1,
+        tempSlicedTrigger.duration,
+        tempSlicedTrigger.velocity,
         true
       );
     }
@@ -260,6 +292,8 @@ const clearPreviouslyScheduledTrigger = (
   }
 };
 
+// const returnTriggerAttributes = (isSlicee, sequencerR)
+
 const returnEmptySlicedTriggersArr = parentTrigger => {
   let tempSlicedTriggersArr = [];
   const newNumOfSlicedTriggers = parentTrigger.sliceAmount * 4;
@@ -284,7 +318,7 @@ const returnSlicedTriggersArr = (
   triggerId,
   state,
   sequencerId,
-  currentlyTriggeredTimeValuesArr,
+  currentlyTriggeredTriggersObjArr,
   synthesizerRef
 ) => {
   const numOfSlicedTriggers = parentTrigger.sliceAmount * 4;
@@ -299,9 +333,9 @@ const returnSlicedTriggersArr = (
     tempSlicedTrigger.timingValue =
       i * iValueScale +
       state.sequencers[sequencerId].triggers[triggerId].timingValue;
-
+    debugger;
     retriggerScheduledTriggers(
-      currentlyTriggeredTimeValuesArr,
+      currentlyTriggeredTriggersObjArr,
       tempSlicedTrigger,
       synthesizerRef
     );
@@ -334,10 +368,10 @@ const returnSlicedParentTrigger = (
   sequencerId,
   synthesizerRef
 ) => {
-  let currentlyTriggeredTimeValuesArr = returnArrayOfCurrentlyTriggeredTimeValues(
+  let currentlyTriggeredTriggersObjArr = returnArrayOfCurrentlyTriggered(
     parentTrigger
   );
-
+  debugger;
   //clear parent trigger
   parentTrigger = returnClearedTrigger(parentTrigger);
 
@@ -352,7 +386,7 @@ const returnSlicedParentTrigger = (
     triggerId,
     state,
     sequencerId,
-    currentlyTriggeredTimeValuesArr,
+    currentlyTriggeredTriggersObjArr,
     synthesizerRef
   );
 
@@ -496,8 +530,9 @@ const reducer = (state = initialState, action) => {
           tempTrigger = returnSetTrigger(
             tempTrigger,
             tempSequencerObj.synthesizerRef,
-            trigger.note,
-            1,
+            tempTrigger.note,
+            tempTrigger.duration,
+            tempTrigger.velocity,
             false
           );
 
@@ -532,7 +567,8 @@ const reducer = (state = initialState, action) => {
               tempTrigger,
               state.sequencers[sequencerId].synthesizerRef,
               action.newNote,
-              1,
+              tempTrigger.duration,
+              tempTrigger.velocity,
               false
             );
           } else {
@@ -541,7 +577,8 @@ const reducer = (state = initialState, action) => {
               tempTrigger,
               state.sequencers[sequencerId].synthesizerRef,
               action.newNote,
-              1,
+              tempTrigger.duration,
+              tempTrigger.velocity,
               false
             );
           }
@@ -635,6 +672,8 @@ const reducer = (state = initialState, action) => {
       const sequencerId = state.sequencerBeingEditedId;
       const synthesizerRef = sequencerRef.synthesizerRef;
 
+      //save previous triggers attributes here?
+
       clearPreviouslyScheduledTrigger(
         isSlicee,
         sequencerRef,
@@ -655,12 +694,12 @@ const reducer = (state = initialState, action) => {
 
                 if (index === triggerId) {
                   // found slicee trigger - schedule new trigger
-                  tempSlicedTrigger.duration = newDurationStr;
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
                     'C2',
-                    1,
+                    newDurationStr,
+                    tempSlicedTrigger.velocity,
                     true
                   );
                 }
@@ -673,13 +712,17 @@ const reducer = (state = initialState, action) => {
           }
         } else {
           if (tempTrigger.id === triggerId) {
+            //log the attributes of tempslicedtrigger here!
+            console.log('tempTrigger.note:  ', tempTrigger.note);
+            console.log('tempTrigger.duration:  ', tempTrigger.duration);
+            console.log('tempTrigger.velocity:  ', tempTrigger.velocity);
             //found correct trigger - shedule new trigger
-            tempTrigger.duration = newDurationStr;
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
               'C2',
-              1,
+              newDurationStr,
+              tempTrigger.velocity,
               true
             );
           }
@@ -730,6 +773,7 @@ const reducer = (state = initialState, action) => {
                     tempSlicedTrigger,
                     synthesizerRef,
                     'C2',
+                    tempSlicedTrigger.duration,
                     newVelocity,
                     true
                   );
@@ -751,6 +795,7 @@ const reducer = (state = initialState, action) => {
               tempTrigger,
               synthesizerRef,
               'C2',
+              tempTrigger.duration,
               newVelocity,
               true
             );
