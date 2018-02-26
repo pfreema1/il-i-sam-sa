@@ -54,13 +54,12 @@ class Velocity extends Component {
   };
 
   convertVelocityToPercentNum = velocityNum => {
-    return velocityNum * 100;
+    return Math.round(velocityNum * 100);
   };
 
   handleDragStop = (value, triggerId, e) => {
     value = value * 0.01; //convert back to 0 - 1 scale
 
-    console.log('value on dragStop:  ', value);
     this.props.dispatch({
       type: 'CHANGE_NOTE_VELOCITY',
       triggerId: triggerId,
@@ -72,7 +71,6 @@ class Velocity extends Component {
 
   handleSliderChange = (triggerId, e, value) => {
     let newVelocityArr = [...this.state.velocityValAsPercentArr];
-    console.log('This value should be x out of 100:  ', value);
 
     newVelocityArr[triggerId] = value;
 
