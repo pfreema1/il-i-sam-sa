@@ -10,6 +10,7 @@ import TriggerEditNote from './TriggerEditNote';
 import Duration from './Duration';
 import './Sequencer.css';
 import Velocity from './Velocity';
+import Nudge from './Nudge';
 
 const CardStyle = {
   width: '100vw',
@@ -172,12 +173,15 @@ class Sequencer extends Component {
           <MenuItem onClick={this.handleMenuItemClick} data={{ item: 2 }}>
             duration
           </MenuItem>
-          <MenuItem onClick={this.handleSliceMenuItemClick} data={{ item: 3 }}>
+          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 3 }}>
+            nudge
+          </MenuItem>
+          <MenuItem onClick={this.handleSliceMenuItemClick} data={{ item: 4 }}>
             slice
           </MenuItem>
           <MenuItem
             onClick={this.handleUnSliceMenuItemClick}
-            data={{ item: 4 }}
+            data={{ item: 5 }}
           >
             un-slice
           </MenuItem>
@@ -198,6 +202,9 @@ class Sequencer extends Component {
             </Tab>
             <Tab label="duration">
               <Duration />
+            </Tab>
+            <Tab label="Nudge">
+              <Nudge />
             </Tab>
           </Tabs>
         </Dialog>

@@ -19,6 +19,7 @@ const returnTriggers = () => {
     let tempObj = {
       id: null,
       timingValue: i * 48,
+      nudgeValue: 0,
       scheduleId: null,
       isTriggered: false,
       note: 'C2',
@@ -41,6 +42,7 @@ const returnSingleSlicedTrigger = () => {
     id: null,
     scheduleId: null,
     isTriggered: false,
+    nudgeValue: 0,
     note: 'C2',
     duration: '192i', //full = 192
     velocity: 1,
@@ -440,16 +442,15 @@ const reducer = (state = initialState, action) => {
         if (tempTrigger.id === triggerId) {
           tempTrigger = returnHandledSampleTrigger(tempTrigger, synthesizerRef);
 
-          tempTrigger.isTriggered
-            ? playClickedTrigger(
-                tempTrigger,
-                sequencerId,
-                synthesizerRef,
-                null,
-                triggerId,
-                false
-              )
-            : null;
+          tempTrigger.isTriggered &&
+            playClickedTrigger(
+              tempTrigger,
+              sequencerId,
+              synthesizerRef,
+              null,
+              triggerId,
+              false
+            );
         }
 
         return tempTrigger;
@@ -485,17 +486,15 @@ const reducer = (state = initialState, action) => {
                   synthesizerRef
                 );
 
-                //this running twice?
-                tempSlicedTrigger.isTriggered
-                  ? playClickedTrigger(
-                      tempSlicedTrigger,
-                      sequencerId,
-                      synthesizerRef,
-                      parentTriggerId,
-                      triggerId,
-                      true
-                    )
-                  : null;
+                tempSlicedTrigger.isTriggered &&
+                  playClickedTrigger(
+                    tempSlicedTrigger,
+                    sequencerId,
+                    synthesizerRef,
+                    parentTriggerId,
+                    triggerId,
+                    true
+                  );
               }
 
               return tempSlicedTrigger;
@@ -750,10 +749,6 @@ const reducer = (state = initialState, action) => {
           }
         } else {
           if (tempTrigger.id === triggerId) {
-            //log the attributes of tempslicedtrigger here!
-            console.log('tempTrigger.note:  ', tempTrigger.note);
-            console.log('tempTrigger.duration:  ', tempTrigger.duration);
-            console.log('tempTrigger.velocity:  ', tempTrigger.velocity);
             //found correct trigger - shedule new trigger
             tempTrigger = returnSetTrigger(
               tempTrigger,
