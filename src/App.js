@@ -209,6 +209,8 @@ const returnArrayOfCurrentlyTriggered = parentTrigger => {
     if (parentTrigger.isTriggered) {
       tempTriggerAttrObj = returnTriggerAttributes(parentTrigger);
       return arrayOfCurrentlyTriggeredAttrs.concat(tempTriggerAttrObj);
+    } else {
+      return [];
     }
   } else {
     //case:  parentTrigger has already been sliced
