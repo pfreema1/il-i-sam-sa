@@ -13,6 +13,8 @@ class Nudge extends Component {
       triggersToRender: [],
       isSlicee: null
     };
+
+    this.totalNudgeRange = this.returnTotalNudgeRange(props);
   }
 
   componentDidMount() {
@@ -24,6 +26,22 @@ class Nudge extends Component {
       this.setupNudgeUI(nextProps);
     }
   }
+
+  returnTotalNudgeRange = props => {
+    const { sequencers, triggerBeingEditedId, sequencerBeingEditedId } = props;
+    const parentTrigger =
+      sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId];
+
+    const numOfSlices = 4 * parentTrigger.sliceAmount;
+
+    if (numOfSlices === 0) {
+      // trigger is not sliced
+      //subtracting 2 because we don't want to be able to trigger on top of previous/next trigger
+      return 48 * 2 - 2;
+    } else {
+      return 48 / numOfSlices * 2 - 2;
+    }
+  };
 
   setupNudgeUI = props => {
     const { sequencers, triggerBeingEditedId, sequencerBeingEditedId } = props;
@@ -55,7 +73,15 @@ class Nudge extends Component {
 
   // function sig:  function(event: object) => void
   // binded value and triggerId (prepended)
-  handleDragStop = (value, triggerId, e) => {};
+  handleDragStop = (value, triggerId, e) => {
+    this.props.dispatch({
+      type: 'CHANGE_NOTE_NUDGE',
+      triggerId,
+      nudgeValue: value,
+      isSlicee: this.state.isSlicee,
+      parentTriggerId: this.props.triggerBeingEditedId
+    });
+  };
 
   // function sig:  function(event: object, newValue: number) => void
   // binded triggerId (its prepended)
@@ -88,8 +114,8 @@ class Nudge extends Component {
                 className={
                   'nudge-slider ' + (trigger.isTriggered ? '' : 'not-triggered')
                 }
-                min={-100} //******** THESE NEED TO BE CHANGED! */
-                max={100}
+                min={this.totalNudgeRange / 2 * -1}
+                max={this.totalNudgeRange / 2}
                 disabled={!trigger.isTriggered}
                 onDragStop={
                   isSlicee
@@ -114,7 +140,7 @@ class Nudge extends Component {
                   (trigger.isTriggered ? '' : 'not-triggered')
                 }
               >
-                {nudgeValueArr[index] + '%'}
+                {nudgeValueArr[index]}
               </div>
             </div>
           );
