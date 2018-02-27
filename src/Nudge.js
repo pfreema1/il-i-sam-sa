@@ -97,10 +97,34 @@ class Nudge extends Component {
 
   renderSliders = () => {
     const { triggersToRender, isSlicee, nudgeValueArr } = this.state;
+    const { triggerBeingEditedId } = this.props;
+    let sliderMinValue;
+
+    // if(this.state.isSlicee) {
+    //   if()
+    // } else {
+
+    // }
+
+    /*
+    if(triggerBeingEditedId === 0 && index === 0) {
+      
+    }
+
+    if(isSlicee)
+      sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
+
+    */
 
     return (
       <div>
         {triggersToRender.map((trigger, index) => {
+          if (triggerBeingEditedId === 0 && index === 0) {
+            sliderMinValue = 0;
+          } else {
+            sliderMinValue = this.totalNudgeRange / 2 * -1;
+          }
+
           return (
             <div key={index} className="nudge-container">
               <MockTrigger
@@ -112,9 +136,11 @@ class Nudge extends Component {
 
               <Slider
                 className={
-                  'nudge-slider ' + (trigger.isTriggered ? '' : 'not-triggered')
+                  'nudge-slider ' +
+                  (trigger.isTriggered ? '' : 'not-triggered ') +
+                  (sliderMinValue === 0 ? 'nudge-slider--first-trigger' : '')
                 }
-                min={this.totalNudgeRange / 2 * -1}
+                min={sliderMinValue}
                 max={this.totalNudgeRange / 2}
                 disabled={!trigger.isTriggered}
                 onDragStop={

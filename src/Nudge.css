@@ -9,7 +9,8 @@
 }
 
 .nudge-slider {
-  width: 50%;
+  /* width: 50%; */
+  min-width: 370px;
 }
 
 .nudge-slider > div {
@@ -23,4 +24,8 @@
 
 .nudge-percentage-container {
   width: 50px;
+}
+
+.nudge-slider--first-trigger {
+  min-width: 370px;
 }
