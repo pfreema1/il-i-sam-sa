@@ -59,19 +59,6 @@ const returnNewSynth = sampleRef => {
   return synthRef;
 };
 
-const setupAmenSequencers = state => {
-  let sequencers = {};
-  let kickSequencerId = 'seqKick' + Date.now();
-  let snareSequencerId = 'seqSnare' + Date.now();
-  let hiHatSequencerId = 'seqHiHat' + Date.now();
-
-  sequencers = setupNewSequencer(hiHatSequencerId, state, closedHiHat1);
-  sequencers = setupNewSequencer(snareSequencerId, state, snare1);
-  sequencers = setupNewSequencer(kickSequencerId, state, kick1);
-
-  return sequencers;
-};
-
 const setupNewSequencer = (sequencerId, state, sampleRef) => {
   let sequencers = { ...state.sequencers };
   sequencers[sequencerId] = {
@@ -81,9 +68,6 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
 
   let sequencerIdArr = returnNewSequencersIdArr(sequencers);
   debugger;
-
-  //dispatch action here:  ADD_NEW_SEQUENCER
-  // store.dispatch({ type: 'ADD_NEW_SEQUENCER', sequencers, sequencerIdArr });
 
   return sequencers;
 };
@@ -387,17 +371,6 @@ const returnSlicedParentTrigger = (
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'INITIALIZE': {
-      const sequencers = setupAmenSequencers(state);
-
-      const newSequencersIdArr = returnNewSequencersIdArr(sequencers);
-
-      return {
-        ...state,
-        sequencersIdArr: newSequencersIdArr,
-        sequencers: { ...sequencers }
-      };
-    }
     case 'ADD_NEW_SEQUENCER': {
       //payload should include:  sequencerId, sample
       const { sequencerId, sample } = action;
@@ -934,8 +907,6 @@ const timelineLogger = ({ getState }) => {
 /*****************************/
 
 const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
-
-// store.dispatch({ type: 'INITIALIZE' });
 
 class App extends Component {
   componentDidMount() {
