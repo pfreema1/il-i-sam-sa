@@ -6,19 +6,43 @@ class Sequencers extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { sequencersToRender: [] };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setupSequencersToRender(this.props);
+  }
 
-  returnSequencers = () => {
-    this.setupSequencers();
+  componentWillReceiveProps(nextProps) {
+    this.setupSequencersToRender(nextProps);
+  }
+
+  setupSequencersToRender = props => {
+    let sequencersArr = [];
+
+    for (let sequencer in props.sequencers) {
+      sequencersArr.push(sequencer);
+    }
+    sequencersArr = sequencersArr.map((sequencer, index) => {
+      let foo = props.sequencersIdArr;
+      return (
+        <Sequencer key={index} sequencerId={props.sequencersIdArr[index]} />
+      );
+    });
+
+    this.setState({
+      sequencersToRender: sequencersArr
+    });
   };
 
-  setupSequencer = sequencerId => {};
-
   render() {
-    return <div>{this.returnSequencers()}</div>;
+    return (
+      <div>
+        {this.state.sequencersToRender.map(sequencer => {
+          return sequencer;
+        })}
+      </div>
+    );
   }
 }
 

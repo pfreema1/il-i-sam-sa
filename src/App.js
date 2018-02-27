@@ -54,72 +54,78 @@ const returnSingleSlicedTrigger = () => {
   };
 };
 
-const returnNewSynth = synthNum => {
-  switch (synthNum) {
-    case 1:
-      return new Tone.AMSynth().toMaster();
-    case 2:
-      return new Tone.DuoSynth().toMaster();
-    case 3:
-      return new Tone.FMSynth().toMaster();
-    case 4:
-      return new Tone.MembraneSynth().toMaster();
-    case 5:
-      return new Tone.MetalSynth().toMaster();
-    case 6:
-      return new Tone.MonoSynth().toMaster();
-    case 7:
-      return new Tone.NoiseSynth().toMaster();
-    case 8:
-      return new Tone.PluckSynth().toMaster();
-    case 9: {
-      let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
-      // kickRef.retrigger = true;
-      return kickRef;
-    }
-    case 10: {
-      let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
-      // kickRef.retrigger = true;
-      return kickRef;
-    }
-    case 11: {
-      let snareRef = new Tone.Sampler({ C2: snare1 }).toMaster();
-      // snareRef.retrigger = true;
-      return snareRef;
-    }
-    case 12: {
-      let closeHiHatRef = new Tone.Sampler({ C2: closedHiHat1 }).toMaster();
-      // closeHiHatRef.retrigger = true;
-      return closeHiHatRef;
-    }
-    default:
-      return null;
-  }
+// const returnNewSynth = synthNum => {
+//   switch (synthNum) {
+//     case 1:
+//       return new Tone.AMSynth().toMaster();
+//     case 2:
+//       return new Tone.DuoSynth().toMaster();
+//     case 3:
+//       return new Tone.FMSynth().toMaster();
+//     case 4:
+//       return new Tone.MembraneSynth().toMaster();
+//     case 5:
+//       return new Tone.MetalSynth().toMaster();
+//     case 6:
+//       return new Tone.MonoSynth().toMaster();
+//     case 7:
+//       return new Tone.NoiseSynth().toMaster();
+//     case 8:
+//       return new Tone.PluckSynth().toMaster();
+//     case 9: {
+//       let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
+//       // kickRef.retrigger = true;
+//       return kickRef;
+//     }
+//     case 10: {
+//       let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
+//       // kickRef.retrigger = true;
+//       return kickRef;
+//     }
+//     case 11: {
+//       let snareRef = new Tone.Sampler({ C2: snare1 }).toMaster();
+//       // snareRef.retrigger = true;
+//       return snareRef;
+//     }
+//     case 12: {
+//       let closeHiHatRef = new Tone.Sampler({ C2: closedHiHat1 }).toMaster();
+//       // closeHiHatRef.retrigger = true;
+//       return closeHiHatRef;
+//     }
+//     default:
+//       return null;
+//   }
+// };
+
+const returnNewSynth = sampleRef => {
+  let synthRef = new Tone.Sampler({ C2: sampleRef }).toMaster();
+  return synthRef;
 };
 
-const setupAmenSequencers = () => {
+const setupAmenSequencers = state => {
   let sequencers = {};
   let kickSequencerId = 'seqKick' + Date.now();
   let snareSequencerId = 'seqSnare' + Date.now();
   let hiHatSequencerId = 'seqHiHat' + Date.now();
 
-  sequencers[kickSequencerId] = {
-    synthesizer: 10,
-    synthesizerRef: returnNewSynth(10),
+  sequencers = setupNewSequencer(hiHatSequencerId, state, closedHiHat1);
+  sequencers = setupNewSequencer(snareSequencerId, state, snare1);
+  sequencers = setupNewSequencer(kickSequencerId, state, kick1);
+
+  return sequencers;
+};
+
+const setupNewSequencer = (sequencerId, state, sampleRef) => {
+  let sequencers = { ...state.sequencers };
+  sequencers[sequencerId] = {
+    synthesizerRef: returnNewSynth(sampleRef),
     triggers: returnTriggers()
   };
 
-  sequencers[snareSequencerId] = {
-    synthesizer: 11,
-    synthesizerRef: returnNewSynth(11),
-    triggers: returnTriggers()
-  };
+  let sequencerIdArr = returnNewSequencersIdArr(sequencers);
 
-  sequencers[hiHatSequencerId] = {
-    synthesizer: 12,
-    synthesizerRef: returnNewSynth(12),
-    triggers: returnTriggers()
-  };
+  //dispatch action here:  ADD_NEW_SEQUENCER
+  store.dispatch({ type: 'ADD_NEW_SEQUENCER', sequencers, sequencerIdArr });
 
   return sequencers;
 };
@@ -167,7 +173,6 @@ const returnSetTrigger = (
   velocity = 1,
   isSample
 ) => {
-  debugger; //note:  what is trigger.nudgeValue ?
   let iValue = trigger.timingValue + trigger.nudgeValue;
 
   trigger.isTriggered = true;
@@ -425,7 +430,7 @@ const returnSlicedParentTrigger = (
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'INITIALIZE': {
-      const sequencers = setupAmenSequencers();
+      const sequencers = setupAmenSequencers(state);
 
       const newSequencersIdArr = returnNewSequencersIdArr(sequencers);
 
@@ -433,6 +438,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         sequencersIdArr: newSequencersIdArr,
         sequencers: { ...sequencers }
+      };
+    }
+    case 'ADD_NEW_SEQUENCER': {
+      // let tempSequencersIdArr = returnNewSequencersIdArr(action.sequencers);
+      return {
+        ...state,
+        sequencersIdArr: [...state.sequencersIdArr, ...action.sequencerIdArr],
+        sequencers: {
+          ...state.sequencers,
+          ...action.sequencers
+        }
       };
     }
     case 'PARENT_TRIGGER_CLICKED': {
@@ -954,18 +970,26 @@ const timelineLogger = ({ getState }) => {
 
 const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
 
-store.dispatch({ type: 'INITIALIZE' });
+// store.dispatch({ type: 'INITIALIZE' });
 
 class App extends Component {
+  componentDidMount() {
+    let state = store.getState();
+
+    setupAmenSequencers(state);
+    // setupNewSequencer('seqKick' + Date.now(), state, kick1);
+  }
+
   render() {
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <div>
             <ToolbarContainer />
-            <Sequencer sequencerId={store.getState().sequencersIdArr[2]} />
+            <Sequencers />
+            {/*<Sequencer sequencerId={store.getState().sequencersIdArr[2]} />
             <Sequencer sequencerId={store.getState().sequencersIdArr[1]} />
-            <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />
+    <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />*/}
             <AddSequencer />
           </div>
         </MuiThemeProvider>

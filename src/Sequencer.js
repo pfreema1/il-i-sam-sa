@@ -127,9 +127,13 @@ class Sequencer extends Component {
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
+    if (!sequencerToRender) {
+      return null;
+    }
     return (
       <Card containerStyle={CardContainerStyle} style={CardParentStyle}>
         <SequencerBrain />
+
         <div className="sequencer__trigger-wrapper">
           {sequencerToRender.triggers.map(trigger => {
             if (trigger.isSliced) {
