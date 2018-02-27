@@ -11,22 +11,16 @@ import Duration from './Duration';
 import './Sequencer.css';
 import Velocity from './Velocity';
 import Nudge from './Nudge';
+import SequencerBrain from './SequencerBrain';
 
-const CardStyle = {
+const CardParentStyle = { width: '100vw' };
+
+const CardContainerStyle = {
   width: '100vw',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  // display: 'flex',
+  // justifyContent: 'space-between',
+  // alignItems: 'center',
   padding: '10px 0 10px 0'
-};
-
-const slicedTriggerContainerStyle = {
-  // backgroundColor: '#A7C9DF',
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'space-between'
 };
 
 /*****************************/
@@ -108,7 +102,7 @@ class Sequencer extends Component {
         collect={props => props}
         holdToDisplay={1000}
       >
-        <div style={slicedTriggerContainerStyle}>
+        <div className="sequencer__sliced-trigger-container">
           {arrayOfWidths.map((width, index) => {
             let widthStr = width + '%';
 
@@ -134,34 +128,37 @@ class Sequencer extends Component {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
     return (
-      <Card containerStyle={CardStyle}>
-        {sequencerToRender.triggers.map(trigger => {
-          if (trigger.isSliced) {
-            return this.returnSlicedTriggers(trigger);
-          } else {
-            return (
-              <ContextMenuTrigger
-                key={trigger.id}
-                id={'triggerMenu' + this.props.sequencerId}
-                //this is passed in as data to MenuItem
-                attributes={{ id: trigger.id }}
-                collect={props => props}
-                holdToDisplay={1000}
-              >
-                <Trigger
-                  sequencerId={this.props.sequencerId}
-                  id={trigger.id}
-                  parentTriggerId={null}
+      <Card containerStyle={CardContainerStyle} style={CardParentStyle}>
+        <SequencerBrain />
+        <div className="sequencer__trigger-wrapper">
+          {sequencerToRender.triggers.map(trigger => {
+            if (trigger.isSliced) {
+              return this.returnSlicedTriggers(trigger);
+            } else {
+              return (
+                <ContextMenuTrigger
                   key={trigger.id}
-                  width={'100%'}
-                  height={'100%'}
-                  isSlicee={false}
-                  barStarter={trigger.id % 4 === 0 ? true : false}
-                />
-              </ContextMenuTrigger>
-            );
-          }
-        })}
+                  id={'triggerMenu' + this.props.sequencerId}
+                  //this is passed in as data to MenuItem
+                  attributes={{ id: trigger.id }}
+                  collect={props => props}
+                  holdToDisplay={1000}
+                >
+                  <Trigger
+                    sequencerId={this.props.sequencerId}
+                    id={trigger.id}
+                    parentTriggerId={null}
+                    key={trigger.id}
+                    width={'100%'}
+                    height={'100%'}
+                    isSlicee={false}
+                    barStarter={trigger.id % 4 === 0 ? true : false}
+                  />
+                </ContextMenuTrigger>
+              );
+            }
+          })}
+        </div>
 
         <ContextMenu id={'triggerMenu' + this.props.sequencerId}>
           <MenuItem onClick={this.handleMenuItemClick} data={{ item: 0 }}>

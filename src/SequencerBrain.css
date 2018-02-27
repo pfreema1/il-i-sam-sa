@@ -1,0 +1,8 @@
+.sequencer-brain__container {
+  display: inline-block;
+  width: 8vw;
+  background: blue;
+  vertical-align: top;
+  height: 5vw;
+  margin: 0 5px 0 5px;
+}

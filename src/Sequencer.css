@@ -2,3 +2,18 @@
 .dialog-root {
   padding-top: 0 !important;
 }
+
+.sequencer__sliced-trigger-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sequencer__trigger-wrapper {
+  width: 90vw;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
