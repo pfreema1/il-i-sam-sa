@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './SequencerBrain.css';
 
-class SequencerBrain extends React.Component {
+class SequencerBrain extends Component {
   constructor(props) {
     super(props);
 

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 const PlayButtonStyle = {
-  width: '50px',
-  height: '50px',
-  borderBottom: '25px solid white',
-  borderRight: '25px solid white',
+  width: '20px',
+  height: '20px',
+  borderBottom: '15px solid white',
+  borderRight: '15px solid white',
   transform: 'rotate(-45deg)'
 };
 

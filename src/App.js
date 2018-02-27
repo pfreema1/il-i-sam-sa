@@ -12,6 +12,9 @@ import PlayButton from './PlayButton';
 import kick1 from './samples/kick1.wav';
 import snare1 from './samples/snare1.wav';
 import closedHiHat1 from './samples/closedHiHat1.wav';
+import ToolbarContainer from './ToolbarContainer';
+import AddSequencer from './AddSequencer';
+import Sequencers from './Sequencers';
 
 const returnTriggers = () => {
   let tempTriggersArr = [];
@@ -959,10 +962,11 @@ class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <div>
+            <ToolbarContainer />
             <Sequencer sequencerId={store.getState().sequencersIdArr[2]} />
             <Sequencer sequencerId={store.getState().sequencersIdArr[1]} />
             <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />
-            <PlayButton />
+            <AddSequencer />
           </div>
         </MuiThemeProvider>
       </Provider>
