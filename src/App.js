@@ -54,49 +54,6 @@ const returnSingleSlicedTrigger = () => {
   };
 };
 
-// const returnNewSynth = synthNum => {
-//   switch (synthNum) {
-//     case 1:
-//       return new Tone.AMSynth().toMaster();
-//     case 2:
-//       return new Tone.DuoSynth().toMaster();
-//     case 3:
-//       return new Tone.FMSynth().toMaster();
-//     case 4:
-//       return new Tone.MembraneSynth().toMaster();
-//     case 5:
-//       return new Tone.MetalSynth().toMaster();
-//     case 6:
-//       return new Tone.MonoSynth().toMaster();
-//     case 7:
-//       return new Tone.NoiseSynth().toMaster();
-//     case 8:
-//       return new Tone.PluckSynth().toMaster();
-//     case 9: {
-//       let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
-//       // kickRef.retrigger = true;
-//       return kickRef;
-//     }
-//     case 10: {
-//       let kickRef = new Tone.Sampler({ C2: kick1 }).toMaster();
-//       // kickRef.retrigger = true;
-//       return kickRef;
-//     }
-//     case 11: {
-//       let snareRef = new Tone.Sampler({ C2: snare1 }).toMaster();
-//       // snareRef.retrigger = true;
-//       return snareRef;
-//     }
-//     case 12: {
-//       let closeHiHatRef = new Tone.Sampler({ C2: closedHiHat1 }).toMaster();
-//       // closeHiHatRef.retrigger = true;
-//       return closeHiHatRef;
-//     }
-//     default:
-//       return null;
-//   }
-// };
-
 const returnNewSynth = sampleRef => {
   let synthRef = new Tone.Sampler({ C2: sampleRef }).toMaster();
   return synthRef;
@@ -123,9 +80,10 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
   };
 
   let sequencerIdArr = returnNewSequencersIdArr(sequencers);
+  debugger;
 
   //dispatch action here:  ADD_NEW_SEQUENCER
-  store.dispatch({ type: 'ADD_NEW_SEQUENCER', sequencers, sequencerIdArr });
+  // store.dispatch({ type: 'ADD_NEW_SEQUENCER', sequencers, sequencerIdArr });
 
   return sequencers;
 };
@@ -441,13 +399,20 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'ADD_NEW_SEQUENCER': {
-      // let tempSequencersIdArr = returnNewSequencersIdArr(action.sequencers);
+      //payload should include:  sequencerId, sample
+      const { sequencerId, sample } = action;
+
+      let tempSequencers = setupNewSequencer(sequencerId, state, sample);
+      let tempSequencersIdArr = returnNewSequencersIdArr(tempSequencers);
+
+      debugger;
+
       return {
         ...state,
-        sequencersIdArr: [...state.sequencersIdArr, ...action.sequencerIdArr],
+        sequencersIdArr: [...tempSequencersIdArr],
         sequencers: {
           ...state.sequencers,
-          ...action.sequencers
+          ...tempSequencers
         }
       };
     }
@@ -975,9 +940,22 @@ const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
 class App extends Component {
   componentDidMount() {
     let state = store.getState();
+    store.dispatch({
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'closedHiHat1',
+      sample: closedHiHat1
+    });
 
-    setupAmenSequencers(state);
-    // setupNewSequencer('seqKick' + Date.now(), state, kick1);
+    store.dispatch({
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'snare1',
+      sample: snare1
+    });
+    store.dispatch({
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'kick1',
+      sample: kick1
+    });
   }
 
   render() {
@@ -987,9 +965,7 @@ class App extends Component {
           <div>
             <ToolbarContainer />
             <Sequencers />
-            {/*<Sequencer sequencerId={store.getState().sequencersIdArr[2]} />
-            <Sequencer sequencerId={store.getState().sequencersIdArr[1]} />
-    <Sequencer sequencerId={store.getState().sequencersIdArr[0]} />*/}
+
             <AddSequencer />
           </div>
         </MuiThemeProvider>

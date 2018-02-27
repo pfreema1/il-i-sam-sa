@@ -7,6 +7,7 @@ import './AddSequencer.css';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import openHiHat1 from './samples/openHiHat1.wav';
 
 class AddSequencer extends Component {
   constructor(props) {
