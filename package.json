@@ -7,8 +7,7 @@
     "jsdom-quokka-plugin": "^1.0.10",
     "material-auto-rotating-carousel": "^1.7.0",
     "material-ui": "^0.20.0",
-    "material-ui-build":
-      "https://github.com/pfreema1/material-ui/tarball/master",
+    "material-ui-build": "https://github.com/pfreema1/material-ui/tarball/master",
     "react": "^16.2.0",
     "react-addons-update": "^15.6.2",
     "react-contextmenu": "^2.9.2",
@@ -20,7 +19,9 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "styled-components": "^3.1.6",
-    "tone": "^0.11.11"
+    "tone": "^0.11.11",
+    "velocity-animate": "^1.5.1",
+    "velocity-react": "^1.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -28,7 +29,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-
   "devDependencies": {
     "flow-bin": "^0.66.0"
   }
