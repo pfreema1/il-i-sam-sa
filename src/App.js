@@ -386,7 +386,7 @@ const reducer = (state = initialState, action) => {
 
       let tempSequencers = setupNewSequencer(sequencerId, state, sample);
       let tempSequencersIdArr = returnNewSequencersIdArr(tempSequencers);
-      let tempSamplesObj = { ...returnNewSamplesObj(sample, state) };
+      let tempSamplesObj = returnNewSamplesObj(sample, state);
 
       return {
         ...state,

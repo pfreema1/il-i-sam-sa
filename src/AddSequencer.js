@@ -82,7 +82,7 @@ class AddSequencer extends Component {
       //close dialog and dispatch action
       this.props.dispatch({
         type: 'ADD_NEW_SEQUENCER',
-        sequencerId: id,
+        sequencerId: id + Date.now(),
         sample: sample
       });
 
@@ -100,6 +100,7 @@ class AddSequencer extends Component {
       for (let i = 0; i < dt.items.length; i++) {
         if (dt.items[i].kind == 'file') {
           let f = dt.items[i].getAsFile();
+
           this.readFile(f);
         }
       }
@@ -115,12 +116,13 @@ class AddSequencer extends Component {
     const reader = new FileReader();
 
     reader.onloadend = e => {
-      let result = e.target.result;
+      // let result = e.target.result;
 
+      let shortenedURL = URL.createObjectURL(file);
       this.props.dispatch({
         type: 'ADD_NEW_SEQUENCER',
-        sequencerId: file.name,
-        sample: e.target.result
+        sequencerId: file.name + Date.now(),
+        sample: shortenedURL
       });
 
       this.setState({ isLoadingFile: false, addSequencerDialogOpen: false });
@@ -130,6 +132,7 @@ class AddSequencer extends Component {
       this.setState({ isLoadingFile: true });
     };
 
+    //do work
     reader.readAsDataURL(file);
   };
 
