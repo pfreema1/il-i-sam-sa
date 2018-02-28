@@ -14,8 +14,9 @@ class SequencerBrain extends Component {
     return (
       <div className="sequencer-brain__container">
         <div className="sequencer-brain__icon-and-name-container">
-          <div className="sequencer-brain__icon-container">ico</div>
-          <div className="sequencer-brain__name-container">kicksky daisy</div>
+          <div className="sequencer-brain__name-container">
+            {this.props.sampleName}
+          </div>
         </div>
         <div className="sequencer-brain__controls-container">
           <div className="sequencer-brain__mute-solo-container">
