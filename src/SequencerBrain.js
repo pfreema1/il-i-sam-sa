@@ -25,22 +25,22 @@ class SequencerBrain extends Component {
           </div>
           <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
             <Slider
-              min={0}
+              min={-100}
               max={100}
               step={1}
-              style={{ height: 40 }}
+              style={{ height: 45 }}
               axis="y"
-              defaultValue={0.5}
+              defaultValue={0}
             />
           </div>
           <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
             <Slider
-              min={0}
+              min={-100}
               max={100}
               step={1}
-              style={{ height: 40 }}
+              style={{ height: 45 }}
               axis="y"
-              defaultValue={0.5}
+              defaultValue={0}
             />
           </div>
           <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
@@ -48,9 +48,9 @@ class SequencerBrain extends Component {
               min={0}
               max={100}
               step={1}
-              style={{ height: 40 }}
+              style={{ height: 45 }}
               axis="y"
-              defaultValue={0.5}
+              defaultValue={100}
             />
           </div>
         </div>

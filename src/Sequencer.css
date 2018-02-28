@@ -18,3 +18,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.sequencer-card > div > div {
+  display: flex !important;
+}

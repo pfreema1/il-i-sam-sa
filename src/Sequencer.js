@@ -134,7 +134,11 @@ class Sequencer extends Component {
       return null;
     }
     return (
-      <Card containerStyle={CardContainerStyle} style={CardParentStyle}>
+      <Card
+        className="sequencer-card"
+        containerStyle={CardContainerStyle}
+        style={CardParentStyle}
+      >
         <VelocityComponent
           runOnMount={true}
           animation={'transition.slideLeftIn'}
