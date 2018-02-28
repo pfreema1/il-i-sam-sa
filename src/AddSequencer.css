@@ -10,3 +10,10 @@
   height: 200px;
   border: 5px dashed white;
 }
+
+.add-sequencer__dialog-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

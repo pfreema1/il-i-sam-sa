@@ -7,15 +7,47 @@ import './AddSequencer.css';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import openHiHat1 from './samples/openHiHat1.wav';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class AddSequencer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      addSequencerDialogOpen: false
+      addSequencerDialogOpen: false,
+      isLoadingFile: false,
+      dropDownMenuValue: 0,
+      menuItemsArr: []
     };
+  }
+
+  // componentDidMount() {
+  //   debugger;
+  //   let items = [];
+
+  //   for (let sample in this.props.samples) {
+  //     items.push(sample);
+  //   }
+
+  //   //prepend info as first item
+  //   items.unshift('Select Sample');
+
+  //   this.setState({ menuItemsArr: items });
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.samples !== this.props.samples) {
+      let items = [];
+
+      for (let sample in nextProps.samples) {
+        items.push(sample);
+      }
+
+      //prepend info as first item
+      items.unshift('Select Sample');
+
+      this.setState({ menuItemsArr: items });
+    }
   }
 
   handleOpenAddSequencerDialogClick = () => {
@@ -37,11 +69,25 @@ class AddSequencer extends Component {
   };
 
   returnMenuItems = () => {
-    const items = ['foo', 'bar', 'baz', 'bat'];
+    return this.state.menuItemsArr.map((item, index) => {
+      return <MenuItem value={index} key={item} primaryText={item} />;
+    });
+  };
 
-    return items.map(item => (
-      <MenuItem value={item} key={item} primaryText={item} />
-    ));
+  handleDropDownMenuChange = (e, index, value) => {
+    const id = this.state.menuItemsArr[value];
+    const sample = this.props.samples[id];
+
+    if (value !== 0) {
+      //close dialog and dispatch action
+      this.props.dispatch({
+        type: 'ADD_NEW_SEQUENCER',
+        sequencerId: id,
+        sample: sample
+      });
+
+      this.setState({ addSequencerDialogOpen: false });
+    }
   };
 
   handleFileDrop = e => {
@@ -54,26 +100,37 @@ class AddSequencer extends Component {
       for (let i = 0; i < dt.items.length; i++) {
         if (dt.items[i].kind == 'file') {
           let f = dt.items[i].getAsFile();
-          console.log('111111... file[' + i + '].name = ' + f.name);
-          debugger;
-          this.props.dispatch({
-            type: 'ADD_NEW_SEQUENCER',
-            sequencerId: f.name,
-            sample: f
-          });
+          this.readFile(f);
         }
       }
     } else {
       //use datatransfer interface to access the file(s)
       for (let i = 0; i < dt.files.length; i++) {
-        console.log('2222222... file[' + i + '].name = ' + dt.files[i].name);
-        this.props.dispatch({
-          type: 'ADD_NEW_SEQUENCER',
-          sequencerId: dt.files[i].name,
-          sample: dt.files[i]
-        });
+        this.readFile(dt.files[i]);
       }
     }
+  };
+
+  readFile = file => {
+    const reader = new FileReader();
+
+    reader.onloadend = e => {
+      let result = e.target.result;
+
+      this.props.dispatch({
+        type: 'ADD_NEW_SEQUENCER',
+        sequencerId: file.name,
+        sample: e.target.result
+      });
+
+      this.setState({ isLoadingFile: false, addSequencerDialogOpen: false });
+    };
+
+    reader.onloadstart = () => {
+      this.setState({ isLoadingFile: true });
+    };
+
+    reader.readAsDataURL(file);
   };
 
   handleDragOver = e => {
@@ -107,30 +164,37 @@ class AddSequencer extends Component {
           onRequestClose={this.handleDialogClose}
           className="dialog-root"
         >
-          <div className=" add-sequencer__dialog-container">
-            <div
-              onDragEnd={this.handleDragEnd}
-              onDragOver={this.handleDragOver}
-              onDrop={this.handleFileDrop}
-              className="add-sequencer__dialog-file-drop-container"
-            >
-              drag file here bruh
+          {this.state.isLoadingFile ? (
+            <div className="add-sequencer__dialog-loading-container">
+              <CircularProgress size={80} thickness={7} />
+              <h1>Loading Sample</h1>
             </div>
-            <div className="add-sequencer__dialog-menu-container">
-              <DropDownMenu
-                maxHeight={300}
-                value={this.state.dropDownMenuValue}
-                onChange={this.handleDropDownMenuChange}
+          ) : (
+            <div className="add-sequencer__dialog-container">
+              <div
+                onDragEnd={this.handleDragEnd}
+                onDragOver={this.handleDragOver}
+                onDrop={this.handleFileDrop}
+                className="add-sequencer__dialog-file-drop-container"
               >
-                {this.returnMenuItems()}
-              </DropDownMenu>
+                drag file here bruh
+              </div>
+              <div className="add-sequencer__dialog-menu-container">
+                <DropDownMenu
+                  maxHeight={300}
+                  value={this.state.dropDownMenuValue}
+                  onChange={this.handleDropDownMenuChange}
+                >
+                  {this.returnMenuItems()}
+                </DropDownMenu>
+              </div>
+              <RaisedButton
+                label="Add Sequencer"
+                primary={true}
+                onClick={this.handleAddSequencer}
+              />
             </div>
-            <RaisedButton
-              label="Add Sequencer"
-              primary={true}
-              onClick={this.handleAddSequencer}
-            />
-          </div>
+          )}
         </Dialog>
       </div>
     );
@@ -141,7 +205,7 @@ class AddSequencer extends Component {
 
 const mapStateToProps = state => {
   return {
-    sequencers: state.sequencers
+    samples: state.samples
   };
 };
 

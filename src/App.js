@@ -81,7 +81,8 @@ const initialState = {
   sequencerBeingEditedId: null,
   isPlaying: false,
   sequencersIdArr: [],
-  sequencers: {}
+  sequencers: {},
+  samples: {}
 };
 
 //set the transport to repeat
@@ -165,6 +166,15 @@ const playClickedTrigger = (
     undefined,
     triggerRef.velocity
   );
+};
+
+const returnNewSamplesObj = (sample, state) => {
+  let newSamplesObj = { ...state.samples };
+  let sampleName = [sample];
+
+  newSamplesObj[sampleName] = sample;
+
+  return newSamplesObj;
 };
 
 const returnArrayOfCurrentlyTriggered = parentTrigger => {
@@ -376,6 +386,7 @@ const reducer = (state = initialState, action) => {
 
       let tempSequencers = setupNewSequencer(sequencerId, state, sample);
       let tempSequencersIdArr = returnNewSequencersIdArr(tempSequencers);
+      let tempSamplesObj = { ...returnNewSamplesObj(sample, state) };
 
       return {
         ...state,
@@ -383,6 +394,9 @@ const reducer = (state = initialState, action) => {
         sequencers: {
           ...state.sequencers,
           ...tempSequencers
+        },
+        samples: {
+          ...tempSamplesObj
         }
       };
     }
