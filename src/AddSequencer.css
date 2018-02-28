@@ -8,5 +8,5 @@
 .add-sequencer__dialog-file-drop-container {
   width: 200px;
   height: 200px;
-  border: 1px dotted white;
+  border: 5px dashed white;
 }

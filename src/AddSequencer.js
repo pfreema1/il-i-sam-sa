@@ -44,6 +44,57 @@ class AddSequencer extends Component {
     ));
   };
 
+  handleFileDrop = e => {
+    e.stopPropagation();
+    e.preventDefault();
+    //if dropped items aren't files, reject them
+    let dt = e.dataTransfer;
+    if (dt.items) {
+      //use datatransferitemlist interface to access the file(s)
+      for (let i = 0; i < dt.items.length; i++) {
+        if (dt.items[i].kind == 'file') {
+          let f = dt.items[i].getAsFile();
+          console.log('111111... file[' + i + '].name = ' + f.name);
+          debugger;
+          this.props.dispatch({
+            type: 'ADD_NEW_SEQUENCER',
+            sequencerId: f.name,
+            sample: f
+          });
+        }
+      }
+    } else {
+      //use datatransfer interface to access the file(s)
+      for (let i = 0; i < dt.files.length; i++) {
+        console.log('2222222... file[' + i + '].name = ' + dt.files[i].name);
+        this.props.dispatch({
+          type: 'ADD_NEW_SEQUENCER',
+          sequencerId: dt.files[i].name,
+          sample: dt.files[i]
+        });
+      }
+    }
+  };
+
+  handleDragOver = e => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  handleDragEnd = e => {
+    //remove all of the drag data
+    const dt = e.dataTransfer;
+    if (dt.items) {
+      //use DataTransferItemList interface to remove the drag data
+      for (let i = 0; i < dt.items.length; i++) {
+        dt.items.remove(i);
+      }
+    } else {
+      // use DataTransfer interface to remove the drag data
+      e.dataTransfer.clearData();
+    }
+  };
+
   render() {
     return (
       <div className="add-sequencer-container">
@@ -57,7 +108,12 @@ class AddSequencer extends Component {
           className="dialog-root"
         >
           <div className=" add-sequencer__dialog-container">
-            <div className="add-sequencer__dialog-file-drop-container">
+            <div
+              onDragEnd={this.handleDragEnd}
+              onDragOver={this.handleDragOver}
+              onDrop={this.handleFileDrop}
+              className="add-sequencer__dialog-file-drop-container"
+            >
               drag file here bruh
             </div>
             <div className="add-sequencer__dialog-menu-container">
@@ -83,4 +139,10 @@ class AddSequencer extends Component {
 
 /*****************************/
 
-export default AddSequencer;
+const mapStateToProps = state => {
+  return {
+    sequencers: state.sequencers
+  };
+};
+
+export default connect(mapStateToProps)(AddSequencer);

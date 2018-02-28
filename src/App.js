@@ -67,7 +67,6 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
   };
 
   let sequencerIdArr = returnNewSequencersIdArr(sequencers);
-  debugger;
 
   return sequencers;
 };
@@ -377,8 +376,6 @@ const reducer = (state = initialState, action) => {
 
       let tempSequencers = setupNewSequencer(sequencerId, state, sample);
       let tempSequencersIdArr = returnNewSequencersIdArr(tempSequencers);
-
-      debugger;
 
       return {
         ...state,
