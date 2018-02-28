@@ -415,7 +415,7 @@ const reducer = (state = initialState, action) => {
               synthesizerRef
             );
 
-            tempTrigger.isTriggered &&
+            if (tempTrigger.isTriggered && !state.isPlaying) {
               playClickedTrigger(
                 tempTrigger,
                 sequencerId,
@@ -424,6 +424,7 @@ const reducer = (state = initialState, action) => {
                 triggerId,
                 false
               );
+            }
           }
 
           return tempTrigger;
@@ -460,7 +461,7 @@ const reducer = (state = initialState, action) => {
                   synthesizerRef
                 );
 
-                tempSlicedTrigger.isTriggered &&
+                if (tempSlicedTrigger.isTriggered && !state.isPlaying) {
                   playClickedTrigger(
                     tempSlicedTrigger,
                     sequencerId,
@@ -469,6 +470,7 @@ const reducer = (state = initialState, action) => {
                     triggerId,
                     true
                   );
+                }
               }
 
               return tempSlicedTrigger;
