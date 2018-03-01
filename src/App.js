@@ -952,6 +952,19 @@ const reducer = (state = initialState, action) => {
     case 'CHANGE_VOLUME_VALUE': {
       const { newVolumeVal, sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
+
+      sequencerRef.volumeRef.volume.value = newVolumeVal;
+      sequencerRef.volumeVal = newVolumeVal;
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...sequencerRef
+          }
+        }
+      };
     }
     default:
       return state;

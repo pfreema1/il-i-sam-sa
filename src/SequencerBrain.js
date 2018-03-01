@@ -114,7 +114,7 @@ class SequencerBrain extends Component {
             <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
               <Slider
                 id="volumeSlider"
-                min={-100}
+                min={-80}
                 max={0}
                 step={1}
                 style={{ height: 45 }}
