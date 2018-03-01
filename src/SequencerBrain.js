@@ -18,8 +18,6 @@ class SequencerBrain extends Component {
       isMuted: sequencerRef.isMuted,
       isSoloed: sequencerRef.isSoloed
     };
-
-    debugger;
   }
 
   //get the values from the store
@@ -34,10 +32,15 @@ class SequencerBrain extends Component {
 
   componentWillReceiveProps(nextProps) {}
 
-  handleSliderChange = (e, newValue) => {
-    if (e.target.id === 'panSlider') {
-    } else if (e.target.id === 'pitchSlider') {
-    } else if (e.target.id === 'volumeSlider') {
+  handleSliderChange = (id, e, newValue) => {
+    debugger;
+
+    if (id === 'panSlider') {
+      this.setState({ panVal: newValue });
+    } else if (id === 'pitchSlider') {
+      this.setState({ pitchVal: newValue });
+    } else if (id === 'volumeSlider') {
+      this.setState({ volumeVal: newValue });
     }
   };
 
@@ -54,21 +57,15 @@ class SequencerBrain extends Component {
 
     return (
       <div className="sequencer-brain__container">
-        <div className="sequencer-brain__icon-and-name-container">
-          <div className="sequencer-brain__name-container">
-            {this.props.sequencerId}
-          </div>
+        <div className="sequencer-brain__name-container">
+          {this.props.sequencerId}
         </div>
         <div className="sequencer-brain__controls-container">
           <div className="sequencer-brain__mute-solo-container">
             <div className="sequencer-brain__mute-button">M</div>
             <div className="sequencer-brain__solo-button">S</div>
           </div>
-          <Tooltip
-            title={'Pan:  ' + panVal}
-            trigger="mouseenter"
-            followCursor="true"
-          >
+          <Tooltip title={'Pan:  ' + panVal} trigger="mouseenter">
             <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
               <Slider
                 id="panSlider"
@@ -78,15 +75,13 @@ class SequencerBrain extends Component {
                 style={{ height: 45 }}
                 axis="y"
                 defaultValue={0}
-                onChange={this.handleSliderChange}
+                onChange={this.handleSliderChange.bind(null, 'panSlider')}
+                onDragStop={this.handleDragStop}
+                value={this.state.panVal}
               />
             </div>
           </Tooltip>
-          <Tooltip
-            title={'Pitch:  ' + pitchVal}
-            trigger="mouseenter"
-            followCursor="true"
-          >
+          <Tooltip title={'Pitch:  ' + pitchVal} trigger="mouseenter">
             <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
               <Slider
                 id="pitchSlider"
@@ -96,15 +91,13 @@ class SequencerBrain extends Component {
                 style={{ height: 45 }}
                 axis="y"
                 defaultValue={0}
-                onChange={this.handleSliderChange}
+                onChange={this.handleSliderChange.bind(null, 'pitchSlider')}
+                onDragStop={this.handleDragStop}
+                value={this.state.pitchVal}
               />
             </div>
           </Tooltip>
-          <Tooltip
-            title={'Volume:  ' + volumeVal}
-            trigger="mouseenter"
-            followCursor="true"
-          >
+          <Tooltip title={'Volume:  ' + volumeVal} trigger="mouseenter">
             <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
               <Slider
                 id="volumeSlider"
@@ -113,8 +106,10 @@ class SequencerBrain extends Component {
                 step={1}
                 style={{ height: 45 }}
                 axis="y"
-                defaultValue={100}
-                onChange={this.handleSliderChange}
+                defaultValue={0}
+                onChange={this.handleSliderChange.bind(null, 'volumeSlider')}
+                onDragStop={this.handleDragStop}
+                value={this.state.volumeVal}
               />
             </div>
           </Tooltip>

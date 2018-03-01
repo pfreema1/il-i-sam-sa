@@ -9,17 +9,17 @@
   border-radius: 5px;
 }
 
-.sequencer-brain__icon-and-name-container {
+/* .sequencer-brain__icon-and-name-container {
   width: 100%;
   height: 30%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+} */
 
 .sequencer-brain__name-container {
   width: 100%;
-  height: 100%;
+  height: 30%;
   display: inline-flex;
   justify-content: center;
   align-items: center;
