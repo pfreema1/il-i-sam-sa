@@ -80,9 +80,12 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
   sequencers[sequencerId] = {
     synthesizerRef: synthComponentRefObj.synthRef,
     volumeRef: synthComponentRefObj.volume,
+    volumeVal: synthComponentRefObj.volume.volume.value,
     panRef: synthComponentRefObj.pan,
+    panVal: synthComponentRefObj.pan.pan.value,
     soloRef: synthComponentRefObj.solo,
     pitchRef: synthComponentRefObj.pitch,
+    pitchVal: synthComponentRefObj.pitch.pitch,
     triggers: returnTriggers(),
     isMuted: false,
     isSoloed: false
@@ -911,6 +914,44 @@ const reducer = (state = initialState, action) => {
           }
         }
       };
+    }
+    case 'CHANGE_PAN_VALUE': {
+      let { newPanVal, sequencerId } = action;
+      let sequencerRef = { ...state.sequencers[sequencerId] };
+
+      sequencerRef.panRef.pan.value = newPanVal;
+      sequencerRef.panVal = newPanVal;
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...sequencerRef
+          }
+        }
+      };
+    }
+    case 'CHANGE_PITCH_VALUE': {
+      const { newPitchVal, sequencerId } = action;
+      let sequencerRef = { ...state.sequencers[sequencerId] };
+
+      sequencerRef.pitchRef.pitch = newPitchVal;
+      sequencerRef.pitchVal = newPitchVal;
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...sequencerRef
+          }
+        }
+      };
+    }
+    case 'CHANGE_VOLUME_VALUE': {
+      const { newVolumeVal, sequencerId } = action;
+      let sequencerRef = { ...state.sequencers[sequencerId] };
     }
     default:
       return state;

@@ -33,8 +33,6 @@ class SequencerBrain extends Component {
   componentWillReceiveProps(nextProps) {}
 
   handleSliderChange = (id, e, newValue) => {
-    debugger;
-
     if (id === 'panSlider') {
       this.setState({ panVal: newValue });
     } else if (id === 'pitchSlider') {
@@ -44,11 +42,26 @@ class SequencerBrain extends Component {
     }
   };
 
-  handleDragStop = e => {
+  handleDragStop = (id, e) => {
     // use state values to get current values when sliding stoppped
-    if (e.target.id === 'panSlider') {
-    } else if (e.target.id === 'pitchSlider') {
-    } else if (e.target.id === 'volumeSlider') {
+    if (id === 'panSlider') {
+      this.props.dispatch({
+        type: 'CHANGE_PAN_VALUE',
+        newPanVal: this.state.panVal,
+        sequencerId: this.props.sequencerId
+      });
+    } else if (id === 'pitchSlider') {
+      this.props.dispatch({
+        type: 'CHANGE_PITCH_VALUE',
+        newPitchVal: this.state.pitchVal,
+        sequencerId: this.props.sequencerId
+      });
+    } else if (id === 'volumeSlider') {
+      this.props.dispatch({
+        type: 'CHANGE_VOLUME_VALUE',
+        newVolumeVal: this.state.volumeVal,
+        sequencerId: this.props.sequencerId
+      });
     }
   };
 
@@ -76,7 +89,7 @@ class SequencerBrain extends Component {
                 axis="y"
                 defaultValue={0}
                 onChange={this.handleSliderChange.bind(null, 'panSlider')}
-                onDragStop={this.handleDragStop}
+                onDragStop={this.handleDragStop.bind(null, 'panSlider')}
                 value={this.state.panVal}
               />
             </div>
@@ -92,7 +105,7 @@ class SequencerBrain extends Component {
                 axis="y"
                 defaultValue={0}
                 onChange={this.handleSliderChange.bind(null, 'pitchSlider')}
-                onDragStop={this.handleDragStop}
+                onDragStop={this.handleDragStop.bind(null, 'pitchSlider')}
                 value={this.state.pitchVal}
               />
             </div>
@@ -108,7 +121,7 @@ class SequencerBrain extends Component {
                 axis="y"
                 defaultValue={0}
                 onChange={this.handleSliderChange.bind(null, 'volumeSlider')}
-                onDragStop={this.handleDragStop}
+                onDragStop={this.handleDragStop.bind(null, 'volumeSlider')}
                 value={this.state.volumeVal}
               />
             </div>

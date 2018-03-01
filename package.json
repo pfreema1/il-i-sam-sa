@@ -5,6 +5,8 @@
   "dependencies": {
     "immutability-helper": "^2.6.5",
     "jsdom-quokka-plugin": "^1.0.10",
+    "lodash": "^4.17.5",
+    "lodash.clonedeep": "^4.5.0",
     "material-auto-rotating-carousel": "^1.7.0",
     "material-ui": "^0.20.0",
     "material-ui-build": "https://github.com/pfreema1/material-ui/tarball/master",
