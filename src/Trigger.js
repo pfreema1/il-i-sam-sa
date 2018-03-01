@@ -98,7 +98,9 @@ class Trigger extends Component {
         }}
         className={'trigger-button ' + (isSlicee ? 'slicee' : '')}
         onClick={this.handleTriggerClick.bind(null, id)}
-      />
+      >
+        {' '}
+      </RaisedButton>
     );
   }
 }

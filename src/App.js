@@ -54,16 +54,38 @@ const returnSingleSlicedTrigger = () => {
   };
 };
 
-const returnNewSynth = sampleRef => {
-  let synthRef = new Tone.Sampler({ C2: sampleRef }).toMaster();
-  return synthRef;
+const returnSynthComponentRefObj = sampleRef => {
+  let synthComponentRefObj = {};
+
+  synthComponentRefObj.volume = new Tone.Volume();
+  synthComponentRefObj.pan = new Tone.Panner();
+  synthComponentRefObj.solo = new Tone.Solo();
+  synthComponentRefObj.pitch = new Tone.PitchShift();
+
+  synthComponentRefObj.synthRef = new Tone.Sampler({ C2: sampleRef }).chain(
+    synthComponentRefObj.pan,
+    synthComponentRefObj.solo,
+    synthComponentRefObj.pitch,
+    synthComponentRefObj.volume,
+    Tone.Master
+  );
+  return synthComponentRefObj;
 };
 
 const setupNewSequencer = (sequencerId, state, sampleRef) => {
   let sequencers = { ...state.sequencers };
+
+  let synthComponentRefObj = returnSynthComponentRefObj(sampleRef);
+
   sequencers[sequencerId] = {
-    synthesizerRef: returnNewSynth(sampleRef),
-    triggers: returnTriggers()
+    synthesizerRef: synthComponentRefObj.synthRef,
+    volumeRef: synthComponentRefObj.volume,
+    panRef: synthComponentRefObj.pan,
+    soloRef: synthComponentRefObj.solo,
+    pitchRef: synthComponentRefObj.pitch,
+    triggers: returnTriggers(),
+    isMuted: false,
+    isSoloed: false
   };
 
   let sequencerIdArr = returnNewSequencersIdArr(sequencers);
@@ -518,52 +540,43 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'SYNTHESIZER_CHANGED': {
-      const sequencerId = state.sequencerBeingEditedId;
-
-      //dispose old synth
-      state.sequencers[sequencerId].synthesizerRef.dispose();
-
-      //create new object with same values as old but new reference
-      let tempSequencerObj = { ...state.sequencers[sequencerId] };
-
-      //change synthesizer number
-      tempSequencerObj.synthesizer = action.newSynthNum;
-
-      //change synthesizerRef
-      tempSequencerObj.synthesizerRef = returnNewSynth(action.newSynthNum);
-
-      //iterate through triggers and reschedule
-      tempSequencerObj.triggers = tempSequencerObj.triggers.map(trigger => {
-        let tempTrigger = { ...trigger };
-
-        if (tempTrigger.isTriggered) {
-          tempTrigger = returnClearedTrigger(tempTrigger);
-
-          //we are using original 'trigger' object to pass in the note
-          tempTrigger = returnSetTrigger(
-            tempTrigger,
-            tempSequencerObj.synthesizerRef,
-            tempTrigger.note,
-            tempTrigger.duration,
-            tempTrigger.velocity,
-            false
-          );
-
-          return tempTrigger;
-        } else {
-          return trigger;
-        }
-      });
-
-      return {
-        ...state,
-        sequencers: {
-          ...state.sequencers,
-          [sequencerId]: {
-            ...tempSequencerObj
-          }
-        }
-      };
+      // const sequencerId = state.sequencerBeingEditedId;
+      // //dispose old synth
+      // state.sequencers[sequencerId].synthesizerRef.dispose();
+      // //create new object with same values as old but new reference
+      // let tempSequencerObj = { ...state.sequencers[sequencerId] };
+      // //change synthesizer number
+      // tempSequencerObj.synthesizer = action.newSynthNum;
+      // //change synthesizerRef
+      // tempSequencerObj.synthesizerRef = returnNewSynth(action.newSynthNum);
+      // //iterate through triggers and reschedule
+      // tempSequencerObj.triggers = tempSequencerObj.triggers.map(trigger => {
+      //   let tempTrigger = { ...trigger };
+      //   if (tempTrigger.isTriggered) {
+      //     tempTrigger = returnClearedTrigger(tempTrigger);
+      //     //we are using original 'trigger' object to pass in the note
+      //     tempTrigger = returnSetTrigger(
+      //       tempTrigger,
+      //       tempSequencerObj.synthesizerRef,
+      //       tempTrigger.note,
+      //       tempTrigger.duration,
+      //       tempTrigger.velocity,
+      //       false
+      //     );
+      //     return tempTrigger;
+      //   } else {
+      //     return trigger;
+      //   }
+      // });
+      // return {
+      //   ...state,
+      //   sequencers: {
+      //     ...state.sequencers,
+      //     [sequencerId]: {
+      //       ...tempSequencerObj
+      //     }
+      //   }
+      // };
     }
     case 'EDIT_TRIGGER_NOTE': {
       const sequencerId = state.sequencerBeingEditedId;

@@ -145,7 +145,7 @@ class Sequencer extends Component {
           duration={1000}
         >
           <div>
-            <SequencerBrain sampleName={this.props.sequencerId} />
+            <SequencerBrain sequencerId={this.props.sequencerId} />
 
             <div className="sequencer__trigger-wrapper">
               {sequencerToRender.triggers.map(trigger => {
