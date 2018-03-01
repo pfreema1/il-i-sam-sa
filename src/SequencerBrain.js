@@ -2,13 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './SequencerBrain.css';
 import Slider from 'material-ui/Slider';
+import 'react-tippy/dist/tippy.css';
+import { Tooltip } from 'react-tippy';
 
 class SequencerBrain extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      sliderValArr: []
+    };
   }
+
+  componentDidMount() {
+    //get the values from the store
+  }
+
+  handleSliderChange = (e, newValue) => {};
 
   render() {
     return (
@@ -23,36 +33,48 @@ class SequencerBrain extends Component {
             <div className="sequencer-brain__mute-button">M</div>
             <div className="sequencer-brain__solo-button">S</div>
           </div>
-          <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
-            <Slider
-              min={-100}
-              max={100}
-              step={1}
-              style={{ height: 45 }}
-              axis="y"
-              defaultValue={0}
-            />
-          </div>
-          <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
-            <Slider
-              min={-100}
-              max={100}
-              step={1}
-              style={{ height: 45 }}
-              axis="y"
-              defaultValue={0}
-            />
-          </div>
-          <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
-            <Slider
-              min={0}
-              max={100}
-              step={1}
-              style={{ height: 45 }}
-              axis="y"
-              defaultValue={100}
-            />
-          </div>
+          <Tooltip title="Pan" trigger="mouseenter" followCursor="true">
+            <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
+              <Slider
+                id="panSlider"
+                min={-100}
+                max={100}
+                step={1}
+                style={{ height: 45 }}
+                axis="y"
+                defaultValue={0}
+                onChange={this.handleSliderChange}
+              />
+            </div>
+          </Tooltip>
+          <Tooltip title="Pitch" trigger="mouseenter" followCursor="true">
+            <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
+              <Slider
+                id="pitchSlider"
+                min={-100}
+                max={100}
+                step={1}
+                style={{ height: 45 }}
+                axis="y"
+                defaultValue={0}
+                onChange={this.handleSliderChange}
+              />
+            </div>
+          </Tooltip>
+          <Tooltip title="Volume" trigger="mouseenter" followCursor="true">
+            <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
+              <Slider
+                id="volumeSlider"
+                min={0}
+                max={100}
+                step={1}
+                style={{ height: 45 }}
+                axis="y"
+                defaultValue={100}
+                onChange={this.handleSliderChange}
+              />
+            </div>
+          </Tooltip>
         </div>
       </div>
     );
