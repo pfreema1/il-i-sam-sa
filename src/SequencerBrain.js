@@ -65,6 +65,32 @@ class SequencerBrain extends Component {
     }
   };
 
+  handleMuteClick = e => {
+    this.props.dispatch({
+      type: 'CHANGE_MUTE_STATE',
+      sequencerId: this.props.sequencerId
+    });
+    //maybe set state should be based on props instead of local state?
+    this.setState(prevState => {
+      return {
+        isMuted: !prevState.isMuted
+      };
+    });
+  };
+
+  handleSoloClick = e => {
+    this.props.dispatch({
+      type: 'CHANGE_SOLO_STATE',
+      sequencerId: this.props.sequencerId
+    });
+
+    this.setState(prevState => {
+      return {
+        isSoloed: !prevState.isSoloed
+      };
+    });
+  };
+
   render() {
     let { panVal, volumeVal, pitchVal } = this.state;
 
@@ -75,8 +101,24 @@ class SequencerBrain extends Component {
         </div>
         <div className="sequencer-brain__controls-container">
           <div className="sequencer-brain__mute-solo-container">
-            <div className="sequencer-brain__mute-button">M</div>
-            <div className="sequencer-brain__solo-button">S</div>
+            <div
+              onClick={this.handleMuteClick}
+              className={
+                'sequencer-brain__mute-button ' +
+                (this.state.isMuted ? 'sequencer-brain__button--active' : '')
+              }
+            >
+              M
+            </div>
+            <div
+              onClick={this.handleSoloClick}
+              className={
+                'sequencer-brain__solo-button ' +
+                (this.state.isSoloed ? 'sequencer-brain__button--active' : '')
+              }
+            >
+              S
+            </div>
           </div>
           <Tooltip title={'Pan:  ' + panVal} trigger="mouseenter">
             <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">

@@ -966,6 +966,40 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+    case 'CHANGE_MUTE_STATE': {
+      const { sequencerId } = action;
+      let sequencerRef = { ...state.sequencers[sequencerId] };
+
+      sequencerRef.volumeRef.mute = !sequencerRef.isMuted;
+      sequencerRef.isMuted = !sequencerRef.isMuted;
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...sequencerRef
+          }
+        }
+      };
+    }
+    case 'CHANGE_SOLO_STATE': {
+      const { sequencerId } = action;
+      let sequencerRef = { ...state.sequencers[sequencerId] };
+
+      sequencerRef.soloRef.solo = !sequencerRef.isSoloed;
+      sequencerRef.isSoloed = !sequencerRef.isSoloed;
+
+      return {
+        ...state,
+        sequencers: {
+          ...state.sequencers,
+          [sequencerId]: {
+            ...sequencerRef
+          }
+        }
+      };
+    }
     default:
       return state;
   }

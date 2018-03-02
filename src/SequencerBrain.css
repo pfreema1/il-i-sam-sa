@@ -52,6 +52,8 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  transition: all 0.5s;
+  cursor: pointer;
 }
 
 .sequencer-brain__solo-button {
@@ -62,9 +64,17 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  transition: all 0.5s;
+  cursor: pointer;
 }
 
 .sequencer-brain__sliders > div > div {
   margin-top: unset !important;
   margin-bottom: unset !important;
+}
+
+.sequencer-brain__button--active {
+  transform: scale(1.1);
+  background: white;
+  color: black;
 }
