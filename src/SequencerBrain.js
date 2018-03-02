@@ -91,6 +91,94 @@ class SequencerBrain extends Component {
     });
   };
 
+  renderMuteAndSoloButtons = () => {
+    return (
+      <div className="sequencer-brain__mute-solo-container">
+        <div
+          onClick={this.handleMuteClick}
+          className={
+            'sequencer-brain__mute-button ' +
+            (this.state.isMuted ? 'sequencer-brain__button--active' : '')
+          }
+        >
+          M
+        </div>
+        <div
+          onClick={this.handleSoloClick}
+          className={
+            'sequencer-brain__solo-button ' +
+            (this.state.isSoloed ? 'sequencer-brain__button--active' : '')
+          }
+        >
+          S
+        </div>
+      </div>
+    );
+  };
+
+  renderPanSlider = panVal => {
+    return (
+      <Tooltip title={'Pan:  ' + panVal} trigger="mouseenter">
+        <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
+          <Slider
+            id="panSlider"
+            min={-1}
+            max={1}
+            step={0.1}
+            style={{ height: 45 }}
+            axis="y"
+            defaultValue={0}
+            onChange={this.handleSliderChange.bind(null, 'panSlider')}
+            onDragStop={this.handleDragStop.bind(null, 'panSlider')}
+            value={this.state.panVal}
+          />
+        </div>
+      </Tooltip>
+    );
+  };
+
+  renderPitchSlider = pitchVal => {
+    return (
+      <Tooltip title={'Pitch:  ' + pitchVal} trigger="mouseenter">
+        <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
+          <Slider
+            id="pitchSlider"
+            min={-12}
+            max={12}
+            step={1}
+            style={{ height: 45 }}
+            axis="y"
+            defaultValue={0}
+            onChange={this.handleSliderChange.bind(null, 'pitchSlider')}
+            onDragStop={this.handleDragStop.bind(null, 'pitchSlider')}
+            value={this.state.pitchVal}
+          />
+        </div>
+      </Tooltip>
+    );
+  };
+
+  renderVolumeSlider = volumeVal => {
+    return (
+      <Tooltip title={'Volume:  ' + volumeVal} trigger="mouseenter">
+        <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
+          <Slider
+            id="volumeSlider"
+            min={-80}
+            max={0}
+            step={1}
+            style={{ height: 45 }}
+            axis="y"
+            defaultValue={0}
+            onChange={this.handleSliderChange.bind(null, 'volumeSlider')}
+            onDragStop={this.handleDragStop.bind(null, 'volumeSlider')}
+            value={this.state.volumeVal}
+          />
+        </div>
+      </Tooltip>
+    );
+  };
+
   render() {
     let { panVal, volumeVal, pitchVal } = this.state;
 
@@ -100,74 +188,10 @@ class SequencerBrain extends Component {
           {this.props.sequencerId}
         </div>
         <div className="sequencer-brain__controls-container">
-          <div className="sequencer-brain__mute-solo-container">
-            <div
-              onClick={this.handleMuteClick}
-              className={
-                'sequencer-brain__mute-button ' +
-                (this.state.isMuted ? 'sequencer-brain__button--active' : '')
-              }
-            >
-              M
-            </div>
-            <div
-              onClick={this.handleSoloClick}
-              className={
-                'sequencer-brain__solo-button ' +
-                (this.state.isSoloed ? 'sequencer-brain__button--active' : '')
-              }
-            >
-              S
-            </div>
-          </div>
-          <Tooltip title={'Pan:  ' + panVal} trigger="mouseenter">
-            <div className="sequencer-brain__sliders sequencer-brain__pan-slider-container">
-              <Slider
-                id="panSlider"
-                min={-1}
-                max={1}
-                step={0.1}
-                style={{ height: 45 }}
-                axis="y"
-                defaultValue={0}
-                onChange={this.handleSliderChange.bind(null, 'panSlider')}
-                onDragStop={this.handleDragStop.bind(null, 'panSlider')}
-                value={this.state.panVal}
-              />
-            </div>
-          </Tooltip>
-          <Tooltip title={'Pitch:  ' + pitchVal} trigger="mouseenter">
-            <div className="sequencer-brain__sliders sequencer-brain__pitch-slider-container">
-              <Slider
-                id="pitchSlider"
-                min={-12}
-                max={12}
-                step={1}
-                style={{ height: 45 }}
-                axis="y"
-                defaultValue={0}
-                onChange={this.handleSliderChange.bind(null, 'pitchSlider')}
-                onDragStop={this.handleDragStop.bind(null, 'pitchSlider')}
-                value={this.state.pitchVal}
-              />
-            </div>
-          </Tooltip>
-          <Tooltip title={'Volume:  ' + volumeVal} trigger="mouseenter">
-            <div className="sequencer-brain__sliders sequencer-brain__vol-slider-container">
-              <Slider
-                id="volumeSlider"
-                min={-80}
-                max={0}
-                step={1}
-                style={{ height: 45 }}
-                axis="y"
-                defaultValue={0}
-                onChange={this.handleSliderChange.bind(null, 'volumeSlider')}
-                onDragStop={this.handleDragStop.bind(null, 'volumeSlider')}
-                value={this.state.volumeVal}
-              />
-            </div>
-          </Tooltip>
+          {this.renderMuteAndSoloButtons()}
+          {this.renderPanSlider(panVal)}
+          {this.renderPitchSlider(pitchVal)}
+          {this.renderVolumeSlider(volumeVal)}
         </div>
       </div>
     );
