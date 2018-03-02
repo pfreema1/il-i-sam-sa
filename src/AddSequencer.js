@@ -98,7 +98,7 @@ class AddSequencer extends Component {
     if (dt.items) {
       //use datatransferitemlist interface to access the file(s)
       for (let i = 0; i < dt.items.length; i++) {
-        if (dt.items[i].kind == 'file') {
+        if (dt.items[i].kind === 'file') {
           let f = dt.items[i].getAsFile();
 
           this.readFile(f);

@@ -3,12 +3,10 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 import Tone from 'tone';
-import Sequencer from './Sequencer';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './App.css';
-import PlayButton from './PlayButton';
 import kick1 from './samples/kick1.wav';
 import snare1 from './samples/snare1.wav';
 import closedHiHat1 from './samples/closedHiHat1.wav';
@@ -90,8 +88,6 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
     isMuted: false,
     isSoloed: false
   };
-
-  let sequencerIdArr = returnNewSequencersIdArr(sequencers);
 
   return sequencers;
 };
@@ -580,6 +576,9 @@ const reducer = (state = initialState, action) => {
       //     }
       //   }
       // };
+      return {
+        ...state
+      };
     }
     case 'EDIT_TRIGGER_NOTE': {
       const sequencerId = state.sequencerBeingEditedId;
@@ -1024,7 +1023,6 @@ const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
 
 class App extends Component {
   componentDidMount() {
-    let state = store.getState();
     store.dispatch({
       type: 'ADD_NEW_SEQUENCER',
       sequencerId: 'closedHiHat1',

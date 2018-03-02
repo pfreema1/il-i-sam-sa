@@ -20,18 +20,6 @@ class SequencerBrain extends Component {
     };
   }
 
-  //get the values from the store
-  /*
-      default volume = 0
-      -volumeRef.mute = true
-      default pan = 0
-      -pan range: -1 hard left, 1 hard right
-      default pitch = 0
-      -pitch range: -12 to 12
-    */
-
-  componentWillReceiveProps(nextProps) {}
-
   handleSliderChange = (id, e, newValue) => {
     if (id === 'panSlider') {
       this.setState({ panVal: newValue });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Sequencer from './Sequencer';
 
-class Sequencers extends React.Component {
+class Sequencers extends Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +24,6 @@ class Sequencers extends React.Component {
       sequencersArr.push(sequencer);
     }
     sequencersArr = sequencersArr.map((sequencer, index) => {
-      let foo = props.sequencersIdArr;
       return (
         <Sequencer key={index} sequencerId={props.sequencersIdArr[index]} />
       );
