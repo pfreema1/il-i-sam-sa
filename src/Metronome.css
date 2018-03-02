@@ -1,0 +1,52 @@
+.metronome__container {
+  width: 130px;
+  height: 45px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  cursor: pointer;
+}
+
+.metronome__icon-container {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  transition: all 0.5s;
+}
+
+.metronome-on {
+  background: black;
+  color: white;
+  transform: scale(1.1);
+}
+
+.metronome__control-container {
+  width: 90px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.metronome__bpm-readout {
+  width: 70px;
+  height: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ns-resize;
+}
+
+.metronome__increase-decrease-container {
+  width: 20px;
+  height: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

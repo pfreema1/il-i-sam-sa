@@ -103,13 +103,15 @@ const initialState = {
   isPlaying: false,
   sequencersIdArr: [],
   sequencers: {},
-  samples: {}
+  samples: {},
+  bpm: 120,
+  isMetronomeOn: false
 };
 
 //set the transport to repeat
 Tone.Transport.loopEnd = '1m';
 Tone.Transport.loop = true;
-Tone.Transport.bpm.value = 100;
+Tone.Transport.bpm.value = 120;
 
 const handlePlayButtonClick = play => {
   if (play) {
@@ -997,6 +999,39 @@ const reducer = (state = initialState, action) => {
             ...sequencerRef
           }
         }
+      };
+    }
+    case 'INCREASE_BPM': {
+      let newBpm = state.bpm + 1;
+
+      Tone.Transport.bpm.value = newBpm;
+
+      if (newBpm > 300) {
+        newBpm = 300;
+      }
+
+      return {
+        ...state,
+        bpm: newBpm
+      };
+    }
+    case 'DECREASE_BPM': {
+      let newBpm = state.bpm - 1;
+
+      if (newBpm < 1) {
+        newBpm = 1;
+      }
+
+      Tone.Transport.bpm.value = newBpm;
+      return {
+        ...state,
+        bpm: newBpm
+      };
+    }
+    case 'TOGGLE_METRONOME': {
+      return {
+        ...state,
+        isMetronomeOn: !state.isMetronomeOn
       };
     }
     default:
