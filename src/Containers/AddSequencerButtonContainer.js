@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
-import '../AddSequencer.css';
+import './AddSequencerButtonContainer.css';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import AddSequencerDialogComponent from '../Components/AddSequencerDialogComponent';

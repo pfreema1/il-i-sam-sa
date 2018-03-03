@@ -11,7 +11,6 @@ import kick1 from './samples/kick1.wav';
 import snare1 from './samples/snare1.wav';
 import closedHiHat1 from './samples/closedHiHat1.wav';
 import ToolbarContainer from './ToolbarContainer';
-// import AddSequencer from './AddSequencer';
 import Sequencers from './Sequencers';
 import highClick from './samples/clickHigh.wav';
 import lowClick from './samples/click.wav';
