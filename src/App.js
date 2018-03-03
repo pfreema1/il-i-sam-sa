@@ -13,6 +13,8 @@ import closedHiHat1 from './samples/closedHiHat1.wav';
 import ToolbarContainer from './ToolbarContainer';
 import AddSequencer from './AddSequencer';
 import Sequencers from './Sequencers';
+import highClick from './samples/clickHigh.wav';
+import lowClick from './samples/click.wav';
 
 const returnTriggers = () => {
   let tempTriggersArr = [];
@@ -96,6 +98,10 @@ const returnNewSequencersIdArr = sequencersObj => {
   return Object.keys(sequencersObj);
 };
 
+const returnClickSamplerRef = () => {
+  return new Tone.Sampler({ C2: lowClick, C3: highClick }).toMaster();
+};
+
 const initialState = {
   isEditingTrigger: false,
   triggerBeingEditedId: null,
@@ -105,7 +111,11 @@ const initialState = {
   sequencers: {},
   samples: {},
   bpm: 120,
-  isMetronomeOn: false
+  isMetronomeOn: false,
+  metronome: {
+    clickSamplerRef: returnClickSamplerRef(),
+    scheduleArray: null
+  }
 };
 
 //set the transport to repeat
@@ -1029,6 +1039,18 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'TOGGLE_METRONOME': {
+      if (state.isMetronomeOn) {
+        //clear scheduled metronome Transport.schedule
+        let newMetronomeScheduleIdArr = state.metronome.scheduleArray.map(
+          scheduleId => {
+            //clear id
+            Tone.Transport.clear(scheduleId);
+            return null;
+          }
+        );
+      } else {
+      }
+
       return {
         ...state,
         isMetronomeOn: !state.isMetronomeOn
