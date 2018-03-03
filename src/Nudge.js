@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Slider from 'material-ui/Slider';
 import './Nudge.css';
 import MockTriggerContainer from './Containers/MockTriggerContainer';
+import NudgeSliderComponent from './Components/NudgeSliderComponent';
 
 class Nudge extends Component {
   constructor(props) {
@@ -100,22 +100,6 @@ class Nudge extends Component {
     const { triggerBeingEditedId } = this.props;
     let sliderMinValue;
 
-    // if(this.state.isSlicee) {
-    //   if()
-    // } else {
-
-    // }
-
-    /*
-    if(triggerBeingEditedId === 0 && index === 0) {
-      
-    }
-
-    if(isSlicee)
-      sequencers[sequencerBeingEditedId].triggers[triggerBeingEditedId]
-
-    */
-
     return (
       <div>
         {triggersToRender.map((trigger, index) => {
@@ -134,31 +118,16 @@ class Nudge extends Component {
                 isSlicee={isSlicee}
               />
 
-              <Slider
-                className={
-                  'nudge-slider ' +
-                  (trigger.isTriggered ? '' : 'not-triggered ') +
-                  (sliderMinValue === 0 ? 'nudge-slider--first-trigger' : '')
-                }
-                min={sliderMinValue}
-                max={this.totalNudgeRange / 2}
-                disabled={!trigger.isTriggered}
-                onDragStop={
-                  isSlicee
-                    ? this.handleDragStop.bind(
-                        null,
-                        this.state.nudgeValueArr[index],
-                        index
-                      )
-                    : this.handleDragStop.bind(
-                        null,
-                        this.state.nudgeValueArr[index],
-                        this.props.triggerBeingEditedId
-                      )
-                }
-                defaultValue={nudgeValueArr[index]}
-                onChange={this.handleSliderChange.bind(null, index)}
-                step={1}
+              <NudgeSliderComponent
+                isTriggered={trigger.isTriggered}
+                sliderMinValue={sliderMinValue}
+                totalNudgeRange={this.totalNudgeRange}
+                isSlicee={isSlicee}
+                handleDragStop={this.handleDragStop}
+                nudgeValueArr={nudgeValueArr}
+                index={index}
+                triggerBeingEditedId={triggerBeingEditedId}
+                handleSliderChange={this.handleSliderChange}
               />
               <div
                 className={
