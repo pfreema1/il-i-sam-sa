@@ -11,7 +11,6 @@ import DurationContainer from './DurationContainer';
 import './SequencerContainer.css';
 import Velocity from '../Velocity';
 import NudgeContainer from './NudgeContainer';
-import SequencerBrain from '../SequencerBrain';
 import { VelocityComponent } from 'velocity-react';
 import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
 import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';

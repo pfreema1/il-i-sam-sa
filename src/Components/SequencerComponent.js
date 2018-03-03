@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'material-ui/Card';
 import { VelocityComponent } from 'velocity-react';
-import SequencerBrain from '../SequencerBrain';
+import SequencerBrain from '../Containers/SequencerBrain';
 import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
 import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';
 import TriggerWrapperComponent from './TriggerWrapperComponent';
