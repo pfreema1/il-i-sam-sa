@@ -8,7 +8,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import AddSequencerDialogContainer from './Containers/AddSequencerDialogContainer';
 
 class AddSequencer extends Component {
   constructor(props) {
