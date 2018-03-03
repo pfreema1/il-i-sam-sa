@@ -8,7 +8,7 @@ import {
   ToolbarTitle
 } from 'material-ui/Toolbar';
 import PlayButton from './PlayButton';
-import Metronome from './Metronome';
+import MetronomeContainer from './Containers/MetronomeContainer';
 
 const ToolbarStyleObj = {
   height: '60px'
@@ -28,7 +28,7 @@ class ToolbarContainer extends Component {
       <div className="toolbar-container">
         <Toolbar style={ToolbarStyleObj}>
           <ToolbarGroup firstChild={true}>
-            <Metronome />
+            <MetronomeContainer />
           </ToolbarGroup>
           <ToolbarGroup firstChild={true}>
             <PlayButton />

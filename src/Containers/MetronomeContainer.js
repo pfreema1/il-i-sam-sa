@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './Metronome.css';
+import MetronomeComponent from '../Components/MetronomeComponent';
+import './MetronomeContainer.css';
 
-class Metronome extends Component {
+class MetronomeContainer extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      //what if i only use redux as state?
-    };
   }
 
   componentDidMount() {
@@ -66,43 +63,17 @@ class Metronome extends Component {
 
   render() {
     return (
-      <div className="metronome__container">
-        <div
-          onClick={this.handleMetronomeIconClick}
-          className={
-            'metronome__icon-container ' +
-            (this.props.isMetronomeOn ? 'metronome-on' : '')
-          }
-        >
-          []
-        </div>
-        <div className="metronome__control-container">
-          <div
-            draggable="true"
-            onDragStart={this.handleOnDragStart}
-            onDrag={this.handleOnDrag}
-            onDragEnd={this.handleOnDragEnd}
-            onDragOver={this.handleOnDragOver}
-            className="metronome__bpm-readout"
-          >
-            {this.props.bpm + ' bpm'}
-          </div>
-          <div className="metronome__increase-decrease-container">
-            <div
-              onClick={this.handleMetronomeIncreaseClick}
-              className="metronome__increase-button"
-            >
-              ^
-            </div>
-            <div
-              onClick={this.handleMetronomeDecreaseClick}
-              className="metronome__decrease-button"
-            >
-              ^
-            </div>
-          </div>
-        </div>
-      </div>
+      <MetronomeComponent
+        handleMetronomeIconClick={this.handleMetronomeIconClick}
+        isMetronomeOn={this.props.isMetronomeOn}
+        handleOnDragStart={this.handleOnDragStart}
+        handleOnDrag={this.handleOnDrag}
+        handleOnDragEnd={this.handleOnDragEnd}
+        handleOnDragOver={this.handleOnDragOver}
+        bpm={this.props.bpm}
+        handleMetronomeIncreaseClick={this.handleMetronomeIncreaseClick}
+        handleMetronomeDecreaseClick={this.handleMetronomeDecreaseClick}
+      />
     );
   }
 }
@@ -116,4 +87,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Metronome);
+export default connect(mapStateToProps)(MetronomeContainer);
