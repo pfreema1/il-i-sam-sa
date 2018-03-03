@@ -10,7 +10,7 @@ import TriggerEditNote from './TriggerEditNote';
 import DurationContainer from './Containers/DurationContainer';
 import './Sequencer.css';
 import Velocity from './Velocity';
-import Nudge from './Nudge';
+import NudgeContainer from './Containers/NudgeContainer';
 import SequencerBrain from './SequencerBrain';
 import { VelocityComponent } from 'velocity-react';
 
@@ -220,7 +220,7 @@ class Sequencer extends Component {
               <DurationContainer />
             </Tab>
             <Tab label="Nudge">
-              <Nudge />
+              <NudgeContainer />
             </Tab>
           </Tabs>
         </Dialog>

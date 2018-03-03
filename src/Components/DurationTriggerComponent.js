@@ -11,7 +11,7 @@ const DurationTriggerComponent = ({
   triggerBeingEditedId,
   handleSliderChange
 }) => (
-  <div key={index} className="duration-container">
+  <div className="duration-container">
     <MockTriggerContainer
       barStarter={index % 4 === 0 ? true : false}
       isTriggered={isTriggered}

@@ -96,6 +96,7 @@ class DurationContainer extends Component {
           {triggersToRender.map((trigger, index) => {
             return (
               <DurationTriggerComponent
+                key={index}
                 index={index}
                 isTriggered={trigger.isTriggered}
                 isSlicee={isSlicee}

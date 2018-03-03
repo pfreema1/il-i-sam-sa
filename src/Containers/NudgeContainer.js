@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './Nudge.css';
-import MockTriggerContainer from './Containers/MockTriggerContainer';
-import NudgeSliderComponent from './Components/NudgeSliderComponent';
+import './NudgeContainer.css';
+import NudgeTriggerComponent from '../Components/NudgeTriggerComponent';
 
 class Nudge extends Component {
   constructor(props) {
@@ -95,60 +94,39 @@ class Nudge extends Component {
     });
   };
 
-  renderSliders = () => {
+  render() {
     const { triggersToRender, isSlicee, nudgeValueArr } = this.state;
     const { triggerBeingEditedId } = this.props;
     let sliderMinValue;
 
     return (
       <div>
-        {triggersToRender.map((trigger, index) => {
-          if (triggerBeingEditedId === 0 && index === 0) {
-            sliderMinValue = 0;
-          } else {
-            sliderMinValue = this.totalNudgeRange / 2 * -1;
-          }
+        <h1>Set Nudge Amount</h1>
+        <div>
+          {triggersToRender.map((trigger, index) => {
+            //create different sliderMinValue if first trigger
+            if (triggerBeingEditedId === 0 && index === 0) {
+              sliderMinValue = 0;
+            } else {
+              sliderMinValue = this.totalNudgeRange / 2 * -1;
+            }
 
-          return (
-            <div key={index} className="nudge-container">
-              <MockTriggerContainer
-                barStarter={index % 4 === 0 ? true : false}
+            return (
+              <NudgeTriggerComponent
+                key={index}
+                index={index}
                 isTriggered={trigger.isTriggered}
-                id={index}
                 isSlicee={isSlicee}
-              />
-
-              <NudgeSliderComponent
-                isTriggered={trigger.isTriggered}
                 sliderMinValue={sliderMinValue}
                 totalNudgeRange={this.totalNudgeRange}
-                isSlicee={isSlicee}
                 handleDragStop={this.handleDragStop}
                 nudgeValueArr={nudgeValueArr}
-                index={index}
                 triggerBeingEditedId={triggerBeingEditedId}
                 handleSliderChange={this.handleSliderChange}
               />
-              <div
-                className={
-                  'nudge-percentage-container ' +
-                  (trigger.isTriggered ? '' : 'not-triggered')
-                }
-              >
-                {nudgeValueArr[index]}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  render() {
-    return (
-      <div>
-        <h1>Set Nudge Amount</h1>
-        {this.renderSliders()}
+            );
+          })}
+        </div>
       </div>
     );
   }
