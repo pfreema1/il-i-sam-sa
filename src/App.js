@@ -114,7 +114,7 @@ const initialState = {
   isMetronomeOn: false,
   metronome: {
     clickSamplerRef: returnClickSamplerRef(),
-    scheduleArray: null
+    scheduleArray: [null, null, null, null]
   }
 };
 
@@ -1033,15 +1033,18 @@ const reducer = (state = initialState, action) => {
       }
 
       Tone.Transport.bpm.value = newBpm;
+
       return {
         ...state,
         bpm: newBpm
       };
     }
     case 'TOGGLE_METRONOME': {
+      let newMetronomeScheduleIdArr;
+
       if (state.isMetronomeOn) {
         //clear scheduled metronome Transport.schedule
-        let newMetronomeScheduleIdArr = state.metronome.scheduleArray.map(
+        newMetronomeScheduleIdArr = state.metronome.scheduleArray.map(
           scheduleId => {
             //clear id
             Tone.Transport.clear(scheduleId);
@@ -1049,10 +1052,39 @@ const reducer = (state = initialState, action) => {
           }
         );
       } else {
+        // schedule metronome clicks
+        newMetronomeScheduleIdArr = state.metronome.scheduleArray.map(
+          (scheduleId, index) => {
+            let iValue = 192 * index;
+            if (index === 0) {
+              return Tone.Transport.schedule(time => {
+                state.metronome.clickSamplerRef.triggerAttackRelease(
+                  'C3',
+                  '192i',
+                  time,
+                  1
+                );
+              }, iValue + 'i');
+            } else {
+              return Tone.Transport.schedule(time => {
+                state.metronome.clickSamplerRef.triggerAttackRelease(
+                  'C2',
+                  '192i',
+                  time,
+                  1
+                );
+              }, iValue + 'i');
+            }
+          }
+        );
       }
 
       return {
         ...state,
+        metronome: {
+          ...state.metronome,
+          scheduleArray: newMetronomeScheduleIdArr
+        },
         isMetronomeOn: !state.isMetronomeOn
       };
     }
