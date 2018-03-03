@@ -13,6 +13,8 @@ import Velocity from './Velocity';
 import NudgeContainer from './Containers/NudgeContainer';
 import SequencerBrain from './SequencerBrain';
 import { VelocityComponent } from 'velocity-react';
+import SequencerContextMenuComponent from './Components/SequencerContextMenuComponent';
+import TriggerEditDialogComponent from './Components/TriggerEditDialogComponent';
 
 const CardParentStyle = {
   width: '100vw',
@@ -127,6 +129,40 @@ class Sequencer extends Component {
     );
   };
 
+  renderTriggerWrapper = sequencerToRender => {
+    return (
+      <div className="sequencer__trigger-wrapper">
+        {sequencerToRender.triggers.map(trigger => {
+          if (trigger.isSliced) {
+            return this.returnSlicedTriggers(trigger);
+          } else {
+            return (
+              <ContextMenuTrigger
+                key={trigger.id}
+                id={'triggerMenu' + this.props.sequencerId}
+                //this is passed in as data to MenuItem
+                attributes={{ id: trigger.id }}
+                collect={props => props}
+                holdToDisplay={1000}
+              >
+                <Trigger
+                  sequencerId={this.props.sequencerId}
+                  id={trigger.id}
+                  parentTriggerId={null}
+                  key={trigger.id}
+                  width={'100%'}
+                  height={'100%'}
+                  isSlicee={false}
+                  barStarter={trigger.id % 4 === 0 ? true : false}
+                />
+              </ContextMenuTrigger>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
@@ -146,84 +182,22 @@ class Sequencer extends Component {
         >
           <div>
             <SequencerBrain sequencerId={this.props.sequencerId} />
-
-            <div className="sequencer__trigger-wrapper">
-              {sequencerToRender.triggers.map(trigger => {
-                if (trigger.isSliced) {
-                  return this.returnSlicedTriggers(trigger);
-                } else {
-                  return (
-                    <ContextMenuTrigger
-                      key={trigger.id}
-                      id={'triggerMenu' + this.props.sequencerId}
-                      //this is passed in as data to MenuItem
-                      attributes={{ id: trigger.id }}
-                      collect={props => props}
-                      holdToDisplay={1000}
-                    >
-                      <Trigger
-                        sequencerId={this.props.sequencerId}
-                        id={trigger.id}
-                        parentTriggerId={null}
-                        key={trigger.id}
-                        width={'100%'}
-                        height={'100%'}
-                        isSlicee={false}
-                        barStarter={trigger.id % 4 === 0 ? true : false}
-                      />
-                    </ContextMenuTrigger>
-                  );
-                }
-              })}
-            </div>
+            {this.renderTriggerWrapper(sequencerToRender)}
           </div>
         </VelocityComponent>
 
-        <ContextMenu id={'triggerMenu' + this.props.sequencerId}>
-          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 0 }}>
-            note
-          </MenuItem>
-          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 1 }}>
-            velocity
-          </MenuItem>
-          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 2 }}>
-            duration
-          </MenuItem>
-          <MenuItem onClick={this.handleMenuItemClick} data={{ item: 3 }}>
-            nudge
-          </MenuItem>
-          <MenuItem onClick={this.handleSliceMenuItemClick} data={{ item: 4 }}>
-            slice
-          </MenuItem>
-          <MenuItem
-            onClick={this.handleUnSliceMenuItemClick}
-            data={{ item: 5 }}
-          >
-            un-slice
-          </MenuItem>
-        </ContextMenu>
+        <SequencerContextMenuComponent
+          sequencerId={this.props.sequencerId}
+          handleMenuItemClick={this.handleMenuItemClick}
+          handleSliceMenuItemClick={this.handleSliceMenuItemClick}
+          handleUnSliceMenuItemClick={this.handleUnSliceMenuItemClick}
+        />
 
-        <Dialog
-          open={this.state.isEditingTrigger}
-          onRequestClose={this.handleDialogClose}
-          autoScrollBodyContent={true}
-          className="dialog-root"
-        >
-          <Tabs initialSelectedIndex={this.state.menuItemClicked}>
-            <Tab label="note">
-              <TriggerEditNote />
-            </Tab>
-            <Tab label="velocity">
-              <Velocity />
-            </Tab>
-            <Tab label="duration">
-              <DurationContainer />
-            </Tab>
-            <Tab label="Nudge">
-              <NudgeContainer />
-            </Tab>
-          </Tabs>
-        </Dialog>
+        <TriggerEditDialogComponent
+          isEditingTrigger={this.state.isEditingTrigger}
+          handleDialogClose={this.handleDialogClose}
+          menuItemClicked={this.state.menuItemClicked}
+        />
       </Card>
     );
   }
