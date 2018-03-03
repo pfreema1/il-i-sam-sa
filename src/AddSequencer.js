@@ -8,6 +8,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import AddSequencerDialogContainer from './Containers/AddSequencerDialogContainer';
 
 class AddSequencer extends Component {
   constructor(props) {
@@ -20,20 +21,6 @@ class AddSequencer extends Component {
       menuItemsArr: []
     };
   }
-
-  // componentDidMount() {
-  //   debugger;
-  //   let items = [];
-
-  //   for (let sample in this.props.samples) {
-  //     items.push(sample);
-  //   }
-
-  //   //prepend info as first item
-  //   items.unshift('Select Sample');
-
-  //   this.setState({ menuItemsArr: items });
-  // }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.samples !== this.props.samples) {

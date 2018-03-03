@@ -99,7 +99,25 @@ const returnNewSequencersIdArr = sequencersObj => {
 };
 
 const returnClickSamplerRef = () => {
-  return new Tone.Sampler({ C2: lowClick, C3: highClick }).toMaster();
+  return new Tone.Sampler({ C2: lowClick, C3: highClick }).chain(
+    new Tone.Volume(-10),
+    Tone.Master
+  );
+};
+
+const returnNewMetronomeScheduleIdArr = (scheduleArray, clickSamplerRef) => {
+  return scheduleArray.map((scheduleId, index) => {
+    let iValue = 192 * index;
+    if (index === 0) {
+      return Tone.Transport.schedule(time => {
+        clickSamplerRef.triggerAttackRelease('C3', '192i', time, 1);
+      }, iValue + 'i');
+    } else {
+      return Tone.Transport.schedule(time => {
+        clickSamplerRef.triggerAttackRelease('C2', '192i', time, 1);
+      }, iValue + 'i');
+    }
+  });
 };
 
 const initialState = {
@@ -1053,29 +1071,9 @@ const reducer = (state = initialState, action) => {
         );
       } else {
         // schedule metronome clicks
-        newMetronomeScheduleIdArr = state.metronome.scheduleArray.map(
-          (scheduleId, index) => {
-            let iValue = 192 * index;
-            if (index === 0) {
-              return Tone.Transport.schedule(time => {
-                state.metronome.clickSamplerRef.triggerAttackRelease(
-                  'C3',
-                  '192i',
-                  time,
-                  1
-                );
-              }, iValue + 'i');
-            } else {
-              return Tone.Transport.schedule(time => {
-                state.metronome.clickSamplerRef.triggerAttackRelease(
-                  'C2',
-                  '192i',
-                  time,
-                  1
-                );
-              }, iValue + 'i');
-            }
-          }
+        newMetronomeScheduleIdArr = returnNewMetronomeScheduleIdArr(
+          state.metronome.scheduleArray,
+          state.metronome.clickSamplerRef
         );
       }
 
