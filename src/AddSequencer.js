@@ -92,7 +92,7 @@ class AddSequencer extends Component {
           <div className="add-sequencer__dialog-container">
             <FileDragContainer handleDialogClose={this.handleDialogClose} />
 
-            <div className="add-sequencer__dialog-menu-container">
+            {/*<div className="add-sequencer__dialog-menu-container">
               <DropDownMenu
                 maxHeight={300}
                 value={this.state.dropDownMenuValue}
@@ -100,7 +100,7 @@ class AddSequencer extends Component {
               >
                 {this.returnMenuItems()}
               </DropDownMenu>
-            </div>
+    </div>*/}
             <RaisedButton
               label="Add Sequencer"
               primary={true}
