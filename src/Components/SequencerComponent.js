@@ -1,0 +1,62 @@
+import React from 'react';
+import { Card } from 'material-ui/Card';
+import { VelocityComponent } from 'velocity-react';
+import SequencerBrain from '../SequencerBrain';
+import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
+import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';
+
+const CardParentStyle = {
+  width: '100vw',
+  minWidth: '950px'
+};
+
+const CardContainerStyle = {
+  width: '100vw',
+  minWidth: '950px',
+
+  padding: '10px 0 10px 0'
+};
+
+const SequencerComponent = ({
+  sequencerId,
+  renderTriggerWrapper,
+  sequencerToRender,
+  handleMenuItemClick,
+  handleSliceMenuItemClick,
+  handleUnSliceMenuItemClick,
+  isEditingTrigger,
+  handleDialogClose,
+  menuItemClicked
+}) => (
+  <Card
+    className="sequencer-card"
+    containerStyle={CardContainerStyle}
+    style={CardParentStyle}
+  >
+    <VelocityComponent
+      runOnMount={true}
+      animation={'transition.slideLeftIn'}
+      duration={1000}
+    >
+      <div>
+        <SequencerBrain sequencerId={sequencerId} />
+        {renderTriggerWrapper(sequencerToRender)}
+      </div>
+    </VelocityComponent>
+
+    <SequencerContextMenuComponent
+      sequencerId={sequencerId}
+      handleMenuItemClick={handleMenuItemClick}
+      handleSliceMenuItemClick={handleSliceMenuItemClick}
+      handleUnSliceMenuItemClick={handleUnSliceMenuItemClick}
+    />
+
+    <TriggerEditDialogComponent
+      isEditingTrigger={isEditingTrigger}
+      handleDialogClose={handleDialogClose}
+      menuItemClicked={menuItemClicked}
+    />
+  </Card>
+);
+
+export default SequencerComponent;

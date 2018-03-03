@@ -15,18 +15,7 @@ import SequencerBrain from './SequencerBrain';
 import { VelocityComponent } from 'velocity-react';
 import SequencerContextMenuComponent from './Components/SequencerContextMenuComponent';
 import TriggerEditDialogComponent from './Components/TriggerEditDialogComponent';
-
-const CardParentStyle = {
-  width: '100vw',
-  minWidth: '950px'
-};
-
-const CardContainerStyle = {
-  width: '100vw',
-  minWidth: '950px',
-
-  padding: '10px 0 10px 0'
-};
+import SequencerComponent from './Components/SequencerComponent';
 
 /*****************************/
 
@@ -170,35 +159,17 @@ class Sequencer extends Component {
       return null;
     }
     return (
-      <Card
-        className="sequencer-card"
-        containerStyle={CardContainerStyle}
-        style={CardParentStyle}
-      >
-        <VelocityComponent
-          runOnMount={true}
-          animation={'transition.slideLeftIn'}
-          duration={1000}
-        >
-          <div>
-            <SequencerBrain sequencerId={this.props.sequencerId} />
-            {this.renderTriggerWrapper(sequencerToRender)}
-          </div>
-        </VelocityComponent>
-
-        <SequencerContextMenuComponent
-          sequencerId={this.props.sequencerId}
-          handleMenuItemClick={this.handleMenuItemClick}
-          handleSliceMenuItemClick={this.handleSliceMenuItemClick}
-          handleUnSliceMenuItemClick={this.handleUnSliceMenuItemClick}
-        />
-
-        <TriggerEditDialogComponent
-          isEditingTrigger={this.state.isEditingTrigger}
-          handleDialogClose={this.handleDialogClose}
-          menuItemClicked={this.state.menuItemClicked}
-        />
-      </Card>
+      <SequencerComponent
+        sequencerId={this.props.sequencerId}
+        renderTriggerWrapper={this.renderTriggerWrapper}
+        sequencerToRender={sequencerToRender}
+        handleMenuItemClick={this.handleMenuItemClick}
+        handleSliceMenuItemClick={this.handleSliceMenuItemClick}
+        handleUnSliceMenuItemClick={this.handleUnSliceMenuItemClick}
+        isEditingTrigger={this.state.isEditingTrigger}
+        handleDialogClose={this.handleDialogClose}
+        menuItemClicked={this.state.menuItemClicked}
+      />
     );
   }
 }
