@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import './Velocity.css';
-import MockTrigger from './MockTrigger';
+import MockTriggerContainer from './Containers/MockTriggerContainer';
 
 class Velocity extends Component {
   constructor(props) {
@@ -87,7 +87,7 @@ class Velocity extends Component {
         {triggersToRender.map((trigger, index) => {
           return (
             <div key={index} className="velocity-container">
-              <MockTrigger
+              <MockTriggerContainer
                 barStarter={index % 4 === 0 ? true : false}
                 isTriggered={trigger.isTriggered}
                 id={index}

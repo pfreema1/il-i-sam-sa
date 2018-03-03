@@ -1,6 +1,6 @@
 import React from 'react';
 import DurationSliderComponent from '../Components/DurationSliderComponent';
-import MockTrigger from '../MockTrigger';
+import MockTriggerContainer from '../Containers/MockTriggerContainer';
 
 const DurationTriggerComponent = ({
   index,
@@ -12,7 +12,7 @@ const DurationTriggerComponent = ({
   handleSliderChange
 }) => (
   <div key={index} className="duration-container">
-    <MockTrigger
+    <MockTriggerContainer
       barStarter={index % 4 === 0 ? true : false}
       isTriggered={isTriggered}
       id={index}

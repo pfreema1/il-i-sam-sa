@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import './Nudge.css';
-import MockTrigger from './MockTrigger';
+import MockTriggerContainer from './Containers/MockTriggerContainer';
 
 class Nudge extends Component {
   constructor(props) {
@@ -127,7 +127,7 @@ class Nudge extends Component {
 
           return (
             <div key={index} className="nudge-container">
-              <MockTrigger
+              <MockTriggerContainer
                 barStarter={index % 4 === 0 ? true : false}
                 isTriggered={trigger.isTriggered}
                 id={index}

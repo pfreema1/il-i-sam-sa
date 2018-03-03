@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './MockTrigger.css';
+import './MockTriggerContainer.css';
+import MockTriggerComponent from '../Components/MockTriggerComponent';
 
-class MockTrigger extends Component {
+class MockTriggerContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -44,13 +45,10 @@ class MockTrigger extends Component {
     let { barStarter, isTriggered } = this.state;
 
     return (
-      <div
-        className={
-          'mock-trigger ' +
-          (barStarter ? 'bar-starter ' : '') +
-          (isTriggered ? 'is-triggered' : 'disabled')
-        }
-        onClick={this.handleClick}
+      <MockTriggerComponent
+        handleClick={this.handleClick}
+        barStarter={barStarter}
+        isTriggered={isTriggered}
       />
     );
   }
@@ -66,4 +64,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(MockTrigger);
+export default connect(mapStateToProps)(MockTriggerContainer);
