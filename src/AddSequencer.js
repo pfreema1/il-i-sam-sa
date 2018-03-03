@@ -4,11 +4,10 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import './AddSequencer.css';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FileDragContainer from './Containers/FileDragContainer';
+import SampleSelectContainer from './Containers/SampleSelectContainer';
 
 class AddSequencer extends Component {
   constructor(props) {
@@ -55,28 +54,6 @@ class AddSequencer extends Component {
     });
   };
 
-  returnMenuItems = () => {
-    return this.state.menuItemsArr.map((item, index) => {
-      return <MenuItem value={index} key={item} primaryText={item} />;
-    });
-  };
-
-  handleDropDownMenuChange = (e, index, value) => {
-    const id = this.state.menuItemsArr[value];
-    const sample = this.props.samples[id];
-
-    if (value !== 0) {
-      //close dialog and dispatch action
-      this.props.dispatch({
-        type: 'ADD_NEW_SEQUENCER',
-        sequencerId: id + Date.now(),
-        sample: sample
-      });
-
-      this.setState({ addSequencerDialogOpen: false });
-    }
-  };
-
   render() {
     return (
       <div className="add-sequencer-container">
@@ -89,22 +66,13 @@ class AddSequencer extends Component {
           onRequestClose={this.handleDialogClose}
           className="dialog-root"
         >
+          <h1>Add Sequencer</h1>
           <div className="add-sequencer__dialog-container">
             <FileDragContainer handleDialogClose={this.handleDialogClose} />
-
-            {/*<div className="add-sequencer__dialog-menu-container">
-              <DropDownMenu
-                maxHeight={300}
-                value={this.state.dropDownMenuValue}
-                onChange={this.handleDropDownMenuChange}
-              >
-                {this.returnMenuItems()}
-              </DropDownMenu>
-    </div>*/}
-            <RaisedButton
-              label="Add Sequencer"
-              primary={true}
-              onClick={this.handleAddSequencer}
+            <SampleSelectContainer
+              handleDialogClose={this.handleDialogClose}
+              menuItemsArr={this.state.menuItemsArr}
+              samples={this.props.samples}
             />
           </div>
         </Dialog>
