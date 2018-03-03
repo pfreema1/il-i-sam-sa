@@ -6,8 +6,8 @@ import Dialog from 'material-ui/Dialog';
 import './AddSequencer.css';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
-import FileDragContainer from './Containers/FileDragContainer';
-import SampleSelectContainer from './Containers/SampleSelectContainer';
+
+import AddSequencerDialogContainer from './Containers/AddSequencerDialogContainer';
 
 class AddSequencer extends Component {
   constructor(props) {
@@ -61,21 +61,12 @@ class AddSequencer extends Component {
           <ContentAdd />{' '}
         </FloatingActionButton>
 
-        <Dialog
-          open={this.state.addSequencerDialogOpen}
-          onRequestClose={this.handleDialogClose}
-          className="dialog-root"
-        >
-          <h1>Add Sequencer</h1>
-          <div className="add-sequencer__dialog-container">
-            <FileDragContainer handleDialogClose={this.handleDialogClose} />
-            <SampleSelectContainer
-              handleDialogClose={this.handleDialogClose}
-              menuItemsArr={this.state.menuItemsArr}
-              samples={this.props.samples}
-            />
-          </div>
-        </Dialog>
+        <AddSequencerDialogContainer
+          addSequencerDialogOpen={this.state.addSequencerDialogOpen}
+          handleDialogClose={this.handleDialogClose}
+          menuItemsArr={this.state.menuItemsArr}
+          samples={this.props.samples}
+        />
       </div>
     );
   }
