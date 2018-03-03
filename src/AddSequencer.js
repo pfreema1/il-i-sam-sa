@@ -8,6 +8,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import FileDragContainer from './Containers/FileDragContainer';
 
 class AddSequencer extends Component {
   constructor(props) {
@@ -76,71 +77,6 @@ class AddSequencer extends Component {
     }
   };
 
-  handleFileDrop = e => {
-    e.stopPropagation();
-    e.preventDefault();
-    //if dropped items aren't files, reject them
-    let dt = e.dataTransfer;
-    if (dt.items) {
-      //use datatransferitemlist interface to access the file(s)
-      for (let i = 0; i < dt.items.length; i++) {
-        if (dt.items[i].kind === 'file') {
-          let f = dt.items[i].getAsFile();
-
-          this.readFile(f);
-        }
-      }
-    } else {
-      //use datatransfer interface to access the file(s)
-      for (let i = 0; i < dt.files.length; i++) {
-        this.readFile(dt.files[i]);
-      }
-    }
-  };
-
-  readFile = file => {
-    const reader = new FileReader();
-
-    reader.onloadend = e => {
-      // let result = e.target.result;
-
-      let shortenedURL = URL.createObjectURL(file);
-      this.props.dispatch({
-        type: 'ADD_NEW_SEQUENCER',
-        sequencerId: file.name + Date.now(),
-        sample: shortenedURL
-      });
-
-      this.setState({ isLoadingFile: false, addSequencerDialogOpen: false });
-    };
-
-    reader.onloadstart = () => {
-      this.setState({ isLoadingFile: true });
-    };
-
-    //do work
-    reader.readAsDataURL(file);
-  };
-
-  handleDragOver = e => {
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
-  handleDragEnd = e => {
-    //remove all of the drag data
-    const dt = e.dataTransfer;
-    if (dt.items) {
-      //use DataTransferItemList interface to remove the drag data
-      for (let i = 0; i < dt.items.length; i++) {
-        dt.items.remove(i);
-      }
-    } else {
-      // use DataTransfer interface to remove the drag data
-      e.dataTransfer.clearData();
-    }
-  };
-
   render() {
     return (
       <div className="add-sequencer-container">
@@ -153,37 +89,24 @@ class AddSequencer extends Component {
           onRequestClose={this.handleDialogClose}
           className="dialog-root"
         >
-          {this.state.isLoadingFile ? (
-            <div className="add-sequencer__dialog-loading-container">
-              <CircularProgress size={80} thickness={7} />
-              <h1>Loading Sample</h1>
-            </div>
-          ) : (
-            <div className="add-sequencer__dialog-container">
-              <div
-                onDragEnd={this.handleDragEnd}
-                onDragOver={this.handleDragOver}
-                onDrop={this.handleFileDrop}
-                className="add-sequencer__dialog-file-drop-container"
+          <div className="add-sequencer__dialog-container">
+            <FileDragContainer handleDialogClose={this.handleDialogClose} />
+
+            <div className="add-sequencer__dialog-menu-container">
+              <DropDownMenu
+                maxHeight={300}
+                value={this.state.dropDownMenuValue}
+                onChange={this.handleDropDownMenuChange}
               >
-                drag file here bruh
-              </div>
-              <div className="add-sequencer__dialog-menu-container">
-                <DropDownMenu
-                  maxHeight={300}
-                  value={this.state.dropDownMenuValue}
-                  onChange={this.handleDropDownMenuChange}
-                >
-                  {this.returnMenuItems()}
-                </DropDownMenu>
-              </div>
-              <RaisedButton
-                label="Add Sequencer"
-                primary={true}
-                onClick={this.handleAddSequencer}
-              />
+                {this.returnMenuItems()}
+              </DropDownMenu>
             </div>
-          )}
+            <RaisedButton
+              label="Add Sequencer"
+              primary={true}
+              onClick={this.handleAddSequencer}
+            />
+          </div>
         </Dialog>
       </div>
     );
