@@ -119,16 +119,6 @@ class Sequencer extends Component {
     );
   };
 
-  renderTriggerWrapper = sequencerToRender => {
-    return (
-      <TriggerWrapperComponent
-        sequencerToRender={sequencerToRender}
-        returnSlicedTriggers={this.returnSlicedTriggers}
-        sequencerId={this.props.sequencerId}
-      />
-    );
-  };
-
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
@@ -138,7 +128,6 @@ class Sequencer extends Component {
     return (
       <SequencerComponent
         sequencerId={this.props.sequencerId}
-        renderTriggerWrapper={this.renderTriggerWrapper}
         sequencerToRender={sequencerToRender}
         handleMenuItemClick={this.handleMenuItemClick}
         handleSliceMenuItemClick={this.handleSliceMenuItemClick}
@@ -146,6 +135,7 @@ class Sequencer extends Component {
         isEditingTrigger={this.state.isEditingTrigger}
         handleDialogClose={this.handleDialogClose}
         menuItemClicked={this.state.menuItemClicked}
+        returnSlicedTriggers={this.returnSlicedTriggers}
       />
     );
   }

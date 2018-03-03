@@ -4,6 +4,7 @@ import { VelocityComponent } from 'velocity-react';
 import SequencerBrain from '../SequencerBrain';
 import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
 import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';
+import TriggerWrapperComponent from './TriggerWrapperComponent';
 
 const CardParentStyle = {
   width: '100vw',
@@ -19,7 +20,7 @@ const CardContainerStyle = {
 
 const SequencerComponent = ({
   sequencerId,
-  renderTriggerWrapper,
+  returnSlicedTriggers,
   sequencerToRender,
   handleMenuItemClick,
   handleSliceMenuItemClick,
@@ -40,7 +41,11 @@ const SequencerComponent = ({
     >
       <div>
         <SequencerBrain sequencerId={sequencerId} />
-        {renderTriggerWrapper(sequencerToRender)}
+        <TriggerWrapperComponent
+          sequencerToRender={sequencerToRender}
+          returnSlicedTriggers={returnSlicedTriggers}
+          sequencerId={sequencerId}
+        />
       </div>
     </VelocityComponent>
 
