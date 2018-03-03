@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FileDragContainer from '../Containers/FileDragContainer';
 import SampleSelectContainer from '../Containers/SampleSelectContainer';

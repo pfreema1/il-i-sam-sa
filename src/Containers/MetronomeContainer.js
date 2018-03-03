@@ -4,10 +4,6 @@ import MetronomeComponent from '../Components/MetronomeComponent';
 import './MetronomeContainer.css';
 
 class MetronomeContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.dragImg = new Image(0, 0);
     //blank image

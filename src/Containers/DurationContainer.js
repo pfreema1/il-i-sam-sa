@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Slider from 'material-ui/Slider';
 import './DurationContainer.css';
 import DurationTriggerComponent from '../Components/DurationTriggerComponent';
 

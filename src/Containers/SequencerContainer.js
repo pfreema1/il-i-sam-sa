@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Trigger from '../Trigger';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import '../react-contextmenu.css';
-import { Card } from 'material-ui/Card';
-import Dialog from 'material-ui/Dialog';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import TriggerEditNote from '../TriggerEditNote';
-import DurationContainer from './DurationContainer';
 import './SequencerContainer.css';
-import Velocity from '../Velocity';
-import NudgeContainer from './NudgeContainer';
-import { VelocityComponent } from 'velocity-react';
-import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
-import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';
 import SequencerComponent from '../Components/SequencerComponent';
-import TriggerWrapperComponent from '../Components/TriggerWrapperComponent';
 
 /*****************************/
 

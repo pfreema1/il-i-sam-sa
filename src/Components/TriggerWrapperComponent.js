@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import Trigger from '../Trigger';
 
 const TriggerWrapperComponent = ({

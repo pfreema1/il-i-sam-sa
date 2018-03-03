@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './SequencerBrain.css';
-import Slider from 'material-ui/Slider';
 import 'react-tippy/dist/tippy.css';
-import { Tooltip } from 'react-tippy';
 import SequencerBrainView from '../Components/SequencerBrain/SequencerBrainView';
 
 class SequencerBrain extends Component {

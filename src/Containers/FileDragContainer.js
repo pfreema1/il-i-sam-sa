@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CircularProgress from 'material-ui/CircularProgress';
 import './FileDragContainer.css';
 import FileDragLoadingComponent from '../Components/FileDragLoadingComponent';
 import FileDragComponent from '../Components/FileDragComponent';
