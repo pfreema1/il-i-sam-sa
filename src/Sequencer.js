@@ -16,6 +16,7 @@ import { VelocityComponent } from 'velocity-react';
 import SequencerContextMenuComponent from './Components/SequencerContextMenuComponent';
 import TriggerEditDialogComponent from './Components/TriggerEditDialogComponent';
 import SequencerComponent from './Components/SequencerComponent';
+import TriggerWrapperComponent from './Components/TriggerWrapperComponent';
 
 /*****************************/
 
@@ -120,35 +121,11 @@ class Sequencer extends Component {
 
   renderTriggerWrapper = sequencerToRender => {
     return (
-      <div className="sequencer__trigger-wrapper">
-        {sequencerToRender.triggers.map(trigger => {
-          if (trigger.isSliced) {
-            return this.returnSlicedTriggers(trigger);
-          } else {
-            return (
-              <ContextMenuTrigger
-                key={trigger.id}
-                id={'triggerMenu' + this.props.sequencerId}
-                //this is passed in as data to MenuItem
-                attributes={{ id: trigger.id }}
-                collect={props => props}
-                holdToDisplay={1000}
-              >
-                <Trigger
-                  sequencerId={this.props.sequencerId}
-                  id={trigger.id}
-                  parentTriggerId={null}
-                  key={trigger.id}
-                  width={'100%'}
-                  height={'100%'}
-                  isSlicee={false}
-                  barStarter={trigger.id % 4 === 0 ? true : false}
-                />
-              </ContextMenuTrigger>
-            );
-          }
-        })}
-      </div>
+      <TriggerWrapperComponent
+        sequencerToRender={sequencerToRender}
+        returnSlicedTriggers={this.returnSlicedTriggers}
+        sequencerId={this.props.sequencerId}
+      />
     );
   };
 
