@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Trigger from './Trigger';
+import Trigger from '../Trigger';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import './react-contextmenu.css';
+import '../react-contextmenu.css';
 import { Card } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import TriggerEditNote from './TriggerEditNote';
-import DurationContainer from './Containers/DurationContainer';
-import './Sequencer.css';
-import Velocity from './Velocity';
-import NudgeContainer from './Containers/NudgeContainer';
-import SequencerBrain from './SequencerBrain';
+import TriggerEditNote from '../TriggerEditNote';
+import DurationContainer from './DurationContainer';
+import './SequencerContainer.css';
+import Velocity from '../Velocity';
+import NudgeContainer from './NudgeContainer';
+import SequencerBrain from '../SequencerBrain';
 import { VelocityComponent } from 'velocity-react';
-import SequencerContextMenuComponent from './Components/SequencerContextMenuComponent';
-import TriggerEditDialogComponent from './Components/TriggerEditDialogComponent';
-import SequencerComponent from './Components/SequencerComponent';
-import TriggerWrapperComponent from './Components/TriggerWrapperComponent';
+import SequencerContextMenuComponent from '../Components/SequencerContextMenuComponent';
+import TriggerEditDialogComponent from '../Components/TriggerEditDialogComponent';
+import SequencerComponent from '../Components/SequencerComponent';
+import TriggerWrapperComponent from '../Components/TriggerWrapperComponent';
 
 /*****************************/
 
-class Sequencer extends Component {
+class SequencerContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -84,6 +84,7 @@ class Sequencer extends Component {
         .sliceAmount * 4;
     let arrayOfWidths = [];
     let heightStr = 100 / (numOfSlicedTriggers / 2) + '%';
+
     for (let i = 0; i < numOfSlicedTriggers; i++) {
       arrayOfWidths.push(Math.floor(100 / (numOfSlicedTriggers / 2)));
     }
@@ -125,6 +126,7 @@ class Sequencer extends Component {
     if (!sequencerToRender) {
       return null;
     }
+
     return (
       <SequencerComponent
         sequencerId={this.props.sequencerId}
@@ -149,4 +151,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Sequencer);
+export default connect(mapStateToProps)(SequencerContainer);

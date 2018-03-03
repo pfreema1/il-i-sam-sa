@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Sequencer from './Sequencer';
+import SequencerContainer from './Containers/SequencerContainer';
 
 class Sequencers extends Component {
   constructor(props) {
@@ -25,7 +25,10 @@ class Sequencers extends Component {
     }
     sequencersArr = sequencersArr.map((sequencer, index) => {
       return (
-        <Sequencer key={index} sequencerId={props.sequencersIdArr[index]} />
+        <SequencerContainer
+          key={index}
+          sequencerId={props.sequencersIdArr[index]}
+        />
       );
     });
 
