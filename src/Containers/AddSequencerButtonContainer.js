@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
-import './AddSequencer.css';
+import '../AddSequencer.css';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
+import AddSequencerDialogComponent from '../Components/AddSequencerDialogComponent';
 
-import AddSequencerDialogContainer from './Containers/AddSequencerDialogContainer';
-
-class AddSequencer extends Component {
+class AddSequencerButtonContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -42,12 +41,6 @@ class AddSequencer extends Component {
     });
   };
 
-  handleAddSequencer = () => {
-    this.setState({
-      addSequencerDialogOpen: false
-    });
-  };
-
   handleDialogClose = () => {
     this.setState({
       addSequencerDialogOpen: false
@@ -61,7 +54,7 @@ class AddSequencer extends Component {
           <ContentAdd />{' '}
         </FloatingActionButton>
 
-        <AddSequencerDialogContainer
+        <AddSequencerDialogComponent
           addSequencerDialogOpen={this.state.addSequencerDialogOpen}
           handleDialogClose={this.handleDialogClose}
           menuItemsArr={this.state.menuItemsArr}
@@ -80,4 +73,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(AddSequencer);
+export default connect(mapStateToProps)(AddSequencerButtonContainer);
