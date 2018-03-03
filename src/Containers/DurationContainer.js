@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
-import './Duration.css';
-import MockTrigger from './MockTrigger';
+import './DurationContainer.css';
+import DurationTriggerComponent from '../Components/DurationTriggerComponent';
 
-class Duration extends Component {
+class DurationContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -87,66 +87,26 @@ class Duration extends Component {
     });
   };
 
-  renderSliders = () => {
-    const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
-
-    return (
-      <div>
-        {triggersToRender.map((trigger, index) => {
-          return (
-            <div key={index} className="duration-container">
-              <MockTrigger
-                barStarter={index % 4 === 0 ? true : false}
-                isTriggered={trigger.isTriggered}
-                id={index}
-                isSlicee={isSlicee}
-              />
-
-              <Slider
-                className={
-                  'duration-slider ' +
-                  (trigger.isTriggered ? '' : 'not-triggered')
-                }
-                min={0}
-                max={100}
-                disabled={!trigger.isTriggered}
-                onDragStop={
-                  isSlicee
-                    ? this.handleDragStop.bind(
-                        null,
-                        this.state.durationValAsPercentArr[index],
-                        index
-                      )
-                    : this.handleDragStop.bind(
-                        null,
-                        this.state.durationValAsPercentArr[index],
-                        this.props.triggerBeingEditedId
-                      )
-                }
-                defaultValue={durationValAsPercentArr[index]}
-                onChange={this.handleSliderChange.bind(null, index)}
-                step={1}
-              />
-              <div
-                className={
-                  'duration-percentage-container ' +
-                  (trigger.isTriggered ? '' : 'not-triggered')
-                }
-              >
-                {durationValAsPercentArr[index] + '%'}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   render() {
+    const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
     return (
       <div>
         <h1>Set Trigger Duration</h1>
-        {this.renderSliders()}
+        <div>
+          {triggersToRender.map((trigger, index) => {
+            return (
+              <DurationTriggerComponent
+                index={index}
+                isTriggered={trigger.isTriggered}
+                isSlicee={isSlicee}
+                handleDragStop={this.handleDragStop}
+                durationValAsPercentArr={durationValAsPercentArr}
+                triggerBeingEditedId={this.props.triggerBeingEditedId}
+                handleSliderChange={this.handleSliderChange}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -162,4 +122,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Duration);
+export default connect(mapStateToProps)(DurationContainer);

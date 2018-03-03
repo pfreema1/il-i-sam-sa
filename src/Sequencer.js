@@ -7,7 +7,7 @@ import { Card } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import TriggerEditNote from './TriggerEditNote';
-import Duration from './Duration';
+import DurationContainer from './Containers/DurationContainer';
 import './Sequencer.css';
 import Velocity from './Velocity';
 import Nudge from './Nudge';
@@ -217,7 +217,7 @@ class Sequencer extends Component {
               <Velocity />
             </Tab>
             <Tab label="duration">
-              <Duration />
+              <DurationContainer />
             </Tab>
             <Tab label="Nudge">
               <Nudge />
