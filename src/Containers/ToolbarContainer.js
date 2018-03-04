@@ -10,6 +10,7 @@ import {
 import ModeSelector from './ModeSelector';
 import MetronomeContainer from './MetronomeContainer';
 import PlayControl from './PlayControl';
+import PatternIndicator from './PatternIndicator';
 
 const ToolbarStyleObj = {
   height: '60px'
@@ -38,7 +39,9 @@ class ToolbarContainer extends Component {
           <ToolbarGroup>
             <ModeSelector />
           </ToolbarGroup>
-          <ToolbarGroup>pattern indicator</ToolbarGroup>
+          <ToolbarGroup>
+            <PatternIndicator />
+          </ToolbarGroup>
         </Toolbar>
       </div>
     );

@@ -135,7 +135,22 @@ const initialState = {
     scheduleArray: [null, null, null, null]
   },
   playBackMode: 'pattern',
-  UiMode: 'pattern'
+  UiMode: 'pattern',
+  patternsArr: [
+    {
+      name: 'Pattern 1'
+    },
+    {
+      name: 'Pattern 2'
+    }
+  ],
+  currentPatternIndex: 0
+};
+
+const returnNewEmptyPattern = () => {
+  return {
+    name: 'foofoo'
+  };
 };
 
 //set the transport to repeat
@@ -581,6 +596,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         UiMode: mode
+      };
+    }
+    case 'PATTERN_CHANGED': {
+      const patternIndex = action.patternIndex;
+
+      return {
+        ...state,
+        currentPatternIndex: patternIndex
+      };
+    }
+    case 'PATTERN_ADDED': {
+      let newPatternsArr = state.patternsArr.concat(returnNewEmptyPattern());
+
+      return {
+        ...state,
+        patternsArr: newPatternsArr
       };
     }
     case 'EDITING_TRIGGER': {
