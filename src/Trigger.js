@@ -21,8 +21,9 @@ const backgroundColorSetter = (isTriggered, barStarter) => {
   }
 };
 
+
 class Trigger extends Component {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
 
     const { sequencerId, id, sequencers, parentTriggerId } = props;
