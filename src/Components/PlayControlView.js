@@ -3,12 +3,14 @@ import React from 'react';
 const PlayControlView = ({
   handlePlayButtonClick,
   handleStopButtonClick,
+  handlePlayModeClick,
   isPlaying,
   playMode
 }) => (
   <div className="play-control-wrapper">
     <div className="play-control__song-pattern-select">
       <div
+        onClick={handlePlayModeClick.bind(null, 'song')}
         className={
           'play-control__song-select ' +
           (playMode === 'song' ? 'play-control__play-mode-selected' : '')
@@ -19,6 +21,7 @@ const PlayControlView = ({
       </div>
 
       <div
+        onClick={handlePlayModeClick.bind(null, 'pattern')}
         className={
           'play-control__patttern-select ' +
           (playMode === 'pattern' ? 'play-control__play-mode-selected' : '')

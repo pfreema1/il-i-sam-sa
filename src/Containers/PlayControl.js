@@ -18,11 +18,16 @@ class PlayControl extends Component {
     this.props.dispatch({ type: 'STOP_BUTTON_CLICKED' });
   };
 
+  handlePlayModeClick = playMode => {
+    this.props.dispatch({ type: 'PLAY_MODE_CLICKED', playMode: playMode });
+  };
+
   render() {
     return (
       <PlayControlView
         handlePlayButtonClick={this.handlePlayButtonClick}
         handleStopButtonClick={this.handleStopButtonClick}
+        handlePlayModeClick={this.handlePlayModeClick}
         isPlaying={this.props.isPlaying}
         playMode={this.props.playMode}
       />

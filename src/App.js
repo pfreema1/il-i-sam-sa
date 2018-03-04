@@ -566,6 +566,14 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
+    case 'PLAY_MODE_CLICKED': {
+      const playMode = action.playMode;
+
+      return {
+        ...state,
+        playMode: playMode
+      };
+    }
     case 'EDITING_TRIGGER': {
       return {
         ...state,
