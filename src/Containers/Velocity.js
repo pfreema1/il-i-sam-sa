@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import './Velocity.css';
-import MockTriggerContainer from './Containers/MockTriggerContainer';
+import VelocityTrigger from '../Components/VelocityTrigger';
 
 class Velocity extends Component {
   constructor(props) {
@@ -86,48 +86,16 @@ class Velocity extends Component {
       <div>
         {triggersToRender.map((trigger, index) => {
           return (
-            <div key={index} className="velocity-container">
-              <MockTriggerContainer
-                barStarter={index % 4 === 0 ? true : false}
-                isTriggered={trigger.isTriggered}
-                id={index}
-                isSlicee={isSlicee}
-              />
-
-              <Slider
-                className={
-                  'velocity-slider ' +
-                  (trigger.isTriggered ? '' : 'not-triggered')
-                }
-                min={0}
-                max={100}
-                disabled={!trigger.isTriggered}
-                onDragStop={
-                  isSlicee
-                    ? this.handleDragStop.bind(
-                        null,
-                        this.state.velocityValAsPercentArr[index],
-                        index
-                      )
-                    : this.handleDragStop.bind(
-                        null,
-                        this.state.velocityValAsPercentArr[index],
-                        this.props.triggerBeingEditedId
-                      )
-                }
-                defaultValue={velocityValAsPercentArr[index]}
-                onChange={this.handleSliderChange.bind(null, index)}
-                step={1}
-              />
-              <div
-                className={
-                  'velocity-percentage-container ' +
-                  (trigger.isTriggered ? '' : 'not-triggered')
-                }
-              >
-                {velocityValAsPercentArr[index] + '%'}
-              </div>
-            </div>
+            <VelocityTrigger
+              key={index}
+              index={index}
+              isTriggered={trigger.isTriggered}
+              isSlicee={isSlicee}
+              handleDragStop={this.handleDragStop}
+              velocityValAsPercentArr={this.state.velocityValAsPercentArr}
+              triggerBeingEditedId={this.props.triggerBeingEditedId}
+              handleSliderChange={this.handleSliderChange}
+            />
           );
         })}
       </div>

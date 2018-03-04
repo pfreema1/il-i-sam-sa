@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Velocity from '../Velocity';
+import Velocity from '../Containers/Velocity';
 import TriggerEditNote from '../TriggerEditNote';
 import DurationContainer from '../Containers/DurationContainer';
 import NudgeContainer from '../Containers/NudgeContainer';
