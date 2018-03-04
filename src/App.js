@@ -133,7 +133,8 @@ const initialState = {
   metronome: {
     clickSamplerRef: returnClickSamplerRef(),
     scheduleArray: [null, null, null, null]
-  }
+  },
+  playMode: 'pattern'
 };
 
 //set the transport to repeat
@@ -145,8 +146,12 @@ const handlePlayButtonClick = play => {
   if (play) {
     Tone.Transport.start('+0.1');
   } else {
-    Tone.Transport.stop();
+    Tone.Transport.pause();
   }
+};
+
+const handleStopButtonClick = () => {
+  Tone.Transport.stop();
 };
 
 const returnClearedTrigger = trigger => {
@@ -552,6 +557,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isPlaying: !state.isPlaying
+      };
+    }
+    case 'STOP_BUTTON_CLICKED': {
+      handleStopButtonClick();
+      return {
+        ...state,
+        isPlaying: false
       };
     }
     case 'EDITING_TRIGGER': {
