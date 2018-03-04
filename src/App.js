@@ -134,7 +134,8 @@ const initialState = {
     clickSamplerRef: returnClickSamplerRef(),
     scheduleArray: [null, null, null, null]
   },
-  playMode: 'pattern'
+  playBackMode: 'pattern',
+  UiMode: 'pattern'
 };
 
 //set the transport to repeat
@@ -566,12 +567,20 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
-    case 'PLAY_MODE_CLICKED': {
-      const playMode = action.playMode;
+    case 'PLAYBACK_MODE_CLICKED': {
+      const playBackMode = action.playBackMode;
 
       return {
         ...state,
-        playMode: playMode
+        playBackMode: playBackMode
+      };
+    }
+    case 'MODE_SELECTOR_CLICKED': {
+      const mode = action.mode;
+
+      return {
+        ...state,
+        UiMode: mode
       };
     }
     case 'EDITING_TRIGGER': {

@@ -1,0 +1,25 @@
+.mode-selector-wrapper {
+  width: 275px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  color: black;
+  cursor: pointer;
+}
+
+.mode-selector__option {
+  height: 100%;
+  border: 1px solid black;
+  transition: all 0.5s;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mode-selector__option--selected {
+  background: black;
+  color: white;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import MetronomeComponent from '../Components/MetronomeComponent';
+import MetronomeComponent from '../Components/Toolbar/MetronomeComponent';
 import './MetronomeContainer.css';
 
 class MetronomeContainer extends Component {

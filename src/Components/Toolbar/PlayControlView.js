@@ -3,17 +3,17 @@ import React from 'react';
 const PlayControlView = ({
   handlePlayButtonClick,
   handleStopButtonClick,
-  handlePlayModeClick,
+  handlePlayBackModeClick,
   isPlaying,
-  playMode
+  playBackMode
 }) => (
   <div className="play-control-wrapper">
     <div className="play-control__song-pattern-select">
       <div
-        onClick={handlePlayModeClick.bind(null, 'song')}
+        onClick={handlePlayBackModeClick.bind(null, 'song')}
         className={
           'play-control__song-select ' +
-          (playMode === 'song' ? 'play-control__play-mode-selected' : '')
+          (playBackMode === 'song' ? 'play-control__play-mode-selected' : '')
         }
       >
         <div className="play-control__small-box-select">[]</div>
@@ -21,10 +21,10 @@ const PlayControlView = ({
       </div>
 
       <div
-        onClick={handlePlayModeClick.bind(null, 'pattern')}
+        onClick={handlePlayBackModeClick.bind(null, 'pattern')}
         className={
           'play-control__patttern-select ' +
-          (playMode === 'pattern' ? 'play-control__play-mode-selected' : '')
+          (playBackMode === 'pattern' ? 'play-control__play-mode-selected' : '')
         }
       >
         <div className="play-control__small-box-select">[]</div>

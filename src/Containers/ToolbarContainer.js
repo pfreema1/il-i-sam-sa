@@ -7,7 +7,7 @@ import {
   ToolbarSeparator,
   ToolbarTitle
 } from 'material-ui/Toolbar';
-
+import ModeSelector from './ModeSelector';
 import MetronomeContainer from './MetronomeContainer';
 import PlayControl from './PlayControl';
 
@@ -35,7 +35,9 @@ class ToolbarContainer extends Component {
           <ToolbarGroup>
             <PlayControl />
           </ToolbarGroup>
-          <ToolbarGroup>modeselector</ToolbarGroup>
+          <ToolbarGroup>
+            <ModeSelector />
+          </ToolbarGroup>
           <ToolbarGroup>pattern indicator</ToolbarGroup>
         </Toolbar>
       </div>

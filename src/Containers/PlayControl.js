@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PlayControlView from '../Components/PlayControlView';
+import PlayControlView from '../Components/Toolbar/PlayControlView';
 import './PlayControl.css';
 
 class PlayControl extends Component {
@@ -18,8 +18,11 @@ class PlayControl extends Component {
     this.props.dispatch({ type: 'STOP_BUTTON_CLICKED' });
   };
 
-  handlePlayModeClick = playMode => {
-    this.props.dispatch({ type: 'PLAY_MODE_CLICKED', playMode: playMode });
+  handlePlayBackModeClick = playBackMode => {
+    this.props.dispatch({
+      type: 'PLAYBACK_MODE_CLICKED',
+      playBackMode: playBackMode
+    });
   };
 
   render() {
@@ -27,9 +30,9 @@ class PlayControl extends Component {
       <PlayControlView
         handlePlayButtonClick={this.handlePlayButtonClick}
         handleStopButtonClick={this.handleStopButtonClick}
-        handlePlayModeClick={this.handlePlayModeClick}
+        handlePlayBackModeClick={this.handlePlayBackModeClick}
         isPlaying={this.props.isPlaying}
-        playMode={this.props.playMode}
+        playBackMode={this.props.playBackMode}
       />
     );
   }
@@ -40,7 +43,7 @@ class PlayControl extends Component {
 const mapStateToProps = state => {
   return {
     isPlaying: state.isPlaying,
-    playMode: state.playMode
+    playBackMode: state.playBackMode
   };
 };
 
