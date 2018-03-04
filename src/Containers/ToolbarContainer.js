@@ -7,8 +7,8 @@ import {
   ToolbarSeparator,
   ToolbarTitle
 } from 'material-ui/Toolbar';
-import PlayButton from './PlayButton';
-import MetronomeContainer from './Containers/MetronomeContainer';
+import PlayButton from '../PlayButton';
+import MetronomeContainer from './MetronomeContainer';
 
 const ToolbarStyleObj = {
   height: '60px'

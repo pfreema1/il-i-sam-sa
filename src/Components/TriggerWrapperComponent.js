@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import Trigger from '../Trigger';
+import Trigger from '../Containers/Trigger';
 
 const TriggerWrapperComponent = ({
   sequencerToRender,

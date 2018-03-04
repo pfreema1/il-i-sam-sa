@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import './Trigger.css';
-
-const ButtonContainerStyle = {
-  width: '5vw',
-  height: '100px',
-  borderRadius: '5px'
-};
+import TriggerView from '../Components/TriggerView';
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
@@ -20,7 +15,6 @@ const backgroundColorSetter = (isTriggered, barStarter) => {
     }
   }
 };
-
 
 class Trigger extends Component {
   constructor(props) {
@@ -39,12 +33,6 @@ class Trigger extends Component {
         isTriggered: sequencers[sequencerId].triggers[id].isTriggered
       };
     }
-
-    // this.state = {
-    //   isTriggered: props.isSliced
-    //     ? sequencers[sequencerId].triggers[FOO].slicedTriggers[id].isTriggered
-    //     : sequencers[sequencerId].triggers[id].isTriggered
-    // };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,25 +71,22 @@ class Trigger extends Component {
   render() {
     const { id, isSlicee } = this.props;
 
+    const bgColor = backgroundColorSetter(
+      this.state.isTriggered,
+      this.props.barStarter
+    );
+
     return (
-      <RaisedButton
-        backgroundColor={backgroundColorSetter(
-          this.state.isTriggered,
-          this.props.barStarter
-        )}
-        label=""
-        style={{
-          ...ButtonContainerStyle,
-          width: this.props.width,
-          height: this.props.height,
-          minWidth: '',
-          backgroundColor: 'yellow'
-        }}
-        className={'trigger-button ' + (isSlicee ? 'slicee' : '')}
-        onClick={this.handleTriggerClick.bind(null, id)}
-      >
-        {' '}
-      </RaisedButton>
+      <TriggerView
+        bgColor={bgColor}
+        isTriggered={this.state.isTriggered}
+        barStarter={this.props.barStarter}
+        width={this.props.width}
+        height={this.props.height}
+        isSlicee={isSlicee}
+        handleTriggerClick={this.handleTriggerClick}
+        id={id}
+      />
     );
   }
 }

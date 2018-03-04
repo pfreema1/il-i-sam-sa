@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Trigger from '../Trigger';
+import Trigger from './Trigger';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import '../react-contextmenu.css';
 import './SequencerContainer.css';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SequencerContainer from './Containers/SequencerContainer';
+import SequencerContainer from './SequencerContainer';
 
 class Sequencers extends Component {
   constructor(props) {
