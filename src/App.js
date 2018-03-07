@@ -139,9 +139,6 @@ const initialState = {
   patternsArr: [
     {
       name: 'Pattern 1'
-    },
-    {
-      name: 'Pattern 2'
     }
   ],
   currentPatternIndex: 0
@@ -607,11 +604,10 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PATTERN_ADDED': {
-      let newPatternsArr = state.patternsArr.concat(returnNewEmptyPattern());
+      // let newPatternsArr = state.patternsArr.concat(returnNewEmptyPattern());
 
       return {
-        ...state,
-        patternsArr: newPatternsArr
+        ...state
       };
     }
     case 'EDITING_TRIGGER': {
