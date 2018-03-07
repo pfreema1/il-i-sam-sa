@@ -32,7 +32,7 @@ class PatternIndicator extends React.Component {
   };
 
   handleNewPatternClick = () => {
-    // this.props.dispatch({ type: 'PATTERN_ADDED' });
+    this.props.dispatch({ type: 'BLANK_PATTERN_ADDED' });
 
     this.handleDialogClose();
   };
@@ -51,6 +51,10 @@ class PatternIndicator extends React.Component {
   };
 
   handlePopoverPatternSelect = patternName => {
+    this.props.dispatch({
+      type: 'COPIED_PATTERN_ADDED',
+      patternToCopy: patternName
+    });
     this.handlePopoverClose();
     this.handleDialogClose();
   };

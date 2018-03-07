@@ -603,9 +603,14 @@ const reducer = (state = initialState, action) => {
         currentPatternIndex: patternIndex
       };
     }
-    case 'PATTERN_ADDED': {
+    case 'BLANK_PATTERN_ADDED': {
       // let newPatternsArr = state.patternsArr.concat(returnNewEmptyPattern());
 
+      return {
+        ...state
+      };
+    }
+    case 'COPIED_PATTERN_ADDED': {
       return {
         ...state
       };
