@@ -158,9 +158,20 @@ const initialState = {
 };
 
 //set the transport to repeat
-Tone.Transport.loopEnd = '1m';
+// Tone.Transport.loopEnd = '1m';
+Tone.Transport.loopStart = '0i';
+Tone.Transport.loopEnd = '768i';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 120;
+
+const setTransportLoopStartEnd = startTimeValue => {
+  Tone.Transport.loopStart = startTimeValue + 'i';
+  Tone.Transport.loopEnd = startTimeValue + 768 + 'i';
+};
+
+const setTransportPositionToLoopStart = startTimeValue => {
+  Tone.Transport.position = startTimeValue + 'i';
+};
 
 const handlePlayButtonClick = play => {
   if (play) {
@@ -170,8 +181,16 @@ const handlePlayButtonClick = play => {
   }
 };
 
-const handleStopButtonClick = () => {
-  Tone.Transport.stop();
+const returnStartTimeForCurrentPattern = currentPatternIndex => {
+  return currentPatternIndex * 768;
+};
+
+const handleStopButtonClick = currentPatternIndex => {
+  Tone.Transport.pause();
+
+  setTransportPositionToLoopStart(
+    returnStartTimeForCurrentPattern(currentPatternIndex)
+  );
 };
 
 const returnClearedTrigger = trigger => {
@@ -580,7 +599,8 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'STOP_BUTTON_CLICKED': {
-      handleStopButtonClick();
+      handleStopButtonClick(state.currentPatternIndex);
+
       return {
         ...state,
         isPlaying: false
@@ -613,25 +633,20 @@ const reducer = (state = initialState, action) => {
     case 'BLANK_PATTERN_ADDED': {
       const startTimeValue = state.patternsArr.length * 768;
       const startIdNum = state.patternsArr.length * 16;
-      // let arrayOfNewTriggers = [];
       let arrayOfNewSequencers = [];
 
-      //create array of new triggers
+      //create array of new sequencers
       for (let sequencer in state.sequencers) {
         let emptyTriggers = returnTriggers();
 
         emptyTriggers = setPatternTimingValues(startTimeValue, emptyTriggers);
+
         emptyTriggers = setNewTriggersIds(startIdNum, emptyTriggers);
 
-        let currentTriggers = state.sequencers[sequencer].triggers.map(
-          trigger => ({
-            ...trigger
-          })
+        // concat new empty triggers to current triggers
+        let currentTriggers = state.sequencers[sequencer].triggers.concat(
+          emptyTriggers
         );
-
-        currentTriggers = currentTriggers.concat(emptyTriggers);
-
-        // arrayOfNewTriggers = arrayOfNewTriggers.concat([currentTriggers]);
 
         //create copy of current sequencer
         let tempSequencer = { ...state.sequencers[sequencer] };
@@ -649,24 +664,31 @@ const reducer = (state = initialState, action) => {
       }
 
       //change Tone.Transport loop start and end
-      Tone.Transport.loopStart = startTimeValue + 'i';
+      setTransportLoopStartEnd(startTimeValue);
+
+      setTransportPositionToLoopStart(startTimeValue);
 
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
-        'Pattern ' + state.patternsArr.length + 1
+        'Pattern ' + (state.patternsArr.length + 1)
       );
 
       //update state.currentPatternIndex
       let newCurrentPatternIndex = newPatternsArr.length - 1;
 
+      //stop playback
+      handleStopButtonClick(newCurrentPatternIndex);
+
       //not sure about these: (case: user adds pattern while in different mode, or while playback is playing)
       //-change playBackMode to 'pattern'
       //-change UiMode to 'pattern'
-      //-stop playback
 
       return {
         ...state,
-        sequencers: newSequencersObj
+        sequencers: newSequencersObj,
+        patternsArr: newPatternsArr,
+        currentPatternIndex: newCurrentPatternIndex,
+        isPlaying: false
       };
     }
     case 'COPIED_PATTERN_ADDED': {
