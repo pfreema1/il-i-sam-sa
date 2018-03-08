@@ -625,9 +625,18 @@ const reducer = (state = initialState, action) => {
     case 'PATTERN_CHANGED': {
       const patternIndex = action.patternIndex;
 
+      //stop playback
+      handleStopButtonClick(patternIndex);
+
+      //change Tone.Transport loop start and end
+      let startTimeValue = returnStartTimeForCurrentPattern(patternIndex);
+      setTransportLoopStartEnd(startTimeValue);
+      setTransportPositionToLoopStart(startTimeValue);
+
       return {
         ...state,
-        currentPatternIndex: patternIndex
+        currentPatternIndex: patternIndex,
+        isPlaying: false
       };
     }
     case 'BLANK_PATTERN_ADDED': {
