@@ -652,6 +652,8 @@ const reducer = (state = initialState, action) => {
     case 'SONG_UPDATED': {
       const songListIdArr = action.listIdArr;
 
+      console.log(Tone.Timeline);
+
       return {
         ...state,
         songArr: songListIdArr
