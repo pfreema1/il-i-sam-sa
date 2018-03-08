@@ -159,7 +159,8 @@ const initialState = {
   UiMode: 'pattern',
   patternsArr: ['Pattern 1'],
   currentPatternIndex: 0,
-  songArr: []
+  songArr: [],
+  returnSongPatternStartTimesArr: []
 };
 
 //set the transport to repeat
@@ -186,6 +187,21 @@ const handlePlayButtonClick = play => {
   }
 };
 const handleSongModePlayButtonClick = () => {};
+
+const returnSongPatternStartTimesArr = (songListIdArr, patternsArr) => {
+  return songListIdArr.map(id => {
+    //find out which index 'id' is in patternsArr
+    let index = patternsArr.reduce((prevVal, pattern, index) => {
+      if (pattern === id) {
+        return index;
+      } else {
+        return prevVal;
+      }
+    }, 0);
+
+    return returnStartTimeForCurrentPattern(index);
+  });
+};
 
 const returnStartTimeForCurrentPattern = currentPatternIndex => {
   return currentPatternIndex * 768;
@@ -651,12 +667,31 @@ const reducer = (state = initialState, action) => {
     }
     case 'SONG_UPDATED': {
       const songListIdArr = action.listIdArr;
+      const songPatternStartTimesArr = returnSongPatternStartTimesArr(
+        songListIdArr,
+        state.patternsArr
+      );
 
-      console.log(Tone.Timeline);
+      /*****************************/
+      for (let i = 0; i < songPatternStartTimesArr.length; i++) {
+        let patternStartTime = songPatternStartTimesArr[i];
+        let patternEndTime = patternStartTime + 768;
+        //for each pattern in song list
+        //get all the events in timeline with time >= patternStartTime and < patternEndTime
+        console.log(Tone.Timeline());
+        // let arrayOfTransportEvents = Tone.Transport._timeline.map(event => {
+        //   if (event.time >= patternStartTime && event.time <= patternEndTime) {
+        //     return event;
+        //   }
+        // });
+      }
+
+      /*****************************/
 
       return {
         ...state,
-        songArr: songListIdArr
+        songArr: songListIdArr,
+        songPatternStartTimesArr: songPatternStartTimesArr
       };
     }
     case 'BLANK_PATTERN_ADDED': {
