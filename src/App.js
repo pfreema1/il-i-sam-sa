@@ -644,6 +644,14 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
+    case 'SONG_UPDATED': {
+      const songListIdArr = action.listIdArr;
+
+      return {
+        ...state,
+        songArr: songListIdArr
+      };
+    }
     case 'BLANK_PATTERN_ADDED': {
       const startTimeValue = state.patternsArr.length * 768;
       const startIdNum = state.patternsArr.length * 16;

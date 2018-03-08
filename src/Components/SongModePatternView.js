@@ -10,7 +10,11 @@ const styling = {
 };
 
 const SongModePatternView = ({ patternName }) => {
-  return <div style={styling}>{patternName}</div>;
+  return (
+    <div id={patternName} style={styling}>
+      {patternName}
+    </div>
+  );
 };
 
 export default SongModePatternView;

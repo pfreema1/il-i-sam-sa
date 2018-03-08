@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SongModePatternView from '../Components/SongModePatternView';
+import ReactSortable from 'react-sortablejs';
 
 const styling = {
   display: 'flex',
@@ -15,11 +16,22 @@ class SongModePatternSelectContainer extends Component {
   render() {
     const { patternsArr } = this.props;
     return (
-      <div style={styling}>
+      <ReactSortable
+        options={{
+          animation: 150,
+          sort: false,
+          group: {
+            name: 'clone1',
+            pull: 'clone',
+            put: false
+          }
+        }}
+        style={styling}
+      >
         {patternsArr.map((pattern, index) => (
           <SongModePatternView key={index} patternName={pattern} />
         ))}
-      </div>
+      </ReactSortable>
     );
   }
 }
