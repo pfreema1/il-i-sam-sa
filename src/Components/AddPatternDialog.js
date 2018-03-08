@@ -49,10 +49,10 @@ const AddPatternDialog = ({
       <Menu>
         {patternsArr.map((item, index) => (
           <MenuItem
-            onClick={handlePopoverPatternSelect.bind(null, item.name)}
+            onClick={handlePopoverPatternSelect.bind(null, item)}
             key={index}
             value={index}
-            primaryText={item.name}
+            primaryText={item}
           />
         ))}
       </Menu>

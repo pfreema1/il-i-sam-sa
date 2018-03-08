@@ -40,6 +40,23 @@ const returnTriggers = () => {
   return tempTriggersArr;
 };
 
+const setPatternTimingValues = (startTimeValue, triggers) => {
+  triggers = triggers.map(trigger => {
+    trigger.timingValue += startTimeValue;
+    return trigger;
+  });
+  return triggers;
+};
+
+const setNewTriggersIds = (startIdNum, triggers) => {
+  triggers = triggers.map((trigger, index) => {
+    trigger.id = startIdNum + index;
+    return trigger;
+  });
+
+  return triggers;
+};
+
 const returnSingleSlicedTrigger = () => {
   return {
     id: null,
@@ -136,18 +153,8 @@ const initialState = {
   },
   playBackMode: 'pattern',
   UiMode: 'pattern',
-  patternsArr: [
-    {
-      name: 'Pattern 1'
-    }
-  ],
+  patternsArr: ['Pattern 1'],
   currentPatternIndex: 0
-};
-
-const returnNewEmptyPattern = () => {
-  return {
-    name: 'foofoo'
-  };
 };
 
 //set the transport to repeat
@@ -604,10 +611,62 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'BLANK_PATTERN_ADDED': {
-      // let newPatternsArr = state.patternsArr.concat(returnNewEmptyPattern());
+      const startTimeValue = state.patternsArr.length * 768;
+      const startIdNum = state.patternsArr.length * 16;
+      // let arrayOfNewTriggers = [];
+      let arrayOfNewSequencers = [];
+
+      //create array of new triggers
+      for (let sequencer in state.sequencers) {
+        let emptyTriggers = returnTriggers();
+
+        emptyTriggers = setPatternTimingValues(startTimeValue, emptyTriggers);
+        emptyTriggers = setNewTriggersIds(startIdNum, emptyTriggers);
+
+        let currentTriggers = state.sequencers[sequencer].triggers.map(
+          trigger => ({
+            ...trigger
+          })
+        );
+
+        currentTriggers = currentTriggers.concat(emptyTriggers);
+
+        // arrayOfNewTriggers = arrayOfNewTriggers.concat([currentTriggers]);
+
+        //create copy of current sequencer
+        let tempSequencer = { ...state.sequencers[sequencer] };
+
+        tempSequencer.triggers = currentTriggers;
+
+        arrayOfNewSequencers = arrayOfNewSequencers.concat(tempSequencer);
+      }
+
+      //create new sequencers object
+      let newSequencersObj = {};
+      for (let i = 0; i < arrayOfNewSequencers.length; i++) {
+        let sequencerKey = state.sequencersIdArr[i];
+        newSequencersObj[sequencerKey] = arrayOfNewSequencers[i];
+      }
+
+      //change Tone.Transport loop start and end
+      Tone.Transport.loopStart = startTimeValue + 'i';
+
+      //update state.patternsArr
+      let newPatternsArr = state.patternsArr.concat(
+        'Pattern ' + state.patternsArr.length + 1
+      );
+
+      //update state.currentPatternIndex
+      let newCurrentPatternIndex = newPatternsArr.length - 1;
+
+      //not sure about these: (case: user adds pattern while in different mode, or while playback is playing)
+      //-change playBackMode to 'pattern'
+      //-change UiMode to 'pattern'
+      //-stop playback
 
       return {
-        ...state
+        ...state,
+        sequencers: newSequencersObj
       };
     }
     case 'COPIED_PATTERN_ADDED': {

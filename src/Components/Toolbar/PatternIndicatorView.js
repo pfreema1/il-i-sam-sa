@@ -16,7 +16,7 @@ const PatternIndicatorView = ({
       onChange={handlePatternChange}
     >
       {patternsArr.map((item, index) => {
-        return <MenuItem key={index} value={index} primaryText={item.name} />;
+        return <MenuItem key={index} value={index} primaryText={item} />;
       })}
     </DropDownMenu>
     <div
