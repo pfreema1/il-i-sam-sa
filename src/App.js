@@ -16,9 +16,10 @@ import highClick from './samples/clickHigh.wav';
 import lowClick from './samples/click.wav';
 import AddSequencerButtonContainer from './Containers/AddSequencerButtonContainer';
 
-const returnTriggers = () => {
+const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
-  for (let i = 0; i < 16; i++) {
+
+  for (let i = 0; i < amount; i++) {
     let tempObj = {
       id: null,
       timingValue: i * 48,
@@ -94,6 +95,8 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
 
   let synthComponentRefObj = returnSynthComponentRefObj(sampleRef);
 
+  let amountOfTriggers = state.patternsArr.length * 16;
+
   sequencers[sequencerId] = {
     synthesizerRef: synthComponentRefObj.synthRef,
     volumeRef: synthComponentRefObj.volume,
@@ -103,7 +106,7 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
     soloRef: synthComponentRefObj.solo,
     pitchRef: synthComponentRefObj.pitch,
     pitchVal: synthComponentRefObj.pitch.pitch,
-    triggers: returnTriggers(),
+    triggers: returnTriggers(amountOfTriggers),
     isMuted: false,
     isSoloed: false
   };
