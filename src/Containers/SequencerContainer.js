@@ -108,6 +108,15 @@ class SequencerContainer extends Component {
     );
   };
 
+  returnTriggersToRender = sequencerToRender => {
+    let triggerStartIndex = this.props.currentPatternIndex * 16;
+    let triggerEndIndex = triggerStartIndex + 16;
+
+    return sequencerToRender.triggers.filter(trigger => {
+      return trigger.id >= triggerStartIndex && trigger.id < triggerEndIndex;
+    });
+  };
+
   render() {
     let sequencerToRender = this.props.sequencers[this.props.sequencerId];
 
@@ -126,6 +135,8 @@ class SequencerContainer extends Component {
         handleDialogClose={this.handleDialogClose}
         menuItemClicked={this.state.menuItemClicked}
         returnSlicedTriggers={this.returnSlicedTriggers}
+        currentPatternIndex={this.props.currentPatternIndex}
+        triggersToRender={this.returnTriggersToRender(sequencerToRender)}
       />
     );
   }
@@ -135,7 +146,8 @@ class SequencerContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    sequencers: state.sequencers
+    sequencers: state.sequencers,
+    currentPatternIndex: state.currentPatternIndex
   };
 };
 

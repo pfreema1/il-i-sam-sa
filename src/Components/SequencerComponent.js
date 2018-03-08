@@ -27,7 +27,8 @@ const SequencerComponent = ({
   handleUnSliceMenuItemClick,
   isEditingTrigger,
   handleDialogClose,
-  menuItemClicked
+  menuItemClicked,
+  triggersToRender
 }) => (
   <Card
     className="sequencer-card"
@@ -45,6 +46,7 @@ const SequencerComponent = ({
           sequencerToRender={sequencerToRender}
           returnSlicedTriggers={returnSlicedTriggers}
           sequencerId={sequencerId}
+          triggersToRender={triggersToRender}
         />
       </div>
     </VelocityComponent>
