@@ -15,6 +15,7 @@ import Sequencers from './Containers/Sequencers';
 import highClick from './samples/clickHigh.wav';
 import lowClick from './samples/click.wav';
 import AddSequencerButtonContainer from './Containers/AddSequencerButtonContainer';
+import SongModeContainer from './Containers/SongModeContainer';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -157,7 +158,8 @@ const initialState = {
   playBackMode: 'pattern',
   UiMode: 'pattern',
   patternsArr: ['Pattern 1'],
-  currentPatternIndex: 0
+  currentPatternIndex: 0,
+  songArr: []
 };
 
 //set the transport to repeat
@@ -1291,6 +1293,8 @@ class App extends Component {
             <Sequencers />
 
             <AddSequencerButtonContainer />
+
+            <SongModeContainer />
           </div>
         </MuiThemeProvider>
       </Provider>
