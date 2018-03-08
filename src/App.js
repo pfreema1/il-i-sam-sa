@@ -185,6 +185,7 @@ const handlePlayButtonClick = play => {
     Tone.Transport.pause();
   }
 };
+const handleSongModePlayButtonClick = () => {};
 
 const returnStartTimeForCurrentPattern = currentPatternIndex => {
   return currentPatternIndex * 768;
@@ -597,7 +598,11 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PLAY_BUTTON_CLICKED': {
-      handlePlayButtonClick(!state.isPlaying);
+      if (state.playBackMode === 'pattern') {
+        handlePlayButtonClick(!state.isPlaying);
+      } else if (state.playBackMode === 'song') {
+        handleSongModePlayButtonClick();
+      }
       return {
         ...state,
         isPlaying: !state.isPlaying
