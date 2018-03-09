@@ -170,6 +170,15 @@ Tone.Transport.loopEnd = '768i';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 120;
 
+/*****************************/
+
+const myLoop = new Tone.Loop(() => {
+  console.log('Tone.Transport.ticks:  ', Tone.Transport.ticks);
+  console.log('Tone.Transport.progress:  ', Tone.Transport.progress);
+}, '4n').start(0);
+
+/*****************************/
+
 const setTransportLoopStartEnd = startTimeValue => {
   Tone.Transport.loopStart = startTimeValue + 'i';
   Tone.Transport.loopEnd = startTimeValue + 768 + 'i';
@@ -191,23 +200,33 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
     let startTime = songPatternStartTimesArr[i];
     let scheduleTime = i * 768;
 
-    Tone.Transport.schedule(time => {
-      Tone.Transport.position = startTime + 'i';
-      // setTransportLoopStartEnd(startTime);
-      console.log('setting position to:  ', startTime);
-      console.log('scheduleTime:  ', scheduleTime);
-      console.log('Tone.Transport.ticks:  ', Tone.Transport.ticks);
-    }, scheduleTime + 'i');
+    // Tone.Transport.schedule(time => {
+    //   Tone.Transport.position = startTime + 'i';
+
+    // }, scheduleTime + 'i');
   }
+
+  let index = 0;
+
+  const myDoop = new Tone.Loop(() => {
+    console.log('index: ', index);
+
+    Tone.Transport.position = songPatternStartTimesArr[index] + 'i';
+
+    index++;
+    if (index >= songPatternStartTimesArr.length) {
+      index = 0;
+    }
+  }, '1m').start(0);
 
   //set loop to play entire song
   Tone.Transport.loopStart = '0i';
   Tone.Transport.loopEnd = songPatternStartTimesArr.length * 768 + 'i';
 
-  Tone.Transport.loop = false;
+  Tone.Transport.loop = true;
 
   //set position at beginning
-  Tone.Transport.position = '0i';
+  // Tone.Transport.position = '0i';
   Tone.Transport.start('+0.1');
 };
 
