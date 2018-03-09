@@ -170,15 +170,6 @@ Tone.Transport.loopEnd = '768i';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 120;
 
-/*****************************/
-
-const myLoop = new Tone.Loop(() => {
-  console.log('Tone.Transport.ticks:  ', Tone.Transport.ticks);
-  console.log('Tone.Transport.progress:  ', Tone.Transport.progress);
-}, '4n').start(0);
-
-/*****************************/
-
 const setTransportLoopStartEnd = startTimeValue => {
   Tone.Transport.loopStart = startTimeValue + 'i';
   Tone.Transport.loopEnd = startTimeValue + 768 + 'i';
@@ -196,22 +187,19 @@ const handlePlayButtonClick = play => {
   }
 };
 const handleSongModePlayButtonClick = songPatternStartTimesArr => {
-  for (let i = 0; i < songPatternStartTimesArr.length; i++) {
-    let startTime = songPatternStartTimesArr[i];
-    let scheduleTime = i * 768;
-
-    // Tone.Transport.schedule(time => {
-    //   Tone.Transport.position = startTime + 'i';
-
-    // }, scheduleTime + 'i');
-  }
-
   let index = 0;
+  Tone.Transport.loop = false;
 
-  const myDoop = new Tone.Loop(() => {
+  const myLoop = new Tone.Loop(() => {
     console.log('index: ', index);
+    console.log('moving to start time:  ', songPatternStartTimesArr[index]);
+    console.log('Tone.Transport.position before:  ', Tone.Transport.position);
+    console.log('Tone.Transport.ticks before:  ', Tone.Transport.ticks);
 
     Tone.Transport.position = songPatternStartTimesArr[index] + 'i';
+
+    console.log('Tone.Transport.position after:  ', Tone.Transport.position);
+    console.log('Tone.Transport.ticks after:  ', Tone.Transport.ticks);
 
     index++;
     if (index >= songPatternStartTimesArr.length) {
@@ -220,10 +208,8 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
   }, '1m').start(0);
 
   //set loop to play entire song
-  Tone.Transport.loopStart = '0i';
-  Tone.Transport.loopEnd = songPatternStartTimesArr.length * 768 + 'i';
-
-  Tone.Transport.loop = true;
+  // Tone.Transport.loopStart = '0i';
+  // Tone.Transport.loopEnd = songPatternStartTimesArr.length * 768 + 'i';
 
   //set position at beginning
   // Tone.Transport.position = '0i';
@@ -559,6 +545,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+
     case 'PARENT_TRIGGER_CLICKED': {
       const { triggerId, sequencerId } = action;
 
