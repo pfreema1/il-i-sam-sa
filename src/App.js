@@ -186,7 +186,30 @@ const handlePlayButtonClick = play => {
     Tone.Transport.pause();
   }
 };
-const handleSongModePlayButtonClick = () => {};
+const handleSongModePlayButtonClick = songPatternStartTimesArr => {
+  for (let i = 0; i < songPatternStartTimesArr.length; i++) {
+    let startTime = songPatternStartTimesArr[i];
+    let scheduleTime = i * 768;
+
+    Tone.Transport.schedule(time => {
+      Tone.Transport.position = startTime + 'i';
+      // setTransportLoopStartEnd(startTime);
+      console.log('setting position to:  ', startTime);
+      console.log('scheduleTime:  ', scheduleTime);
+      console.log('Tone.Transport.ticks:  ', Tone.Transport.ticks);
+    }, scheduleTime + 'i');
+  }
+
+  //set loop to play entire song
+  Tone.Transport.loopStart = '0i';
+  Tone.Transport.loopEnd = songPatternStartTimesArr.length * 768 + 'i';
+
+  Tone.Transport.loop = false;
+
+  //set position at beginning
+  Tone.Transport.position = '0i';
+  Tone.Transport.start('+0.1');
+};
 
 const returnSongPatternStartTimesArr = (songListIdArr, patternsArr) => {
   return songListIdArr.map(id => {
@@ -617,7 +640,7 @@ const reducer = (state = initialState, action) => {
       if (state.playBackMode === 'pattern') {
         handlePlayButtonClick(!state.isPlaying);
       } else if (state.playBackMode === 'song') {
-        handleSongModePlayButtonClick();
+        handleSongModePlayButtonClick(state.songPatternStartTimesArr);
       }
       return {
         ...state,
@@ -671,22 +694,6 @@ const reducer = (state = initialState, action) => {
         songListIdArr,
         state.patternsArr
       );
-
-      /*****************************/
-      for (let i = 0; i < songPatternStartTimesArr.length; i++) {
-        let patternStartTime = songPatternStartTimesArr[i];
-        let patternEndTime = patternStartTime + 768;
-        //for each pattern in song list
-        //get all the events in timeline with time >= patternStartTime and < patternEndTime
-        console.log(Tone.Timeline());
-        // let arrayOfTransportEvents = Tone.Transport._timeline.map(event => {
-        //   if (event.time >= patternStartTime && event.time <= patternEndTime) {
-        //     return event;
-        //   }
-        // });
-      }
-
-      /*****************************/
 
       return {
         ...state,
