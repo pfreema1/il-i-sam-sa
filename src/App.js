@@ -194,13 +194,15 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
   const myLoop = new Tone.Loop(() => {
     console.log('index: ', index);
     console.log('moving to start time:  ', songPatternStartTimesArr[index]);
-    console.log('Tone.Transport.position before:  ', Tone.Transport.position);
+
     console.log('Tone.Transport.ticks before:  ', Tone.Transport.ticks);
 
     Tone.Transport.position = songPatternStartTimesArr[index] + 'i';
 
-    console.log('Tone.Transport.position after:  ', Tone.Transport.position);
     console.log('Tone.Transport.ticks after:  ', Tone.Transport.ticks);
+
+    Tone.Transport.stop();
+    Tone.Transport.start('+0.1');
 
     index++;
     if (index >= songPatternStartTimesArr.length) {
@@ -208,12 +210,6 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
     }
   }, '1m').start(0);
 
-  //set loop to play entire song
-  // Tone.Transport.loopStart = '0i';
-  // Tone.Transport.loopEnd = songPatternStartTimesArr.length * 768 + 'i';
-
-  //set position at beginning
-  // Tone.Transport.position = '0i';
   Tone.Transport.start('+0.1');
 };
 

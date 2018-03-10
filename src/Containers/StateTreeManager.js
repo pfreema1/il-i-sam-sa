@@ -75,7 +75,7 @@ class StateTreeManager extends Component {
       index++;
 
       console.log('interval run!');
-    }, 200);
+    }, 50);
   };
 
   render() {
