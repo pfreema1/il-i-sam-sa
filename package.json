@@ -14,6 +14,7 @@
     "react-addons-update": "^15.6.2",
     "react-contextmenu": "^2.9.2",
     "react-dom": "^16.2.0",
+    "react-localforage": "^1.0.1",
     "react-motion": "^0.5.2",
     "react-redux": "^5.0.6",
     "react-scripts": "1.1.1",

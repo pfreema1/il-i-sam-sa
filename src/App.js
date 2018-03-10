@@ -16,6 +16,7 @@ import highClick from './samples/clickHigh.wav';
 import lowClick from './samples/click.wav';
 import AddSequencerButtonContainer from './Containers/AddSequencerButtonContainer';
 import SongModeContainer from './Containers/SongModeContainer';
+import StateTreeManager from './Containers/StateTreeManager';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -545,7 +546,13 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+    case 'LOAD_STATE': {
+      let { stateObj } = action;
 
+      return {
+        ...stateObj
+      };
+    }
     case 'PARENT_TRIGGER_CLICKED': {
       const { triggerId, sequencerId } = action;
 
@@ -1356,6 +1363,8 @@ class App extends Component {
             <Sequencers />
 
             <AddSequencerButtonContainer />
+
+            <StateTreeManager />
 
             <SongModeContainer />
           </div>
