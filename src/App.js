@@ -546,13 +546,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case 'LOAD_STATE': {
-      let { stateObj } = action;
 
-      return {
-        ...stateObj
-      };
-    }
     case 'PARENT_TRIGGER_CLICKED': {
       const { triggerId, sequencerId } = action;
 

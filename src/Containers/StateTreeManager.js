@@ -26,67 +26,64 @@ class StateTreeManager extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      saveState: false,
-      loadState: false
-    };
+    this.actionsArr = [
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 0, sequencerId: 'kick1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 4, sequencerId: 'kick1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 8, sequencerId: 'kick1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 12, sequencerId: 'kick1' },
+      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 16, sequencerId: 'snare1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 20, sequencerId: 'snare1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 24, sequencerId: 'snare1' },
+      { type: 'PARENT_TRIGGER_CLICKED', triggerId: 28, sequencerId: 'snare1' },
+      { type: 'BLANK_PATTERN_ADDED' },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 32,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 36,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 40,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 44,
+        sequencerId: 'closedHiHat1'
+      }
+    ];
   }
 
-  componentDidMount() {
-    console.log('fooooo');
-  }
-
-  handleSaveStateClick = () => {
-    let objStr = JSON.stringify(this.props.state);
-
-    setTimeout(() => {
-      this.setState({ saveState: true, stateString: objStr });
-
-      // console.log('objStr:  ', objStr);
-    }, 3000);
-  };
+  handleSaveStateClick = () => {};
 
   handleLoadStateClick = () => {
-    this.setState({ loadState: true });
-  };
+    //run these dispatches every ~1 second
+    let index = 0;
+    let intervalFn = setInterval(() => {
+      if (index < this.actionsArr.length) {
+        this.props.dispatch(this.actionsArr[index]);
+      } else {
+        clearInterval(intervalFn);
+      }
 
-  stateLoaded = state => {
-    let stateObj = JSON.parse(state);
+      index++;
 
-    setTimeout(() => {
-      this.setState({ loadState: false });
-      this.props.dispatch({ type: 'LOAD_STATE', stateObj });
-    }, 3000);
+      console.log('interval run!');
+    }, 200);
   };
 
   render() {
-    let { saveState, loadState, stateString } = this.state;
-    let { state } = this.props;
-
     return (
       <div style={wrapperStyling}>
         <div onClick={this.handleSaveStateClick} style={saveStateStyling}>
           SAVE STATE
         </div>
-
-        {saveState && (
-          <Forage.SetItem itemKey={'state'} itemValue={stateString} />
-        )}
-
-        {loadState && (
-          <Forage.GetItem
-            itemKey="state"
-            render={({ inProgress, value, error }) => {
-              return (
-                <div>
-                  {error && <div>{error.message}</div>}
-                  {inProgress && <progress />}
-                  {value && this.stateLoaded(value)}
-                </div>
-              );
-            }}
-          />
-        )}
 
         <div onClick={this.handleLoadStateClick} style={loadStateStyling}>
           LOAD STATE
