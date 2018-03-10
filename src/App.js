@@ -194,6 +194,7 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
   const myLoop = new Tone.Loop(() => {
     console.log('index: ', index);
     console.log('moving to start time:  ', songPatternStartTimesArr[index]);
+    Tone.Transport.stop();
 
     console.log('Tone.Transport.ticks before:  ', Tone.Transport.ticks);
 
@@ -201,8 +202,7 @@ const handleSongModePlayButtonClick = songPatternStartTimesArr => {
 
     console.log('Tone.Transport.ticks after:  ', Tone.Transport.ticks);
 
-    Tone.Transport.stop();
-    Tone.Transport.start('+0.1');
+    // Tone.Transport.start('+0.1');
 
     index++;
     if (index >= songPatternStartTimesArr.length) {
