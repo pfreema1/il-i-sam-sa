@@ -142,6 +142,32 @@ const returnNewMetronomeScheduleIdArr = (scheduleArray, clickSamplerRef) => {
   });
 };
 
+// const partCallbackFn = (time, note, synthRef, duration, velocity) => {
+//   synthRef.triggerAttackRelease(note, duration, time, velocity);
+// };
+
+// const returnNewTonePart = () => {
+//   return new Tone.Part(partCallbackFn).start(0);
+// };
+
+const returnPatternTrigger = (
+  note,
+  duration,
+  time,
+  velocity,
+  synthesizerRef
+) => {
+  let patternTrigger = {};
+
+  patternTrigger.note = note;
+  patternTrigger.duration = duration;
+  patternTrigger.time = time;
+  patternTrigger.velocity = velocity;
+  patternTrigger.synthesizerRef = synthesizerRef;
+
+  return patternTrigger;
+};
+
 const initialState = {
   isEditingTrigger: false,
   triggerBeingEditedId: null,
@@ -162,6 +188,12 @@ const initialState = {
   currentPatternIndex: 0,
   songArr: [],
   returnSongPatternStartTimesArr: []
+};
+
+var GLOBAL_PATTERN_TRIGGERS = [[]];
+
+const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
+  GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].push(patternTrigger);
 };
 
 //set the transport to repeat
@@ -255,27 +287,33 @@ const returnSetTrigger = (
   note = 'C2',
   duration = '192i',
   velocity = 1,
-  isSample
+  isSample,
+  state
 ) => {
   let iValue = trigger.timingValue + trigger.nudgeValue;
 
   trigger.isTriggered = true;
 
-  if (isSample) {
-    trigger.scheduleId = Tone.Transport.schedule(time => {
-      synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
-    }, iValue + 'i');
-  } else {
-    // trigger.scheduleId = Tone.Transport.schedule(time => {
-    //   synthesizerRef.triggerAttackRelease(
-    //     trigger.note,
-    //     duration,
-    //     time,
-    //     trigger.velocity
-    //   );
-    // }, iValue + 'i');
-    // trigger.note = note;
-  }
+  // if (isSample) {
+  //   trigger.scheduleId = Tone.Transport.schedule(time => {
+  //     synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
+  //   }, iValue + 'i');
+  // }
+
+  trigger.scheduleId = new Tone.Event(time => {
+    synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
+  });
+
+  // trigger.scheduleId.start(iValue + 'i');
+
+  let patternTrigger = returnPatternTrigger(
+    note,
+    duration,
+    iValue,
+    velocity,
+    synthesizerRef
+  );
+  addPatternTriggerToArr(patternTrigger, state.currentPatternIndex);
 
   //set triggers' attributes
   trigger.note = note;
@@ -348,7 +386,7 @@ const returnArrayOfCurrentlyTriggered = parentTrigger => {
   }
 };
 
-const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
+const returnHandledSampleTrigger = (trigger, synthesizerRef, state) => {
   if (trigger.isTriggered) {
     trigger = returnClearedTrigger(trigger);
   } else {
@@ -358,7 +396,8 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
       'C2',
       trigger.duration,
       trigger.velocity,
-      true
+      true,
+      state
     );
   }
 
@@ -368,7 +407,8 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef) => {
 const retriggerScheduledTriggers = (
   currentlyTriggeredTriggersObjArr,
   tempSlicedTrigger,
-  synthesizerRef
+  synthesizerRef,
+  state
 ) => {
   for (let i = 0; i < currentlyTriggeredTriggersObjArr.length; i++) {
     if (
@@ -385,7 +425,8 @@ const retriggerScheduledTriggers = (
         'C2',
         tempSlicedTrigger.duration,
         tempSlicedTrigger.velocity,
-        true
+        true,
+        state
       );
     }
   }
@@ -457,7 +498,8 @@ const returnSlicedTriggersArr = (
     retriggerScheduledTriggers(
       currentlyTriggeredTriggersObjArr,
       tempSlicedTrigger,
-      synthesizerRef
+      synthesizerRef,
+      state
     );
 
     tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempSlicedTrigger);
@@ -555,7 +597,8 @@ const reducer = (state = initialState, action) => {
           if (tempTrigger.id === triggerId) {
             tempTrigger = returnHandledSampleTrigger(
               tempTrigger,
-              synthesizerRef
+              synthesizerRef,
+              state
             );
 
             if (tempTrigger.isTriggered && !state.isPlaying) {
@@ -601,7 +644,8 @@ const reducer = (state = initialState, action) => {
               if (index === triggerId) {
                 tempSlicedTrigger = returnHandledSampleTrigger(
                   tempSlicedTrigger,
-                  synthesizerRef
+                  synthesizerRef,
+                  state
                 );
 
                 if (tempSlicedTrigger.isTriggered && !state.isPlaying) {
@@ -844,7 +888,8 @@ const reducer = (state = initialState, action) => {
                 action.newNote,
                 tempTrigger.duration,
                 tempTrigger.velocity,
-                false
+                false,
+                state
               );
             } else {
               //case:  trigger wasn't triggered
@@ -854,7 +899,8 @@ const reducer = (state = initialState, action) => {
                 action.newNote,
                 tempTrigger.duration,
                 tempTrigger.velocity,
-                false
+                false,
+                state
               );
             }
           } else {
@@ -976,7 +1022,8 @@ const reducer = (state = initialState, action) => {
                     'C2',
                     newDurationStr,
                     tempSlicedTrigger.velocity,
-                    true
+                    true,
+                    state
                   );
                 }
 
@@ -995,7 +1042,8 @@ const reducer = (state = initialState, action) => {
               'C2',
               newDurationStr,
               tempTrigger.velocity,
-              true
+              true,
+              state
             );
           }
         }
@@ -1047,7 +1095,8 @@ const reducer = (state = initialState, action) => {
                     'C2',
                     tempSlicedTrigger.duration,
                     newVelocity,
-                    true
+                    true,
+                    state
                   );
                 }
 
@@ -1069,7 +1118,8 @@ const reducer = (state = initialState, action) => {
               'C2',
               tempTrigger.duration,
               newVelocity,
-              true
+              true,
+              state
             );
           }
         }
@@ -1121,7 +1171,8 @@ const reducer = (state = initialState, action) => {
                     'C2',
                     tempSlicedTrigger.duration,
                     tempSlicedTrigger.velocity,
-                    true
+                    true,
+                    state
                   );
                 }
 
@@ -1141,7 +1192,8 @@ const reducer = (state = initialState, action) => {
               'C2',
               tempTrigger.duration,
               tempTrigger.velocity,
-              true
+              true,
+              state
             );
           }
         }
@@ -1315,6 +1367,11 @@ const timelineLogger = ({ getState }) => {
     const Timeline = { ...Tone.Transport._timeline };
 
     console.log(`%c TIMELINE`, `color: #ff8000`, Timeline);
+    console.log(
+      `%c GLOBAL_PATTERN_TRIGGERS`,
+      `color: #ff80ff`,
+      GLOBAL_PATTERN_TRIGGERS
+    );
 
     return returnValue;
   };
