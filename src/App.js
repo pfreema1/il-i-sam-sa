@@ -159,7 +159,8 @@ const returnPatternTrigger = (
   duration,
   time,
   velocity,
-  synthesizerRef
+  synthesizerRef,
+  scheduleId
 ) => {
   let patternTrigger = {};
 
@@ -168,6 +169,7 @@ const returnPatternTrigger = (
   patternTrigger.time = time;
   patternTrigger.velocity = velocity;
   patternTrigger.synthesizerRef = synthesizerRef;
+  patternTrigger.scheduleId = scheduleId;
 
   return patternTrigger;
 };
@@ -210,9 +212,11 @@ const buildTimeline = currentPatternIndex => {
       velocity
     } = trigger;
 
-    new Tone.Event(time => {
+    let newScheduleId = new Tone.Event(time => {
       synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
     }).start(normalizedTimingValue + 'i');
+
+    trigger.scheduleId = newScheduleId;
   });
 };
 
@@ -341,7 +345,8 @@ const returnSetTrigger = (
     duration,
     iValue,
     velocity,
-    synthesizerRef
+    synthesizerRef,
+    trigger.scheduleId
   );
 
   patternTrigger.normalizedTimingValue = returnNormalizedTimingValue(
@@ -481,6 +486,7 @@ const clearPreviouslyScheduledTrigger = (
   parentTriggerId,
   triggerId
 ) => {
+  /*
   if (isSlicee) {
     Tone.Transport.clear(
       sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
@@ -489,6 +495,7 @@ const clearPreviouslyScheduledTrigger = (
   } else {
     Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
   }
+  */
 };
 
 // const returnTriggerAttributes = (isSlicee, sequencerR)
