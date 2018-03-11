@@ -67,7 +67,7 @@ const returnSingleSlicedTrigger = () => {
     isTriggered: false,
     nudgeValue: 0,
     note: 'C2',
-    duration: '192i', //full = 192
+    duration: '192i',
     velocity: 1,
     isSliced: false,
     sliceAmount: 0
@@ -302,9 +302,11 @@ const handleStopButtonClick = currentPatternIndex => {
   // );
 };
 
-const returnClearedTrigger = trigger => {
+const returnClearedTrigger = (trigger, synthRef, currentPatternIndex) => {
+  // Tone.Transport.clear(trigger.scheduleId);
+  clearTriggerInGlobalArr(trigger.timingValue, synthRef, currentPatternIndex);
+
   trigger.isTriggered = false;
-  Tone.Transport.clear(trigger.scheduleId);
   trigger.scheduleId = null;
   trigger.note = 'C2';
 
@@ -430,7 +432,11 @@ const returnArrayOfCurrentlyTriggered = parentTrigger => {
 
 const returnHandledSampleTrigger = (trigger, synthesizerRef, state) => {
   if (trigger.isTriggered) {
-    trigger = returnClearedTrigger(trigger);
+    trigger = returnClearedTrigger(
+      trigger,
+      synthesizerRef,
+      state.currentPatternIndex
+    );
   } else {
     trigger = returnSetTrigger(
       trigger,
@@ -474,9 +480,20 @@ const retriggerScheduledTriggers = (
   }
 };
 
-const clearAllSlicedTriggers = parentTrigger => {
+const clearAllSlicedTriggers = (
+  parentTrigger,
+  synthRef,
+  currentPatternIndex
+) => {
   for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
-    Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
+    // Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
+    if (parentTrigger.slicedTriggers[i].isTriggered) {
+      clearTriggerInGlobalArr(
+        parentTrigger.slicedTriggers[i].timingValue,
+        synthRef,
+        currentPatternIndex
+      );
+    }
   }
 };
 
@@ -484,21 +501,59 @@ const clearPreviouslyScheduledTrigger = (
   isSlicee,
   sequencerRef,
   parentTriggerId,
-  triggerId
+  triggerId,
+  currentPatternIndex
 ) => {
-  /*
+  let prevTriggerTime,
+    prevTriggerSynthRef = sequencerRef.synthesizerRef;
+
   if (isSlicee) {
-    Tone.Transport.clear(
+    // Tone.Transport.clear(
+    //   sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
+    //     .scheduleId
+    // );
+    prevTriggerTime =
       sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
-        .scheduleId
-    );
+        .timingValue;
   } else {
-    Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
+    // Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
+    prevTriggerTime = sequencerRef.triggers[triggerId].timingValue;
   }
-  */
+
+  clearTriggerInGlobalArr(
+    prevTriggerTime,
+    prevTriggerSynthRef,
+    currentPatternIndex
+  );
 };
 
-// const returnTriggerAttributes = (isSlicee, sequencerR)
+const clearTriggerInGlobalArr = (
+  prevTriggerTime,
+  prevTriggerSynthRef,
+  currentPatternIndex
+) => {
+  let matchingGlobalTriggerIndex;
+  let matchingGlobalTrigger = GLOBAL_PATTERN_TRIGGERS[
+    currentPatternIndex
+  ].filter((trigger, index) => {
+    if (
+      trigger.time === prevTriggerTime &&
+      trigger.synthesizerRef === prevTriggerSynthRef
+    ) {
+      matchingGlobalTriggerIndex = index;
+      return true;
+    }
+  })[0];
+
+  //cancel tone.event
+  matchingGlobalTrigger.scheduleId.dispose();
+
+  //remove from the global array
+  GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].splice(
+    matchingGlobalTriggerIndex,
+    1
+  );
+};
 
 const returnEmptySlicedTriggersArr = parentTrigger => {
   let tempSlicedTriggersArr = [];
@@ -578,9 +633,17 @@ const returnSlicedParentTrigger = (
     parentTrigger
   );
   //clear parent trigger
-  parentTrigger = returnClearedTrigger(parentTrigger);
+  parentTrigger = returnClearedTrigger(
+    parentTrigger,
+    synthesizerRef,
+    state.currentPatternIndex
+  );
 
-  clearAllSlicedTriggers(parentTrigger);
+  clearAllSlicedTriggers(
+    parentTrigger,
+    synthesizerRef,
+    state.currentPatternIndex
+  );
 
   parentTrigger.isSliced = true;
   parentTrigger.sliceAmount = parentTrigger.sliceAmount + 1;
@@ -1005,6 +1068,7 @@ const reducer = (state = initialState, action) => {
     case 'TRIGGER_UNSLICED': {
       const sequencerId = action.sequencerBeingEditedId;
       const triggerId = action.triggerBeingEditedId;
+      const synthRef = state.sequencers[sequencerId].synthesizerRef;
 
       //check if unable to unslice further
       if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
@@ -1014,7 +1078,11 @@ const reducer = (state = initialState, action) => {
         };
       }
 
-      clearAllSlicedTriggers(state.sequencers[sequencerId].triggers[triggerId]);
+      clearAllSlicedTriggers(
+        state.sequencers[sequencerId].triggers[triggerId],
+        synthRef,
+        state.currentPatternIndex
+      );
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         let parentTrigger = { ...trigger };
@@ -1121,7 +1189,8 @@ const reducer = (state = initialState, action) => {
         isSlicee,
         sequencerRef,
         parentTriggerId,
-        triggerId
+        triggerId,
+        state.currentPatternIndex
       );
 
       //create new parent triggers array and schedule new trigger
