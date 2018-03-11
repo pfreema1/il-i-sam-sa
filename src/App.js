@@ -53,6 +53,16 @@ const returnEmptyTriggers = (startTimeValue, startIdNum) => {
   return emptyTriggers;
 };
 
+const returnNewSequencersObj = (arrayOfNewSequencers, state) => {
+  let newSequencersObj = {};
+  for (let i = 0; i < arrayOfNewSequencers.length; i++) {
+    let sequencerKey = state.sequencersIdArr[i];
+    newSequencersObj[sequencerKey] = arrayOfNewSequencers[i];
+  }
+
+  return newSequencersObj;
+};
+
 const returnArrayOfNewSequencers = (sequencers, startTimeValue, startIdNum) => {
   let arrayOfNewSequencers = [];
 
@@ -957,32 +967,17 @@ const reducer = (state = initialState, action) => {
         startIdNum
       );
 
-      /*
-      //create array of new sequencers
-      for (let sequencer in state.sequencers) {
-        let emptyTriggers = returnEmptyTriggers(startTimeValue, startIdNum);
-
-        // concat new empty triggers to current triggers
-        let currentTriggers = state.sequencers[sequencer].triggers.concat(
-          emptyTriggers
-        );
-
-        //create copy of current sequencer
-        let tempSequencer = { ...state.sequencers[sequencer] };
-
-        tempSequencer.triggers = currentTriggers;
-
-        arrayOfNewSequencers = arrayOfNewSequencers.concat(tempSequencer);
-      }
-
-      */
-
       //create new sequencers object
-      let newSequencersObj = {};
+      let newSequencersObj = returnNewSequencersObj(
+        arrayOfNewSequencers,
+        state
+      );
+
+      /*
       for (let i = 0; i < arrayOfNewSequencers.length; i++) {
         let sequencerKey = state.sequencersIdArr[i];
         newSequencersObj[sequencerKey] = arrayOfNewSequencers[i];
-      }
+      }*/
 
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
