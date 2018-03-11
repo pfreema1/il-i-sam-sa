@@ -304,7 +304,10 @@ const handleStopButtonClick = currentPatternIndex => {
 
 const returnClearedTrigger = (trigger, synthRef, currentPatternIndex) => {
   // Tone.Transport.clear(trigger.scheduleId);
-  clearTriggerInGlobalArr(trigger.timingValue, synthRef, currentPatternIndex);
+  if (trigger.isTriggered) {
+    let prevTriggerTime = trigger.timingValue + trigger.nudgeValue;
+    clearTriggerInGlobalArr(prevTriggerTime, synthRef, currentPatternIndex);
+  }
 
   trigger.isTriggered = false;
   trigger.scheduleId = null;
@@ -488,11 +491,10 @@ const clearAllSlicedTriggers = (
   for (let i = 0; i < parentTrigger.slicedTriggers.length; i++) {
     // Tone.Transport.clear(parentTrigger.slicedTriggers[i].scheduleId);
     if (parentTrigger.slicedTriggers[i].isTriggered) {
-      clearTriggerInGlobalArr(
-        parentTrigger.slicedTriggers[i].timingValue,
-        synthRef,
-        currentPatternIndex
-      );
+      let prevTriggerTime =
+        parentTrigger.slicedTriggers[i].timingValue +
+        parentTrigger.slicedTriggers[i].nudgeValue;
+      clearTriggerInGlobalArr(prevTriggerTime, synthRef, currentPatternIndex);
     }
   }
 };
@@ -502,7 +504,8 @@ const clearPreviouslyScheduledTrigger = (
   sequencerRef,
   parentTriggerId,
   triggerId,
-  currentPatternIndex
+  currentPatternIndex,
+  nudgeOffset = 0
 ) => {
   let prevTriggerTime,
     prevTriggerSynthRef = sequencerRef.synthesizerRef;
@@ -514,23 +517,29 @@ const clearPreviouslyScheduledTrigger = (
     // );
     prevTriggerTime =
       sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
-        .timingValue;
+        .timingValue +
+      sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
+        .nudgeValue;
   } else {
     // Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
-    prevTriggerTime = sequencerRef.triggers[triggerId].timingValue;
+    prevTriggerTime =
+      sequencerRef.triggers[triggerId].timingValue +
+      sequencerRef.triggers[triggerId].nudgeValue;
   }
 
   clearTriggerInGlobalArr(
     prevTriggerTime,
     prevTriggerSynthRef,
-    currentPatternIndex
+    currentPatternIndex,
+    nudgeOffset
   );
 };
 
 const clearTriggerInGlobalArr = (
   prevTriggerTime,
   prevTriggerSynthRef,
-  currentPatternIndex
+  currentPatternIndex,
+  nudgeOffset = 0
 ) => {
   let matchingGlobalTriggerIndex;
   let matchingGlobalTrigger = GLOBAL_PATTERN_TRIGGERS[
@@ -1265,7 +1274,9 @@ const reducer = (state = initialState, action) => {
         isSlicee,
         sequencerRef,
         parentTriggerId,
-        triggerId
+        triggerId,
+        state.currentPatternIndex,
+        nudgeValue
       );
 
       const newTriggers = sequencerRef.triggers.map(trigger => {
