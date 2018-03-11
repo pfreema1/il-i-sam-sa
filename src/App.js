@@ -196,9 +196,24 @@ const initialState = {
 
 var GLOBAL_PATTERN_TRIGGERS = [[]];
 
-const updateTimeline = currentPatternIndex => {
+const buildTimeline = currentPatternIndex => {
   //clear current timeline
+  Tone.Transport.cancel();
+
   //iterate through triggers in global array and set events
+  GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].map(trigger => {
+    let {
+      synthesizerRef,
+      note,
+      duration,
+      normalizedTimingValue,
+      velocity
+    } = trigger;
+
+    new Tone.Event(time => {
+      synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
+    }).start(normalizedTimingValue + 'i');
+  });
 };
 
 const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
@@ -275,11 +290,12 @@ const returnStartTimeForCurrentPattern = currentPatternIndex => {
 };
 
 const handleStopButtonClick = currentPatternIndex => {
-  Tone.Transport.pause();
+  Tone.Transport.stop();
+  // Tone.Transport.pause();
 
-  setTransportPositionToLoopStart(
-    returnStartTimeForCurrentPattern(currentPatternIndex)
-  );
+  // setTransportPositionToLoopStart(
+  //   returnStartTimeForCurrentPattern(currentPatternIndex)
+  // );
 };
 
 const returnClearedTrigger = trigger => {
@@ -314,7 +330,9 @@ const returnSetTrigger = (
     synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
   });
 
-  // trigger.scheduleId.start(iValue + 'i');
+  trigger.scheduleId.start(
+    returnNormalizedTimingValue(iValue, state.currentPatternIndex) + 'i'
+  );
 
   /*****************************/
 
@@ -744,9 +762,11 @@ const reducer = (state = initialState, action) => {
       handleStopButtonClick(patternIndex);
 
       //change Tone.Transport loop start and end
-      let startTimeValue = returnStartTimeForCurrentPattern(patternIndex);
-      setTransportLoopStartEnd(startTimeValue);
-      setTransportPositionToLoopStart(startTimeValue);
+      // let startTimeValue = returnStartTimeForCurrentPattern(patternIndex);
+      // setTransportLoopStartEnd(startTimeValue);
+      // setTransportPositionToLoopStart(startTimeValue);
+
+      buildTimeline(patternIndex);
 
       return {
         ...state,
@@ -820,7 +840,7 @@ const reducer = (state = initialState, action) => {
       //add new array to GLOBAL_PATTERN_TRIGGERS
       GLOBAL_PATTERN_TRIGGERS.push([]);
       //update Timeline
-      updateTimeline(state.currentPatternIndex);
+      buildTimeline(newCurrentPatternIndex);
       /*****************************/
 
       return {
