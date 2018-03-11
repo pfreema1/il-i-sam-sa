@@ -1111,13 +1111,12 @@ const reducer = (state = initialState, action) => {
       const sequencerId = state.sequencerBeingEditedId;
       const synthesizerRef = sequencerRef.synthesizerRef;
 
-      //save previous triggers attributes here?
-
       clearPreviouslyScheduledTrigger(
         isSlicee,
         sequencerRef,
         parentTriggerId,
-        triggerId
+        triggerId,
+        state.currentPatternIndex
       );
 
       //create new parent triggers array and schedule new trigger
