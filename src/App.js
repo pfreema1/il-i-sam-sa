@@ -198,7 +198,7 @@ const initialState = {
 
 var GLOBAL_PATTERN_TRIGGERS = [[]];
 
-const buildTimeline = currentPatternIndex => {
+const buildPatternTimeline = currentPatternIndex => {
   //clear current timeline
   Tone.Transport.cancel();
 
@@ -220,6 +220,29 @@ const buildTimeline = currentPatternIndex => {
   });
 };
 
+const buildSongTimeline = songArr => {
+  //clear current timeline
+  Tone.Transport.cancel();
+
+  songArr.map((patternIndex, index) => {
+    GLOBAL_PATTERN_TRIGGERS[patternIndex].map(trigger => {
+      let {
+        synthesizerRef,
+        note,
+        duration,
+        normalizedTimingValue,
+        velocity
+      } = trigger;
+
+      let newScheduleId = new Tone.Event(time => {
+        synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
+      }).start(normalizedTimingValue + index * 768 + 'i');
+
+      trigger.scheduleId = newScheduleId;
+    });
+  });
+};
+
 const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
   GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].push(patternTrigger);
 };
@@ -231,9 +254,15 @@ Tone.Transport.loopEnd = '768i';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 120;
 
-const setTransportLoopStartEnd = startTimeValue => {
-  Tone.Transport.loopStart = startTimeValue + 'i';
-  Tone.Transport.loopEnd = startTimeValue + 768 + 'i';
+const setTransportLoopStartEnd = state => {
+  if (state.playBackMode === 'pattern') {
+    Tone.Transport.loopStart = '0i';
+    Tone.Transport.loopEnd = '768i';
+  } else if (state.playBackMode === 'song') {
+    let transportEnd = state.songArr.length * 768;
+    Tone.Transport.loopStart = '0i';
+    Tone.Transport.loopEnd = transportEnd + 'i';
+  }
 };
 
 const setTransportPositionToLoopStart = startTimeValue => {
@@ -800,11 +829,16 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PLAY_BUTTON_CLICKED': {
-      if (state.playBackMode === 'pattern') {
-        handlePlayButtonClick(!state.isPlaying);
-      } else if (state.playBackMode === 'song') {
-        handleSongModePlayButtonClick(state.songPatternStartTimesArr);
-      }
+      // if (state.playBackMode === 'pattern') {
+      //   handlePlayButtonClick(!state.isPlaying);
+      // } else if (state.playBackMode === 'song') {
+      //   handleSongModePlayButtonClick(state.songPatternStartTimesArr);
+      // }
+
+      setTransportLoopStartEnd(state);
+
+      handlePlayButtonClick(!state.isPlaying);
+
       return {
         ...state,
         isPlaying: !state.isPlaying
@@ -820,6 +854,12 @@ const reducer = (state = initialState, action) => {
     }
     case 'PLAYBACK_MODE_CLICKED': {
       const playBackMode = action.playBackMode;
+
+      if (playBackMode === 'song') {
+        buildSongTimeline(state.songArr);
+      } else if (playBackMode === 'pattern') {
+        buildPatternTimeline(state.currentPatternIndex);
+      }
 
       return {
         ...state,
@@ -845,7 +885,7 @@ const reducer = (state = initialState, action) => {
       // setTransportLoopStartEnd(startTimeValue);
       // setTransportPositionToLoopStart(startTimeValue);
 
-      buildTimeline(patternIndex);
+      buildPatternTimeline(patternIndex);
 
       return {
         ...state,
@@ -860,9 +900,22 @@ const reducer = (state = initialState, action) => {
         state.patternsArr
       );
 
+      //list of pattern id's to list of pattern indexes
+      let songListPatternIndexArr = songListIdArr.map(id => {
+        return state.patternsArr.reduce((prevVal, pattern, index) => {
+          if (id === pattern) {
+            return index;
+          } else {
+            return prevVal;
+          }
+        }, null);
+      });
+
+      buildSongTimeline(songListPatternIndexArr);
+
       return {
         ...state,
-        songArr: songListIdArr,
+        songArr: songListPatternIndexArr,
         songPatternStartTimesArr: songPatternStartTimesArr
       };
     }
@@ -919,7 +972,7 @@ const reducer = (state = initialState, action) => {
       //add new array to GLOBAL_PATTERN_TRIGGERS
       GLOBAL_PATTERN_TRIGGERS.push([]);
       //update Timeline
-      buildTimeline(newCurrentPatternIndex);
+      buildPatternTimeline(newCurrentPatternIndex);
       /*****************************/
 
       return {
