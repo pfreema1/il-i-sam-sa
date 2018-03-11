@@ -150,6 +150,10 @@ const returnNewMetronomeScheduleIdArr = (scheduleArray, clickSamplerRef) => {
 //   return new Tone.Part(partCallbackFn).start(0);
 // };
 
+const returnNormalizedTimingValue = (timingValue, patternIndex) => {
+  return timingValue - patternIndex * 768;
+};
+
 const returnPatternTrigger = (
   note,
   duration,
@@ -192,6 +196,11 @@ const initialState = {
 
 var GLOBAL_PATTERN_TRIGGERS = [[]];
 
+const updateTimeline = currentPatternIndex => {
+  //clear current timeline
+  //iterate through triggers in global array and set events
+};
+
 const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
   GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].push(patternTrigger);
 };
@@ -219,6 +228,7 @@ const handlePlayButtonClick = play => {
     Tone.Transport.pause();
   }
 };
+
 const handleSongModePlayButtonClick = songPatternStartTimesArr => {
   let index = 0;
   Tone.Transport.loop = false;
@@ -306,6 +316,8 @@ const returnSetTrigger = (
 
   // trigger.scheduleId.start(iValue + 'i');
 
+  /*****************************/
+
   let patternTrigger = returnPatternTrigger(
     note,
     duration,
@@ -313,7 +325,14 @@ const returnSetTrigger = (
     velocity,
     synthesizerRef
   );
+
+  patternTrigger.normalizedTimingValue = returnNormalizedTimingValue(
+    iValue,
+    state.currentPatternIndex
+  );
   addPatternTriggerToArr(patternTrigger, state.currentPatternIndex);
+
+  /*****************************/
 
   //set triggers' attributes
   trigger.note = note;
@@ -782,9 +801,9 @@ const reducer = (state = initialState, action) => {
       }
 
       //change Tone.Transport loop start and end
-      setTransportLoopStartEnd(startTimeValue);
+      // setTransportLoopStartEnd(startTimeValue);
 
-      setTransportPositionToLoopStart(startTimeValue);
+      // setTransportPositionToLoopStart(startTimeValue);
 
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
@@ -797,9 +816,12 @@ const reducer = (state = initialState, action) => {
       //stop playback
       handleStopButtonClick(newCurrentPatternIndex);
 
-      //not sure about these: (case: user adds pattern while in different mode, or while playback is playing)
-      //-change playBackMode to 'pattern'
-      //-change UiMode to 'pattern'
+      /*****************************/
+      //add new array to GLOBAL_PATTERN_TRIGGERS
+      GLOBAL_PATTERN_TRIGGERS.push([]);
+      //update Timeline
+      updateTimeline(state.currentPatternIndex);
+      /*****************************/
 
       return {
         ...state,
