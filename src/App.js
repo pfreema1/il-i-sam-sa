@@ -880,15 +880,12 @@ const reducer = (state = initialState, action) => {
       //stop playback
       handleStopButtonClick(patternIndex);
 
-      //change Tone.Transport loop start and end
-      // let startTimeValue = returnStartTimeForCurrentPattern(patternIndex);
-      // setTransportLoopStartEnd(startTimeValue);
-      // setTransportPositionToLoopStart(startTimeValue);
-
       buildPatternTimeline(patternIndex);
 
       return {
         ...state,
+        playBackMode: 'pattern',
+        UiMode: 'pattern',
         currentPatternIndex: patternIndex,
         isPlaying: false
       };
@@ -911,7 +908,9 @@ const reducer = (state = initialState, action) => {
         }, null);
       });
 
-      buildSongTimeline(songListPatternIndexArr);
+      if (state.playBackMode === 'song') {
+        buildSongTimeline(songListPatternIndexArr);
+      }
 
       return {
         ...state,
@@ -952,11 +951,6 @@ const reducer = (state = initialState, action) => {
         newSequencersObj[sequencerKey] = arrayOfNewSequencers[i];
       }
 
-      //change Tone.Transport loop start and end
-      // setTransportLoopStartEnd(startTimeValue);
-
-      // setTransportPositionToLoopStart(startTimeValue);
-
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
         'Pattern ' + (state.patternsArr.length + 1)
@@ -984,6 +978,20 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'COPIED_PATTERN_ADDED': {
+      let { patternToCopy } = action;
+      let patternToCopyIndex = state.patternsArr.reduce(
+        (prevVal, pattern, index) => {
+          if (patternToCopy === pattern) {
+            return index;
+          } else {
+            return prevVal;
+          }
+        },
+        null
+      );
+
+      //need to run reducer for BLANK_PATTERN_ADDED to update UI triggers
+
       return {
         ...state
       };
