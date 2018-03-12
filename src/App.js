@@ -973,12 +973,6 @@ const reducer = (state = initialState, action) => {
         state
       );
 
-      /*
-      for (let i = 0; i < arrayOfNewSequencers.length; i++) {
-        let sequencerKey = state.sequencersIdArr[i];
-        newSequencersObj[sequencerKey] = arrayOfNewSequencers[i];
-      }*/
-
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
         "Pattern " + (state.patternsArr.length + 1)
@@ -990,12 +984,11 @@ const reducer = (state = initialState, action) => {
       //stop playback
       handleStopButtonClick(newCurrentPatternIndex);
 
-      /*****************************/
       //add new array to GLOBAL_PATTERN_TRIGGERS
       GLOBAL_PATTERN_TRIGGERS.push([]);
+
       //update Timeline
       buildPatternTimeline(newCurrentPatternIndex);
-      /*****************************/
 
       return {
         ...state,
@@ -1018,7 +1011,7 @@ const reducer = (state = initialState, action) => {
         null
       );
 
-      //need to run reducer for BLANK_PATTERN_ADDED to update UI triggers
+      
 
       return {
         ...state
