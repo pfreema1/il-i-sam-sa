@@ -137,7 +137,7 @@ const copyGlobalPatternTriggers = indexToCopyFrom => {
   let timeOffset = (indexOfLastPattern - indexToCopyFrom) * 768;
 
   //update time of new triggers
-  patternTriggers.map(trigger => {
+  patternTriggers.forEach(trigger => {
     trigger.time = trigger.time + timeOffset;
   });
 
@@ -273,8 +273,6 @@ const returnUpdatedTimingAndIdTriggers = (
   return newClonedTriggers;
 };
 
-const returnUpdatedTimingValueTriggers = () => {};
-
 const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
   let triggersToCopyArr = [];
 
@@ -285,7 +283,7 @@ const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
     let tempTriggers = state.sequencers[sequencer].triggers.filter(
       (trigger, index) => {
         if (index >= patternToCopyStartId && index < patternToCopyEndId) {
-          return trigger;
+          return true;
         }
       }
     );
