@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import './ToolbarContainer.css';
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  ToolbarTitle
-} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ModeSelector from './ModeSelector';
 import MetronomeContainer from './MetronomeContainer';
 import PlayControl from './PlayControl';

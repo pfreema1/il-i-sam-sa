@@ -1,5 +1,4 @@
 import React from 'react';
-import SongModePatternView from './SongModePatternView';
 import ReactSortable from 'react-sortablejs';
 
 const styling = {
@@ -25,11 +24,7 @@ const SongBuilderDropArea = ({ songArr, onAdd, onUpdate }) => {
         onAdd: onAdd,
         onUpdate: onUpdate
       }}
-    >
-      {/*songArr.map((pattern, index) => {
-        return <SongModePatternView key={index} patternName={pattern} />;
-      })*/}
-    </ReactSortable>
+    />
   );
 };
 

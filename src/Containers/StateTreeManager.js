@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Forage from 'react-localforage';
 
 const wrapperStyling = {
   display: 'flex',
