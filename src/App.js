@@ -63,6 +63,45 @@ const returnNewSequencersObj = (arrayOfNewSequencers, state) => {
   return newSequencersObj;
 };
 
+const returnArrayOfNewSequencersWithCopiedPattern = (
+  sequencers,
+  clonedTriggers,
+  currentPatternIndex
+) => {
+  let arrayOfNewSequencers = [];
+  let clonedTriggerIndex = 0;
+  let sequencerIndex = 0;
+
+  for (let sequencer in sequencers) {
+    let startingIdValue = currentPatternIndex * 16;
+    let endingIdValue = startingIdValue + 16;
+
+    let newTriggers = sequencers[sequencer].triggers.map((trigger, index) => {
+      if (index >= startingIdValue && index < endingIdValue) {
+        //set trigger equal to corresponding trigger in clonedTriggers
+        trigger = clonedTriggers[sequencerIndex][clonedTriggerIndex];
+
+        clonedTriggerIndex++;
+
+        return trigger;
+      } else {
+        return trigger;
+      }
+    });
+
+    let tempSequencer = { ...sequencers[sequencer] };
+
+    tempSequencer.triggers = newTriggers;
+
+    arrayOfNewSequencers = arrayOfNewSequencers.concat(tempSequencer);
+
+    sequencerIndex++;
+    clonedTriggerIndex = 0;
+  }
+
+  return arrayOfNewSequencers;
+};
+
 const returnArrayOfNewSequencers = (sequencers, startTimeValue, startIdNum) => {
   let arrayOfNewSequencers = [];
 
@@ -89,6 +128,20 @@ const setPatternTimingValues = (startTimeValue, triggers) => {
     return trigger;
   });
   return triggers;
+};
+
+const copyGlobalPatternTriggers = indexToCopyFrom => {
+  let patternTriggers = deepCopy(GLOBAL_PATTERN_TRIGGERS[indexToCopyFrom]);
+
+  let indexOfLastPattern = GLOBAL_PATTERN_TRIGGERS.length - 1;
+  let timeOffset = (indexOfLastPattern - indexToCopyFrom) * 768;
+
+  //update time of new triggers
+  patternTriggers.map(trigger => {
+    trigger.time = trigger.time + timeOffset;
+  });
+
+  GLOBAL_PATTERN_TRIGGERS[indexOfLastPattern] = patternTriggers;
 };
 
 const setNewTriggersIds = (startIdNum, triggers) => {
@@ -159,6 +212,68 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
 const returnNewSequencersIdArr = sequencersObj => {
   return Object.keys(sequencersObj);
 };
+
+const deepCopy = obj => {
+  let rv;
+
+  switch (typeof obj) {
+    case 'object':
+      if (obj === null) {
+        rv = null;
+      } else {
+        if (obj instanceof Tone.Event) {
+          //copy the reference to  the Tone.Event
+          rv = obj;
+        } else if (obj instanceof Tone.Sampler) {
+          rv = obj;
+        } else {
+          switch (Object.prototype.toString.call(obj)) {
+            case '[object Array]':
+              //it's an array, create a new array with
+              // deep copies of the entries
+              rv = obj.map(deepCopy);
+              break;
+            default:
+              //some other kind of object, deep-copy
+              //its properties into a new object
+              rv = Object.keys(obj).reduce((prev, key) => {
+                prev[key] = deepCopy(obj[key]);
+                return prev;
+              }, {});
+              break;
+          }
+        }
+      }
+      break;
+    default:
+      //it's a primitive. copy via assignment
+      rv = obj;
+      break;
+  }
+  return rv;
+};
+
+const returnUpdatedTimingAndIdTriggers = (
+  currentPatternIndex,
+  clonedTriggers,
+  indexToCopyFrom
+) => {
+  let startingIdValue = currentPatternIndex * 16;
+  let indexOfLastPattern = GLOBAL_PATTERN_TRIGGERS.length - 1;
+  let timeOffset = (indexOfLastPattern - indexToCopyFrom) * 768;
+
+  let newClonedTriggers = clonedTriggers.map(triggers => {
+    return triggers.map((trigger, index) => {
+      trigger.id = startingIdValue + index;
+      trigger.timingValue = trigger.timingValue + timeOffset;
+      return trigger;
+    });
+  });
+
+  return newClonedTriggers;
+};
+
+const returnUpdatedTimingValueTriggers = () => {};
 
 const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
   let triggersToCopyArr = [];
@@ -1021,6 +1136,7 @@ const reducer = (state = initialState, action) => {
     }
     case 'COPIED_PATTERN_ADDED': {
       let { patternToCopy } = action;
+
       let patternToCopyIndex = state.patternsArr.reduce(
         (prevVal, pattern, index) => {
           if (patternToCopy === pattern) {
@@ -1037,8 +1153,34 @@ const reducer = (state = initialState, action) => {
         state
       );
 
+      // at this point, the blank pattern should already have been added, so lets make a deep copy of the triggers to copy
+      let clonedTriggers = deepCopy(triggersToCopyArr);
+      //update id's and timing values
+      clonedTriggers = returnUpdatedTimingAndIdTriggers(
+        state.currentPatternIndex,
+        clonedTriggers,
+        patternToCopyIndex
+      );
+
+      //do same process as adding blank pattern above - create whole new sequencers object to maintain immutability pattern
+      let arrayOfNewSequencers = returnArrayOfNewSequencersWithCopiedPattern(
+        state.sequencers,
+        clonedTriggers,
+        state.currentPatternIndex
+      );
+
+      let newSequencersObj = returnNewSequencersObj(
+        arrayOfNewSequencers,
+        state
+      );
+
+      copyGlobalPatternTriggers(patternToCopyIndex);
+
+      buildPatternTimeline(state.currentPatternIndex);
+
       return {
-        ...state
+        ...state,
+        sequencers: newSequencersObj
       };
     }
     case 'EDITING_TRIGGER': {

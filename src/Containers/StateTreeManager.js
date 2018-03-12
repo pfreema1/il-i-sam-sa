@@ -56,7 +56,9 @@ class StateTreeManager extends Component {
         type: 'PARENT_TRIGGER_CLICKED',
         triggerId: 44,
         sequencerId: 'closedHiHat1'
-      }
+      },
+      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'COPIED_PATTERN_ADDED', patternToCopy: 'Pattern 3' }
     ];
   }
 
