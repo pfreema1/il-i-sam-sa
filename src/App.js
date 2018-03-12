@@ -282,9 +282,7 @@ const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
   for (let sequencer in state.sequencers) {
     let tempTriggers = state.sequencers[sequencer].triggers.filter(
       (trigger, index) => {
-        if (index >= patternToCopyStartId && index < patternToCopyEndId) {
-          return true;
-        }
+        return index >= patternToCopyStartId && index < patternToCopyEndId;
       }
     );
 
@@ -377,7 +375,7 @@ const buildPatternTimeline = currentPatternIndex => {
   Tone.Transport.cancel();
 
   //iterate through triggers in global array and set events
-  GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].map(trigger => {
+  GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].forEach(trigger => {
     let {
       synthesizerRef,
       note,
@@ -398,8 +396,8 @@ const buildSongTimeline = songArr => {
   //clear current timeline
   Tone.Transport.cancel();
 
-  songArr.map((patternIndex, index) => {
-    GLOBAL_PATTERN_TRIGGERS[patternIndex].map(trigger => {
+  songArr.forEach((patternIndex, index) => {
+    GLOBAL_PATTERN_TRIGGERS[patternIndex].forEach(trigger => {
       let {
         synthesizerRef,
         note,
@@ -439,42 +437,12 @@ const setTransportLoopStartEnd = state => {
   }
 };
 
-const setTransportPositionToLoopStart = startTimeValue => {
-  Tone.Transport.position = startTimeValue + 'i';
-};
-
 const handlePlayButtonClick = play => {
   if (play) {
     Tone.Transport.start('+0.1');
   } else {
     Tone.Transport.pause();
   }
-};
-
-const handleSongModePlayButtonClick = songPatternStartTimesArr => {
-  let index = 0;
-  Tone.Transport.loop = false;
-
-  const myLoop = new Tone.Loop(() => {
-    console.log('index: ', index);
-    console.log('moving to start time:  ', songPatternStartTimesArr[index]);
-    Tone.Transport.stop();
-
-    console.log('Tone.Transport.ticks before:  ', Tone.Transport.ticks);
-
-    Tone.Transport.position = songPatternStartTimesArr[index] + 'i';
-
-    console.log('Tone.Transport.ticks after:  ', Tone.Transport.ticks);
-
-    // Tone.Transport.start('+0.1');
-
-    index++;
-    if (index >= songPatternStartTimesArr.length) {
-      index = 0;
-    }
-  }, '1m').start(0);
-
-  Tone.Transport.start('+0.1');
 };
 
 const returnSongPatternStartTimesArr = (songListIdArr, patternsArr) => {
@@ -498,11 +466,6 @@ const returnStartTimeForCurrentPattern = currentPatternIndex => {
 
 const handleStopButtonClick = currentPatternIndex => {
   Tone.Transport.stop();
-  // Tone.Transport.pause();
-
-  // setTransportPositionToLoopStart(
-  //   returnStartTimeForCurrentPattern(currentPatternIndex)
-  // );
 };
 
 const returnClearedTrigger = (trigger, synthRef, currentPatternIndex) => {
@@ -754,6 +717,8 @@ const clearTriggerInGlobalArr = (
     ) {
       matchingGlobalTriggerIndex = index;
       return true;
+    } else {
+      return false;
     }
   })[0];
 
@@ -1003,12 +968,6 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PLAY_BUTTON_CLICKED': {
-      // if (state.playBackMode === 'pattern') {
-      //   handlePlayButtonClick(!state.isPlaying);
-      // } else if (state.playBackMode === 'song') {
-      //   handleSongModePlayButtonClick(state.songPatternStartTimesArr);
-      // }
-
       setTransportLoopStartEnd(state);
 
       handlePlayButtonClick(!state.isPlaying);

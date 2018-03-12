@@ -91,7 +91,7 @@ class Velocity extends Component {
               isTriggered={trigger.isTriggered}
               isSlicee={isSlicee}
               handleDragStop={this.handleDragStop}
-              velocityValAsPercentArr={this.state.velocityValAsPercentArr}
+              velocityValAsPercentArr={velocityValAsPercentArr}
               triggerBeingEditedId={this.props.triggerBeingEditedId}
               handleSliderChange={this.handleSliderChange}
             />
