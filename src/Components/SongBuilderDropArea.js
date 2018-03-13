@@ -13,6 +13,7 @@ const styling = {
 const SongBuilderDropArea = ({ songArr, onAdd, onUpdate, onChoose }) => {
   return (
     <ReactSortable
+      id="songBuilderDropArea"
       style={styling}
       options={{
         animation: 150,

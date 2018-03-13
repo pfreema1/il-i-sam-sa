@@ -17,6 +17,7 @@ import lowClick from './samples/click.wav';
 import AddSequencerButtonContainer from './Containers/AddSequencerButtonContainer';
 import SongModeContainer from './Containers/SongModeContainer';
 import StateTreeManager from './Containers/StateTreeManager';
+import './songMode.css';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -1691,6 +1692,27 @@ const reducer = (state = initialState, action) => {
     }
     case 'SONG_MODE_PATTERN_SELECTED': {
       let { sequenceInSongIndex, patternName } = action;
+
+      /*
+        not happy about manipulating dom directly here, but couldn't 
+        figure out how to show selected pattern any other way
+      */
+      // get reference to drop area
+      let songBuilderDropArea = document.getElementById('songBuilderDropArea');
+
+      //iterate through the children (patterns in song) and remove any 'selected-pattern' styling class
+      Array.from(songBuilderDropArea.childNodes).forEach((childNode, index) => {
+        songBuilderDropArea.childNodes
+          .item(index)
+          .classList.remove('selected-pattern');
+      });
+
+      //add 'selected-pattern' styling to element that was clicked
+      let elemClicked = songBuilderDropArea.childNodes.item(
+        sequenceInSongIndex
+      );
+
+      elemClicked.classList.add('selected-pattern');
 
       return {
         ...state,

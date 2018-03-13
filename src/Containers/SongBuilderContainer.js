@@ -52,6 +52,17 @@ class SongBuilderContainer extends Component {
       sequenceInSongIndex: evt.oldIndex,
       patternName: evt.item.id
     });
+
+    //set style here for the selected elem and iterate through the other elements and set their styles?
+    //evt.target.children = all nodes
+    //evt.item = selected node
+
+    // Array.from(evt.target.children).forEach((elem, index) => {
+    //   let nodeElem = evt.target.children.item(index);
+    //   nodeElem.classList.remove('selected-pattern');
+    // });
+
+    // evt.item.classList.add('selected-pattern');
   };
 
   //changed sorting within list
