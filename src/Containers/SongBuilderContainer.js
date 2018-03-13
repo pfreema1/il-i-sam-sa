@@ -9,7 +9,16 @@ const styling = {
   height: '70vh'
 };
 
+/*****************************/
+
 class SongBuilderContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedPattern: ''
+    };
+  }
   printIds = els => {
     for (let i = 0; i < els.length; i++) {
       console.log('at ' + i + ':  ' + els[i].id);
@@ -37,6 +46,14 @@ class SongBuilderContainer extends Component {
     this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
   };
 
+  onChoose = evt => {
+    this.props.dispatch({
+      type: 'SONG_MODE_PATTERN_SELECTED',
+      sequenceInSongIndex: evt.oldIndex,
+      patternName: evt.item.id
+    });
+  };
+
   //changed sorting within list
   onUpdateFn = evt => {
     // this.printIds(evt.to.children);
@@ -53,6 +70,7 @@ class SongBuilderContainer extends Component {
           onAdd={this.onAddFn}
           onUpdate={this.onUpdateFn}
           songArr={songArr}
+          onChoose={this.onChoose}
         />
       </div>
     );

@@ -20,6 +20,7 @@ const SequencerContextMenuComponent = ({
     <MenuItem onClick={handleMenuItemClick} data={{ item: 3 }}>
       nudge
     </MenuItem>
+    <MenuItem divider />
     <MenuItem onClick={handleSliceMenuItemClick} data={{ item: 4 }}>
       slice
     </MenuItem>

@@ -365,7 +365,9 @@ const initialState = {
   patternsArr: ['Pattern 1'],
   currentPatternIndex: 0,
   songArr: [],
-  returnSongPatternStartTimesArr: []
+  returnSongPatternStartTimesArr: [],
+  songModeSelectedPattern: '',
+  songModeSelectedPatternSequenceIndex: ''
 };
 
 var GLOBAL_PATTERN_TRIGGERS = [[]];
@@ -1685,6 +1687,15 @@ const reducer = (state = initialState, action) => {
           scheduleArray: newMetronomeScheduleIdArr
         },
         isMetronomeOn: !state.isMetronomeOn
+      };
+    }
+    case 'SONG_MODE_PATTERN_SELECTED': {
+      let { sequenceInSongIndex, patternName } = action;
+
+      return {
+        ...state,
+        songModeSelectedPattern: patternName,
+        songModeSelectedPatternSequenceIndex: sequenceInSongIndex
       };
     }
     default:

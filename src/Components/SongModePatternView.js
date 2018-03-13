@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 const styling = {
   width: '100px',
@@ -6,15 +7,46 @@ const styling = {
   background: 'white',
   border: '1px solid black',
   color: 'black',
-  cursor: 'move'
+  cursor: 'move',
+  transition: 'all 0.5s'
 };
 
-const SongModePatternView = ({ patternName }) => {
-  return (
-    <div id={patternName} style={styling}>
-      {patternName}
-    </div>
-  );
+const selectedStyling = {
+  background: 'yellow'
 };
 
-export default SongModePatternView;
+/*****************************/
+
+class SongModePatternView extends Component {
+  constructor(props) {
+    super(props);
+
+    // this.state = { isSelected: false };
+  }
+
+  handleClick = () => {
+    // this.setState({ isSelected: !this.state.isSelected });
+  };
+
+  render() {
+    let { patternName, songModeSelectedPattern } = this.props;
+
+    //if this component is selectedpatternsequenceindex
+
+    return (
+      <div id={patternName} style={styling} onClick={this.handleClick}>
+        {patternName}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    songModeSelectedPattern: state.songModeSelectedPattern,
+    songModeSelectedPatternSequenceIndex:
+      state.songModeSelectedPatternSequenceIndex
+  };
+};
+
+export default connect(mapStateToProps)(SongModePatternView);

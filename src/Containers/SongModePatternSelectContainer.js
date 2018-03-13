@@ -8,7 +8,7 @@ const styling = {
   justifyContent: 'center',
   alignItems: 'center',
   width: '100vw',
-  height: '30vh',
+  height: '120px',
   background: 'RGBA(55, 57, 62, 1.00)'
 };
 
@@ -38,7 +38,10 @@ class SongModePatternSelectContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    patternsArr: state.patternsArr
+    patternsArr: state.patternsArr,
+    songModeSelectedPattern: state.songModeSelectedPattern,
+    songModeSelectedPatternSequenceIndex:
+      state.songModeSelectedPatternSequenceIndex
   };
 }
 
