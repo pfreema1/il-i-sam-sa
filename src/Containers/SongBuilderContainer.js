@@ -53,6 +53,10 @@ class SongBuilderContainer extends Component {
     this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
   };
 
+  onRemove = evt => {
+    console.log('on remove running');
+  };
+
   render() {
     const { songArr } = this.props;
 
@@ -63,6 +67,7 @@ class SongBuilderContainer extends Component {
           onUpdate={this.onUpdateFn}
           songArr={songArr}
           onChoose={this.onChoose}
+          onRemove={this.onRemove}
         />
         <SongBuilderOptionsArea />
       </div>

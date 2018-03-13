@@ -24,7 +24,7 @@ const SongBuilderOptionsAreaView = ({
 }) => {
   return (
     <div style={styling}>
-      {songModeSelectedPattern !== '' ? (
+      {songModeSelectedPattern !== null ? (
         <div>
           <h1>{songModeSelectedPattern}</h1>
           <div style={buttonStyling} onClick={handleRemoveFromSongClick}>

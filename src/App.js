@@ -367,9 +367,9 @@ const initialState = {
   currentPatternIndex: 0,
   songArr: [],
   returnSongPatternStartTimesArr: [],
-  songModeSelectedPattern: '',
+  songModeSelectedPattern: null,
   songModeSelectedPatternDomRef: null,
-  songModeSelectedPatternSequenceIndex: ''
+  songModeSelectedPatternSequenceIndex: null
 };
 
 var GLOBAL_PATTERN_TRIGGERS = [[]];
@@ -1727,14 +1727,31 @@ const reducer = (state = initialState, action) => {
       //remove DOM element
       elemToRemove.remove();
 
-      let songBuilderDropArea = document.getElementById('songBuilderDropArea');
-
-      Array.from(songBuilderDropArea.childNodes).forEach(
-        (childNode, index) => {}
+      const songBuilderDropArea = document.getElementById(
+        'songBuilderDropArea'
       );
 
+      const arrayOfPatternNamesForSong = Array.from(
+        songBuilderDropArea.childNodes
+      ).map((childNode, index) => {
+        return childNode.id;
+      });
+
+      const newSongArr = arrayOfPatternNamesForSong.map(patternName => {
+        //convert pattern name to index of patternsArr
+        let indexInPatternsArr;
+        state.patternsArr.forEach((pattern, index) => {
+          if (pattern === patternName) indexInPatternsArr = index;
+        });
+
+        return indexInPatternsArr;
+      });
+
+      buildSongTimeline(newSongArr);
+
       return {
-        ...state
+        ...state,
+        songArr: newSongArr
       };
     }
     case 'GO_TO_PATTERN_CLICKED': {

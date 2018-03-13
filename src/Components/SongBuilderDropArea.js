@@ -10,7 +10,13 @@ const styling = {
   alignItems: 'center'
 };
 
-const SongBuilderDropArea = ({ songArr, onAdd, onUpdate, onChoose }) => {
+const SongBuilderDropArea = ({
+  songArr,
+  onAdd,
+  onUpdate,
+  onChoose,
+  onRemove
+}) => {
   return (
     <ReactSortable
       id="songBuilderDropArea"
@@ -24,7 +30,8 @@ const SongBuilderDropArea = ({ songArr, onAdd, onUpdate, onChoose }) => {
         },
         onAdd: onAdd,
         onUpdate: onUpdate,
-        onChoose: onChoose
+        onChoose: onChoose,
+        onRemove: onRemove
       }}
     />
   );
