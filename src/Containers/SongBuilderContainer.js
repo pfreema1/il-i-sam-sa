@@ -4,6 +4,7 @@ import SongBuilderDropArea from '../Components/SongBuilderDropArea';
 
 const styling = {
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   height: '70vh'
@@ -32,16 +33,6 @@ class SongBuilderContainer extends Component {
   };
 
   onAddFn = evt => {
-    /*
-      var itemEl = evt.item;  // dragged HTMLElement
-      evt.to;    // target list
-      evt.from;  // previous list
-      evt.oldIndex;  // element's old index within old parent
-      evt.newIndex;  // element's new index within new parent
-      evt.item.id // elements' id
-      evt.to.children[X].id //id of sorted list at X
-    */
-    // this.printIds(evt.to.children);
     const listIdArr = this.returnIdList(evt.to.children);
     this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
   };
@@ -52,22 +43,10 @@ class SongBuilderContainer extends Component {
       sequenceInSongIndex: evt.oldIndex,
       patternName: evt.item.id
     });
-
-    //set style here for the selected elem and iterate through the other elements and set their styles?
-    //evt.target.children = all nodes
-    //evt.item = selected node
-
-    // Array.from(evt.target.children).forEach((elem, index) => {
-    //   let nodeElem = evt.target.children.item(index);
-    //   nodeElem.classList.remove('selected-pattern');
-    // });
-
-    // evt.item.classList.add('selected-pattern');
   };
 
   //changed sorting within list
   onUpdateFn = evt => {
-    // this.printIds(evt.to.children);
     const listIdArr = this.returnIdList(evt.to.children);
     this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
   };
