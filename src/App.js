@@ -1724,8 +1724,14 @@ const reducer = (state = initialState, action) => {
     }
     case 'REMOVE_PATTERN_FROM_SONG': {
       let elemToRemove = state.songModeSelectedPatternDomRef;
-
+      //remove DOM element
       elemToRemove.remove();
+
+      let songBuilderDropArea = document.getElementById('songBuilderDropArea');
+
+      Array.from(songBuilderDropArea.childNodes).forEach(
+        (childNode, index) => {}
+      );
 
       return {
         ...state
