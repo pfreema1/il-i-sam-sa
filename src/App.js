@@ -1751,7 +1751,10 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        songArr: newSongArr
+        songArr: newSongArr,
+        songModeSelectedPattern: null,
+        songModeSelectedPatternDomRef: null,
+        songModeSelectedPatternSequencerIndex: null
       };
     }
     case 'GO_TO_PATTERN_CLICKED': {
