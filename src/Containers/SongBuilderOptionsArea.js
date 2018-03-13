@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import SongBuilderOptionsAreaView from '../Components/SongBuilderOptionsAreaView';
 
 class SongBuilderOptionsArea extends Component {
-  handleRemoveFromSongClick = () => {};
+  handleRemoveFromSongClick = () => {
+    this.props.dispatch({ type: 'REMOVE_PATTERN_FROM_SONG' });
+  };
 
   handleMakeUniqueClick = () => {};
 

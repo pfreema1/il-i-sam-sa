@@ -368,6 +368,7 @@ const initialState = {
   songArr: [],
   returnSongPatternStartTimesArr: [],
   songModeSelectedPattern: '',
+  songModeSelectedPatternDomRef: null,
   songModeSelectedPatternSequenceIndex: ''
 };
 
@@ -1717,7 +1718,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         songModeSelectedPattern: patternName,
-        songModeSelectedPatternSequenceIndex: sequenceInSongIndex
+        songModeSelectedPatternSequenceIndex: sequenceInSongIndex,
+        songModeSelectedPatternDomRef: action.patternDomRef
+      };
+    }
+    case 'REMOVE_PATTERN_FROM_SONG': {
+      let elemToRemove = state.songModeSelectedPatternDomRef;
+
+      elemToRemove.remove();
+
+      return {
+        ...state
       };
     }
     case 'GO_TO_PATTERN_CLICKED': {

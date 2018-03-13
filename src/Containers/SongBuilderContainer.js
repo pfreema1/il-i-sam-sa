@@ -42,7 +42,8 @@ class SongBuilderContainer extends Component {
     this.props.dispatch({
       type: 'SONG_MODE_PATTERN_SELECTED',
       sequenceInSongIndex: evt.oldIndex,
-      patternName: evt.item.id
+      patternName: evt.item.id,
+      patternDomRef: evt.item
     });
   };
 
