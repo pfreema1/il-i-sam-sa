@@ -7,7 +7,14 @@ class SongBuilderOptionsArea extends Component {
     this.props.dispatch({ type: 'REMOVE_PATTERN_FROM_SONG' });
   };
 
-  handleMakeUniqueClick = () => {};
+  handleMakeUniqueClick = () => {
+    this.props.dispatch({ type: 'BLANK_PATTERN_ADDED' });
+    this.props.dispatch({
+      type: 'COPIED_PATTERN_ADDED',
+      patternToCopy: this.props.songModeSelectedPattern
+    });
+    this.props.dispatch({ type: 'MAKE_UNIQUE_IN_SONG_MODE' });
+  };
 
   handleGoToPatternClick = () => {
     this.props.dispatch({ type: 'GO_TO_PATTERN_CLICKED' });

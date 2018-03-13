@@ -419,6 +419,26 @@ const buildSongTimeline = songArr => {
   });
 };
 
+//this function returns the song array based on the ui in drop area
+const returnSongPatternIndexArr = state => {
+  const songBuilderDropArea = document.getElementById('songBuilderDropArea');
+
+  return Array.from(songBuilderDropArea.childNodes)
+    .map((childNode, index) => {
+      //makes list of pattern id's
+      return childNode.id;
+    })
+    .map(patternName => {
+      //convert pattern names to index of patternsArr
+      let indexInPatternsArr;
+      state.patternsArr.forEach((pattern, index) => {
+        if (pattern === patternName) indexInPatternsArr = index;
+      });
+
+      return indexInPatternsArr;
+    });
+};
+
 const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
   GLOBAL_PATTERN_TRIGGERS[currentPatternIndex].push(patternTrigger);
 };
@@ -1726,7 +1746,7 @@ const reducer = (state = initialState, action) => {
       let elemToRemove = state.songModeSelectedPatternDomRef;
       //remove DOM element
       elemToRemove.remove();
-
+      /*
       const songBuilderDropArea = document.getElementById(
         'songBuilderDropArea'
       );
@@ -1747,6 +1767,11 @@ const reducer = (state = initialState, action) => {
         return indexInPatternsArr;
       });
 
+      */
+
+      //this function returns the song array based on the ui in drop area
+      let newSongArr = returnSongPatternIndexArr(state);
+
       buildSongTimeline(newSongArr);
 
       return {
@@ -1755,6 +1780,32 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPattern: null,
         songModeSelectedPatternDomRef: null,
         songModeSelectedPatternSequencerIndex: null
+      };
+    }
+    case 'MAKE_UNIQUE_IN_SONG_MODE': {
+      //try just changing the dom nodes' id?
+      let nodeToChange = state.songModeSelectedPatternDomRef;
+      let songIndexWhereUniquePatternGoes =
+        state.songModeSelectedPatternSequenceIndex;
+
+      //use REMOVE_PATTERN_FROM_SONG code to remove pattern
+
+      //create clone - same way drag works
+
+      //insert clone into song list
+
+      //update songArr
+
+      //rebuild song timeline
+
+      //change songModeSelectedPattern
+
+      //change songModeSelectedPatternDomRef
+
+      //change songModeSelectedSequenceIndex
+
+      return {
+        ...state
       };
     }
     case 'GO_TO_PATTERN_CLICKED': {
