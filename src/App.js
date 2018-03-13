@@ -1720,6 +1720,26 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPatternSequenceIndex: sequenceInSongIndex
       };
     }
+    case 'GO_TO_PATTERN_CLICKED': {
+      let newCurrentPatternIndex = state.patternsArr.reduce(
+        (prevVal, pattern, index) => {
+          if (pattern === state.songModeSelectedPattern) {
+            return index;
+          } else {
+            return prevVal;
+          }
+        },
+        null
+      );
+
+      buildPatternTimeline(newCurrentPatternIndex);
+
+      return {
+        ...state,
+        UiMode: 'pattern',
+        currentPatternIndex: newCurrentPatternIndex
+      };
+    }
     default:
       return state;
   }

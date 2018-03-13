@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SongBuilderDropArea from '../Components/SongBuilderDropArea';
+import SongBuilderOptionsArea from './SongBuilderOptionsArea';
 
 const styling = {
   display: 'flex',
@@ -62,6 +63,7 @@ class SongBuilderContainer extends Component {
           songArr={songArr}
           onChoose={this.onChoose}
         />
+        <SongBuilderOptionsArea />
       </div>
     );
   }
