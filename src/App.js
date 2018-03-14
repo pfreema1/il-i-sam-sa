@@ -64,7 +64,28 @@ const returnNewSequencersObj = (arrayOfNewSequencers, state) => {
   return newSequencersObj;
 };
 
-// const returnArrayOfNewTriggersWithCopiedPattern = ()
+const returnArrayOfNewTriggersWithCopiedPattern = (
+  sequencers,
+  sequencer,
+  startingIdValue,
+  endingIdValue,
+  clonedTriggers,
+  sequencerIndex,
+  clonedTriggerIndex
+) => {
+  return sequencers[sequencer].triggers.map((trigger, index) => {
+    if (index >= startingIdValue && index < endingIdValue) {
+      //set trigger equal to corresponding trigger in clonedTriggers
+      trigger = clonedTriggers[sequencerIndex][clonedTriggerIndex];
+
+      clonedTriggerIndex++;
+
+      return trigger;
+    } else {
+      return trigger;
+    }
+  });
+};
 
 const returnArrayOfNewSequencersWithCopiedPattern = (
   sequencers,
@@ -79,18 +100,15 @@ const returnArrayOfNewSequencersWithCopiedPattern = (
     let startingIdValue = currentPatternIndex * 16;
     let endingIdValue = startingIdValue + 16;
 
-    let newTriggers = sequencers[sequencer].triggers.map((trigger, index) => {
-      if (index >= startingIdValue && index < endingIdValue) {
-        //set trigger equal to corresponding trigger in clonedTriggers
-        trigger = clonedTriggers[sequencerIndex][clonedTriggerIndex];
-
-        clonedTriggerIndex++;
-
-        return trigger;
-      } else {
-        return trigger;
-      }
-    });
+    let newTriggers = returnArrayOfNewTriggersWithCopiedPattern(
+      sequencers,
+      sequencer,
+      startingIdValue,
+      endingIdValue,
+      clonedTriggers,
+      sequencerIndex,
+      clonedTriggerIndex
+    );
 
     let tempSequencer = { ...sequencers[sequencer] };
 
