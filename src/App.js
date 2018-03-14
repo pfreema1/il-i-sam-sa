@@ -149,6 +149,16 @@ const setPatternTimingValues = (startTimeValue, triggers) => {
   return triggers;
 };
 
+const returnIndexOfPattern = (patternToGetIndex, patternsArr) => {
+  return patternsArr.reduce((prevVal, pattern, index) => {
+    if (patternToGetIndex === pattern) {
+      return index;
+    } else {
+      return prevVal;
+    }
+  }, null);
+};
+
 const copyGlobalPatternTriggers = indexToCopyFrom => {
   let patternTriggers = deepCopy(GLOBAL_PATTERN_TRIGGERS[indexToCopyFrom]);
 
@@ -1126,15 +1136,9 @@ const reducer = (state = initialState, action) => {
     case 'COPIED_PATTERN_ADDED': {
       let { patternToCopy } = action;
 
-      let patternToCopyIndex = state.patternsArr.reduce(
-        (prevVal, pattern, index) => {
-          if (patternToCopy === pattern) {
-            return index;
-          } else {
-            return prevVal;
-          }
-        },
-        null
+      let patternToCopyIndex = returnIndexOfPattern(
+        patternToCopy,
+        state.patternsArr
       );
 
       let triggersToCopyArr = returnTriggersToCopyArr(
