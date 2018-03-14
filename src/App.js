@@ -67,12 +67,14 @@ const returnNewSequencersObj = (arrayOfNewSequencers, state) => {
 const returnArrayOfNewTriggersWithCopiedPattern = (
   sequencers,
   sequencer,
-  startingIdValue,
-  endingIdValue,
+  currentPatternIndex,
   clonedTriggers,
   sequencerIndex,
   clonedTriggerIndex
 ) => {
+  let startingIdValue = currentPatternIndex * 16;
+  let endingIdValue = startingIdValue + 16;
+
   return sequencers[sequencer].triggers.map((trigger, index) => {
     if (index >= startingIdValue && index < endingIdValue) {
       //set trigger equal to corresponding trigger in clonedTriggers
@@ -97,14 +99,10 @@ const returnArrayOfNewSequencersWithCopiedPattern = (
   let sequencerIndex = 0;
 
   for (let sequencer in sequencers) {
-    let startingIdValue = currentPatternIndex * 16;
-    let endingIdValue = startingIdValue + 16;
-
     let newTriggers = returnArrayOfNewTriggersWithCopiedPattern(
       sequencers,
       sequencer,
-      startingIdValue,
-      endingIdValue,
+      currentPatternIndex,
       clonedTriggers,
       sequencerIndex,
       clonedTriggerIndex
@@ -246,6 +244,7 @@ const deepCopy = obj => {
           //copy the reference to  the Tone.Event
           rv = obj;
         } else if (obj instanceof Tone.Sampler) {
+          //copy the reference to the Tone.Sampler
           rv = obj;
         } else {
           switch (Object.prototype.toString.call(obj)) {
@@ -334,14 +333,6 @@ const returnNewMetronomeScheduleIdArr = (scheduleArray, clickSamplerRef) => {
     }
   });
 };
-
-// const partCallbackFn = (time, note, synthRef, duration, velocity) => {
-//   synthRef.triggerAttackRelease(note, duration, time, velocity);
-// };
-
-// const returnNewTonePart = () => {
-//   return new Tone.Part(partCallbackFn).start(0);
-// };
 
 const returnNormalizedTimingValue = (timingValue, patternIndex) => {
   return timingValue - patternIndex * 768;
@@ -539,12 +530,6 @@ const returnSetTrigger = (
 
   trigger.isTriggered = true;
 
-  // if (isSample) {
-  //   trigger.scheduleId = Tone.Transport.schedule(time => {
-  //     synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
-  //   }, iValue + 'i');
-  // }
-
   trigger.scheduleId = new Tone.Event(time => {
     synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
   });
@@ -552,8 +537,6 @@ const returnSetTrigger = (
   trigger.scheduleId.start(
     returnNormalizedTimingValue(iValue, state.currentPatternIndex) + 'i'
   );
-
-  /*****************************/
 
   let patternTrigger = returnPatternTrigger(
     note,
@@ -569,8 +552,6 @@ const returnSetTrigger = (
     state.currentPatternIndex
   );
   addPatternTriggerToArr(patternTrigger, state.currentPatternIndex);
-
-  /*****************************/
 
   //set triggers' attributes
   trigger.note = note;
@@ -721,17 +702,12 @@ const clearPreviouslyScheduledTrigger = (
     prevTriggerSynthRef = sequencerRef.synthesizerRef;
 
   if (isSlicee) {
-    // Tone.Transport.clear(
-    //   sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
-    //     .scheduleId
-    // );
     prevTriggerTime =
       sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
         .timingValue +
       sequencerRef.triggers[parentTriggerId].slicedTriggers[triggerId]
         .nudgeValue;
   } else {
-    // Tone.Transport.clear(sequencerRef.triggers[triggerId].scheduleId);
     prevTriggerTime =
       sequencerRef.triggers[triggerId].timingValue +
       sequencerRef.triggers[triggerId].nudgeValue;
@@ -786,8 +762,6 @@ const returnEmptySlicedTriggersArr = parentTrigger => {
     //add timingValue property
     tempTrigger.timingValue =
       parentTrigger.id * 48 + 48 / newNumOfSlicedTriggers * i;
-
-    //********** may need to add id here **********
 
     tempSlicedTriggersArr = tempSlicedTriggersArr.concat(tempTrigger);
   }
@@ -1050,11 +1024,6 @@ const reducer = (state = initialState, action) => {
       const mode = action.mode;
       let isPlaying = false;
 
-      // if (state.playBackMode !== mode) {
-      //   handleStopButtonClick();
-      //   isPlaying = true;
-      // }
-
       handleStopButtonClick();
 
       if (mode === 'song') {
@@ -1098,11 +1067,8 @@ const reducer = (state = initialState, action) => {
       //list of pattern id's to list of pattern indexes
       let songListPatternIndexArr = songListIdArr.map(id => {
         return state.patternsArr.reduce((prevVal, pattern, index) => {
-          if (id === pattern) {
-            return index;
-          } else {
-            return prevVal;
-          }
+          if (id === pattern) return index;
+          else return prevVal;
         }, null);
       });
 
@@ -1221,43 +1187,6 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'SYNTHESIZER_CHANGED': {
-      // const sequencerId = state.sequencerBeingEditedId;
-      // //dispose old synth
-      // state.sequencers[sequencerId].synthesizerRef.dispose();
-      // //create new object with same values as old but new reference
-      // let tempSequencerObj = { ...state.sequencers[sequencerId] };
-      // //change synthesizer number
-      // tempSequencerObj.synthesizer = action.newSynthNum;
-      // //change synthesizerRef
-      // tempSequencerObj.synthesizerRef = returnNewSynth(action.newSynthNum);
-      // //iterate through triggers and reschedule
-      // tempSequencerObj.triggers = tempSequencerObj.triggers.map(trigger => {
-      //   let tempTrigger = { ...trigger };
-      //   if (tempTrigger.isTriggered) {
-      //     tempTrigger = returnClearedTrigger(tempTrigger);
-      //     //we are using original 'trigger' object to pass in the note
-      //     tempTrigger = returnSetTrigger(
-      //       tempTrigger,
-      //       tempSequencerObj.synthesizerRef,
-      //       tempTrigger.note,
-      //       tempTrigger.duration,
-      //       tempTrigger.velocity,
-      //       false
-      //     );
-      //     return tempTrigger;
-      //   } else {
-      //     return trigger;
-      //   }
-      // });
-      // return {
-      //   ...state,
-      //   sequencers: {
-      //     ...state.sequencers,
-      //     [sequencerId]: {
-      //       ...tempSequencerObj
-      //     }
-      //   }
-      // };
       return {
         ...state
       };
@@ -1400,7 +1329,7 @@ const reducer = (state = initialState, action) => {
       );
 
       //create new parent triggers array and schedule new trigger
-      let newTriggers = sequencerRef.triggers.map(trigger => {
+      const newTriggers = sequencerRef.triggers.map(trigger => {
         let tempTrigger = { ...trigger };
 
         if (isSlicee) {
@@ -1485,7 +1414,6 @@ const reducer = (state = initialState, action) => {
 
                 if (index === triggerId) {
                   // found slicee trigger - schedule new trigger
-                  // tempSlicedTrigger.duration = newDurationStr;
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
@@ -1506,9 +1434,6 @@ const reducer = (state = initialState, action) => {
         } else {
           if (tempTrigger.id === triggerId) {
             //found correct trigger - shedule new trigger
-            // tempTrigger.duration = newDurationStr;
-            console.log('newVelocity:  ', newVelocity);
-
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
@@ -1562,7 +1487,6 @@ const reducer = (state = initialState, action) => {
 
                 if (index === triggerId) {
                   // found slicee trigger - schedule new trigger
-                  // tempSlicedTrigger.duration = newDurationStr;
                   tempSlicedTrigger.nudgeValue = nudgeValue;
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
