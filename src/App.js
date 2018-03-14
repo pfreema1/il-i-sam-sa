@@ -64,6 +64,8 @@ const returnNewSequencersObj = (arrayOfNewSequencers, state) => {
   return newSequencersObj;
 };
 
+// const returnArrayOfNewTriggersWithCopiedPattern = ()
+
 const returnArrayOfNewSequencersWithCopiedPattern = (
   sequencers,
   clonedTriggers,
@@ -488,7 +490,7 @@ const returnStartTimeForCurrentPattern = currentPatternIndex => {
   return currentPatternIndex * 768;
 };
 
-const handleStopButtonClick = currentPatternIndex => {
+const handleStopButtonClick = () => {
   Tone.Transport.stop();
 };
 
@@ -1002,7 +1004,7 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'STOP_BUTTON_CLICKED': {
-      handleStopButtonClick(state.currentPatternIndex);
+      handleStopButtonClick();
 
       return {
         ...state,
@@ -1012,6 +1014,8 @@ const reducer = (state = initialState, action) => {
     case 'PLAYBACK_MODE_CLICKED': {
       const playBackMode = action.playBackMode;
 
+      handleStopButtonClick();
+
       if (playBackMode === 'song') {
         buildSongTimeline(state.songArr);
       } else if (playBackMode === 'pattern') {
@@ -1020,22 +1024,33 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        playBackMode: playBackMode
+        playBackMode: playBackMode,
+        isPlaying: false
       };
     }
     case 'MODE_SELECTOR_CLICKED': {
       const mode = action.mode;
 
+      handleStopButtonClick();
+
+      if (mode === 'song') {
+        buildSongTimeline(state.songArr);
+      } else if (mode === 'pattern') {
+        buildPatternTimeline(state.currentPatternIndex);
+      }
+
       return {
         ...state,
-        UiMode: mode
+        UiMode: mode,
+        playBackMode: mode,
+        isPlaying: false
       };
     }
     case 'PATTERN_CHANGED': {
       const patternIndex = action.patternIndex;
 
       //stop playback
-      handleStopButtonClick(patternIndex);
+      handleStopButtonClick();
 
       buildPatternTimeline(patternIndex);
 
@@ -1099,7 +1114,7 @@ const reducer = (state = initialState, action) => {
       let newCurrentPatternIndex = newPatternsArr.length - 1;
 
       //stop playback
-      handleStopButtonClick(newCurrentPatternIndex);
+      handleStopButtonClick();
 
       //add new array to GLOBAL_PATTERN_TRIGGERS
       GLOBAL_PATTERN_TRIGGERS.push([]);
@@ -1746,28 +1761,8 @@ const reducer = (state = initialState, action) => {
       let elemToRemove = state.songModeSelectedPatternDomRef;
       //remove DOM element
       elemToRemove.remove();
-      /*
-      const songBuilderDropArea = document.getElementById(
-        'songBuilderDropArea'
-      );
 
-      const arrayOfPatternNamesForSong = Array.from(
-        songBuilderDropArea.childNodes
-      ).map((childNode, index) => {
-        return childNode.id;
-      });
-
-      const newSongArr = arrayOfPatternNamesForSong.map(patternName => {
-        //convert pattern name to index of patternsArr
-        let indexInPatternsArr;
-        state.patternsArr.forEach((pattern, index) => {
-          if (pattern === patternName) indexInPatternsArr = index;
-        });
-
-        return indexInPatternsArr;
-      });
-
-      */
+      handleStopButtonClick();
 
       //this function returns the song array based on the ui in drop area
       let newSongArr = returnSongPatternIndexArr(state);
@@ -1779,7 +1774,8 @@ const reducer = (state = initialState, action) => {
         songArr: newSongArr,
         songModeSelectedPattern: null,
         songModeSelectedPatternDomRef: null,
-        songModeSelectedPatternSequenceIndex: null
+        songModeSelectedPatternSequenceIndex: null,
+        isPlaying: false
       };
     }
     case 'MAKE_UNIQUE_IN_SONG_MODE': {
@@ -1818,7 +1814,7 @@ const reducer = (state = initialState, action) => {
         null
       );
 
-      handleStopButtonClick(newCurrentPatternIndex);
+      handleStopButtonClick();
 
       buildPatternTimeline(newCurrentPatternIndex);
 
