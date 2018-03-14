@@ -1779,34 +1779,31 @@ const reducer = (state = initialState, action) => {
         songArr: newSongArr,
         songModeSelectedPattern: null,
         songModeSelectedPatternDomRef: null,
-        songModeSelectedPatternSequencerIndex: null
+        songModeSelectedPatternSequenceIndex: null
       };
     }
     case 'MAKE_UNIQUE_IN_SONG_MODE': {
-      //try just changing the dom nodes' id?
-      let nodeToChange = state.songModeSelectedPatternDomRef;
-      let songIndexWhereUniquePatternGoes =
-        state.songModeSelectedPatternSequenceIndex;
+      const nodeToChange = state.songModeSelectedPatternDomRef;
 
-      // remove pattern
-      nodeToChange.remove();
+      const newPatternName = state.patternsArr[state.patternsArr.length - 1];
 
-      //create clone - same way drag works
-
-      //insert clone into song list
+      //change content of el
+      nodeToChange.id = newPatternName;
+      nodeToChange.innerHTML = newPatternName;
 
       //update songArr
+      const newSongArr = returnSongPatternIndexArr(state);
 
       //rebuild song timeline
+      buildSongTimeline(newSongArr);
 
       //change songModeSelectedPattern
-
-      //change songModeSelectedPatternDomRef
-
-      //change songModeSelectedSequenceIndex
+      const songModeSelectedPattern = newPatternName;
 
       return {
-        ...state
+        ...state,
+        songArr: newSongArr,
+        songModeSelectedPattern: songModeSelectedPattern
       };
     }
     case 'GO_TO_PATTERN_CLICKED': {
@@ -1821,12 +1818,16 @@ const reducer = (state = initialState, action) => {
         null
       );
 
+      handleStopButtonClick(newCurrentPatternIndex);
+
       buildPatternTimeline(newCurrentPatternIndex);
 
       return {
         ...state,
         UiMode: 'pattern',
-        currentPatternIndex: newCurrentPatternIndex
+        currentPatternIndex: newCurrentPatternIndex,
+        playBackMode: 'pattern',
+        isPlaying: false
       };
     }
     default:

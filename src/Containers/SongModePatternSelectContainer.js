@@ -17,6 +17,7 @@ class SongModePatternSelectContainer extends Component {
     const { patternsArr } = this.props;
     return (
       <ReactSortable
+        id="songModePatternSelect"
         options={{
           animation: 150,
           sort: false,
