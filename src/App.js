@@ -1030,6 +1030,12 @@ const reducer = (state = initialState, action) => {
     }
     case 'MODE_SELECTOR_CLICKED': {
       const mode = action.mode;
+      let isPlaying = false;
+
+      // if (state.playBackMode !== mode) {
+      //   handleStopButtonClick();
+      //   isPlaying = true;
+      // }
 
       handleStopButtonClick();
 
@@ -1043,7 +1049,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         UiMode: mode,
         playBackMode: mode,
-        isPlaying: false
+        isPlaying: isPlaying
       };
     }
     case 'PATTERN_CHANGED': {
@@ -1069,6 +1075,8 @@ const reducer = (state = initialState, action) => {
         state.patternsArr
       );
 
+      handleStopButtonClick();
+
       //list of pattern id's to list of pattern indexes
       let songListPatternIndexArr = songListIdArr.map(id => {
         return state.patternsArr.reduce((prevVal, pattern, index) => {
@@ -1087,7 +1095,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         songArr: songListPatternIndexArr,
-        songPatternStartTimesArr: songPatternStartTimesArr
+        songPatternStartTimesArr: songPatternStartTimesArr,
+        isPlaying: false
       };
     }
     case 'BLANK_PATTERN_ADDED': {
