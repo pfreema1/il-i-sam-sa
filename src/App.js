@@ -1788,7 +1788,8 @@ const reducer = (state = initialState, action) => {
       let songIndexWhereUniquePatternGoes =
         state.songModeSelectedPatternSequenceIndex;
 
-      //use REMOVE_PATTERN_FROM_SONG code to remove pattern
+      // remove pattern
+      nodeToChange.remove();
 
       //create clone - same way drag works
 
