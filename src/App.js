@@ -18,6 +18,7 @@ import AddSequencerButtonContainer from './Containers/AddSequencerButtonContaine
 import SongModeContainer from './Containers/SongModeContainer';
 import StateTreeManager from './Containers/StateTreeManager';
 import './songMode.css';
+import MixerScreenContainer from './Containers/MixerScreenContainer';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -1841,6 +1842,8 @@ class App extends Component {
             <StateTreeManager />
 
             <SongModeContainer />
+
+            <MixerScreenContainer />
           </div>
         </MuiThemeProvider>
       </Provider>

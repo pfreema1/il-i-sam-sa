@@ -19,6 +19,14 @@ class SequencerBrain extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const nextVolumeVal =
+      nextProps.sequencers[this.props.sequencerId].volumeVal;
+
+    if (nextVolumeVal !== this.state.volumeVal)
+      this.setState({ volumeVal: nextVolumeVal });
+  }
+
   handleSliderChange = (id, e, newValue) => {
     if (id === 'panSlider') {
       this.setState({ panVal: newValue });
