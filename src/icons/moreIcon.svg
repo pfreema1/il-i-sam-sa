@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="160px" viewBox="0 0 40 160" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>more icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-7-Copy" transform="translate(-220.000000, -300.000000)" fill="#82827B">
+            <g id="Group-4" transform="translate(176.000000, 101.000000)">
+                <g id="hoverIcons">
+                    <g id="Group-5" transform="translate(44.000000, 196.000000)">
+                        <g id="more-icon" transform="translate(0.000000, 3.000000)">
+                            <path d="M20,40 C31.045695,40 40,31.045695 40,20 C40,14.1044756 37.4491162,8.80474208 33.3908592,5.14430979 C29.8456756,1.94665515 25.1501706,0 20,0 C8.954305,0 0,8.954305 0,20 C0,31.045695 8.954305,40 20,40 Z" id="Oval-2"></path>
+                            <path d="M20,100 C31.045695,100 40,91.045695 40,80 C40,74.1044756 37.4491162,68.8047421 33.3908592,65.1443098 C29.8456756,61.9466552 25.1501706,60 20,60 C8.954305,60 0,68.954305 0,80 C0,91.045695 8.954305,100 20,100 Z" id="Oval-2"></path>
+                            <path d="M20,160 C31.045695,160 40,151.045695 40,140 C40,134.104476 37.4491162,128.804742 33.3908592,125.14431 C29.8456756,121.946655 25.1501706,120 20,120 C8.954305,120 0,128.954305 0,140 C0,151.045695 8.954305,160 20,160 Z" id="Oval-2"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

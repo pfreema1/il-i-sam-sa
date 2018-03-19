@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="288px" height="288px" viewBox="0 0 288 288" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>durationIcon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-7" transform="translate(-97.000000, -568.000000)" fill="#82827B">
+            <g id="durationIcon" transform="translate(98.000000, 569.000000)">
+                <path d="M143,286 C221.976719,286 286,215.381367 286,143 C286,143 143,143 143,143 C143,143 143,0 143,0 C64.0232808,0 0,64.0232808 0,143 C0,221.976719 64.0232808,286 143,286 Z" id="Oval" stroke="#979797"></path>
+                <path d="M143,286 C221.976719,286 286,215.381367 286,143 C286,143 143,143 143,143 C143,143 143,0 143,0 C64.0232808,0 0,64.0232808 0,143 C0,221.976719 64.0232808,286 143,286 Z" id="Oval" fill-opacity="0.2" transform="translate(143.000000, 143.000000) rotate(180.000000) translate(-143.000000, -143.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
