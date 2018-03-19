@@ -20,7 +20,7 @@ const ModeSelectorView = ({ UiMode, handleModeSelectorClick }) => (
     >
       PATTERN
     </div>
-    <div
+    {/*<div
       onClick={handleModeSelectorClick.bind(null, 'mixer')}
       className={
         'mode-selector__option ' +
@@ -28,7 +28,7 @@ const ModeSelectorView = ({ UiMode, handleModeSelectorClick }) => (
       }
     >
       MIXER
-    </div>
+    </div>*/}
   </div>
 );
 

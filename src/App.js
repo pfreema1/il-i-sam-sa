@@ -233,7 +233,8 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
     pitchVal: synthComponentRefObj.pitch.pitch,
     triggers: returnTriggers(amountOfTriggers),
     isMuted: false,
-    isSoloed: false
+    isSoloed: false,
+    fxArray: []
   };
 
   return sequencers;

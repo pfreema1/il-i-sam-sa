@@ -1,14 +1,30 @@
 import React from 'react';
 import Slider from 'material-ui/Slider';
 
-const styling = {
+const mixerStyling = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  margin: '20px',
+  border: '1px solid black',
+  height: '80vh',
+  minWidth: '120px'
+};
+
+const sequencerIdStyling = {
+  height: '5%'
+};
+
+const fxContainerStyling = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: '20px',
-  border: '1px solid black'
+  height: '20%'
 };
+
+/*****************************/
 
 const MixerControlView = ({
   sequencerName,
@@ -18,10 +34,12 @@ const MixerControlView = ({
   index
 }) => {
   return (
-    <div style={styling}>
-      <h3>{sequencerName}</h3>
+    <div style={mixerStyling}>
+      <div style={sequencerIdStyling}>
+        <h3>{sequencerName}</h3>
+      </div>
       <Slider
-        style={{ height: 300 }}
+        style={{ height: '60%' }}
         axis="y"
         defaultValue={volumeVal}
         min={-80}
@@ -30,7 +48,7 @@ const MixerControlView = ({
         onDragStop={volumeDragStop.bind(null, index)}
         value={volumeVal}
       />
-      <div>fx here</div>
+      <div style={fxContainerStyling}>fx here</div>
     </div>
   );
 };
