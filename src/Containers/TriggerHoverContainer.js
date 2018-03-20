@@ -5,7 +5,6 @@ import sliceMinus from '../icons/sliceMinus.svg';
 import velocityIcon from '../icons/velocityIcon.svg';
 import durationIcon from '../icons/durationIcon.svg';
 import nudgeIcon from '../icons/nudgeIcon.svg';
-import { Tooltip } from 'react-tippy';
 
 const ContainerStyling = {
   // height: '70px',
@@ -32,27 +31,57 @@ const row = {
 
 class TriggerHoverContainer extends Component {
   render() {
+    const {
+      handleMenuItemClick,
+      handleSliceMenuItemClick,
+      handleUnSliceMenuItemClick,
+      triggerId
+    } = this.props;
+
     return (
       <div style={ContainerStyling}>
         <div style={row}>
           <div>
-            <Tooltip title="VELOCITY" trigger="mouseenter" interactive="true">
-              <img alt="velocity-icon" style={imgStyling} src={velocityIcon} />
-            </Tooltip>
+            <img
+              onClick={handleMenuItemClick.bind(null, triggerId, 1)}
+              alt="velocity-icon"
+              style={imgStyling}
+              src={velocityIcon}
+            />
           </div>
           <div>
-            <img alt="duration-icon" style={imgStyling} src={durationIcon} />
+            <img
+              onClick={handleMenuItemClick.bind(null, triggerId, 2)}
+              alt="duration-icon"
+              style={imgStyling}
+              src={durationIcon}
+            />
           </div>
           <div>
-            <img alt="nudge-icon" style={imgStyling} src={nudgeIcon} />
+            <img
+              onClick={handleMenuItemClick.bind(null, triggerId, 3)}
+              alt="nudge-icon"
+              style={imgStyling}
+              src={nudgeIcon}
+            />
           </div>
         </div>
         <div style={row}>
           <div>
-            <img alt="increase-slices" style={imgStyling} src={sliceAdd} />
+            <img
+              onClick={handleSliceMenuItemClick.bind(null, triggerId)}
+              alt="increase-slices"
+              style={imgStyling}
+              src={sliceAdd}
+            />
           </div>
           <div>
-            <img alt="decrease-slices" style={imgStyling} src={sliceMinus} />
+            <img
+              onClick={handleUnSliceMenuItemClick.bind(null, triggerId)}
+              alt="decrease-slices"
+              style={imgStyling}
+              src={sliceMinus}
+            />
           </div>
         </div>
       </div>

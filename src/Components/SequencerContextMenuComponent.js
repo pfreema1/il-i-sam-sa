@@ -8,9 +8,6 @@ const SequencerContextMenuComponent = ({
   handleUnSliceMenuItemClick
 }) => (
   <ContextMenu id={'triggerMenu' + sequencerId}>
-    <MenuItem onClick={handleMenuItemClick} data={{ item: 0 }}>
-      note
-    </MenuItem>
     <MenuItem onClick={handleMenuItemClick} data={{ item: 1 }}>
       velocity
     </MenuItem>

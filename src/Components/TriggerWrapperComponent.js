@@ -8,7 +8,10 @@ const TriggerWrapperComponent = ({
   sequencerToRender,
   returnSlicedTriggers,
   sequencerId,
-  triggersToRender
+  triggersToRender,
+  handleMenuItemClick,
+  handleSliceMenuItemClick,
+  handleUnSliceMenuItemClick
 }) => (
   <div className="sequencer__trigger-wrapper">
     {triggersToRender &&
@@ -26,7 +29,14 @@ const TriggerWrapperComponent = ({
               holdToDisplay={1000}
             >
               <Tooltip
-                html={<TriggerHoverContainer />}
+                html={
+                  <TriggerHoverContainer
+                    handleMenuItemClick={handleMenuItemClick}
+                    handleSliceMenuItemClick={handleSliceMenuItemClick}
+                    handleUnSliceMenuItemClick={handleUnSliceMenuItemClick}
+                    triggerId={trigger.id}
+                  />
+                }
                 useContext
                 position="bottom"
                 trigger="mouseenter"

@@ -18,10 +18,10 @@ class SequencerContainer extends Component {
     };
   }
 
-  handleMenuItemClick = (e, data) => {
-    let triggerBeingEditedId = data.attributes.id;
+  handleMenuItemClick = (id, itemNum, e) => {
+    let triggerBeingEditedId = id;
 
-    this.setState({ isEditingTrigger: true, menuItemClicked: data.item });
+    this.setState({ isEditingTrigger: true, menuItemClicked: itemNum });
 
     this.props.dispatch({
       type: 'EDITING_TRIGGER',
@@ -42,10 +42,10 @@ class SequencerContainer extends Component {
     });
   };
 
-  handleSliceMenuItemClick = (e, data) => {
+  handleSliceMenuItemClick = (id, e) => {
     console.log('sliced!');
 
-    let triggerBeingEditedId = data.attributes.id;
+    let triggerBeingEditedId = id;
 
     this.props.dispatch({
       type: 'TRIGGER_SLICED',
@@ -55,8 +55,8 @@ class SequencerContainer extends Component {
     });
   };
 
-  handleUnSliceMenuItemClick = (e, data) => {
-    let triggerBeingEditedId = data.attributes.id;
+  handleUnSliceMenuItemClick = (id, e) => {
+    let triggerBeingEditedId = id;
 
     this.props.dispatch({
       type: 'TRIGGER_UNSLICED',

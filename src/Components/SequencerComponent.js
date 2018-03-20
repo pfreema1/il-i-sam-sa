@@ -47,6 +47,9 @@ const SequencerComponent = ({
           returnSlicedTriggers={returnSlicedTriggers}
           sequencerId={sequencerId}
           triggersToRender={triggersToRender}
+          handleMenuItemClick={handleMenuItemClick}
+          handleSliceMenuItemClick={handleSliceMenuItemClick}
+          handleUnSliceMenuItemClick={handleUnSliceMenuItemClick}
         />
       </div>
     </VelocityComponent>
