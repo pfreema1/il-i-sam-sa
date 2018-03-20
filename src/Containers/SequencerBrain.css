@@ -11,9 +11,9 @@
 }
 
 .sequencer-brain__name-container {
-  width: 100%;
-  height: 30%;
-  display: inline-flex;
+  width: 90%;
+  height: 22%;
+  display: flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
@@ -21,13 +21,17 @@
   border: 1px solid black;
   background: RGBA(35, 35, 39, 1);
   font-family: 'Oswald', sans-serif;
+  margin: 0 auto 0 auto;
+  border-radius: 2px;
 }
 
 .sequencer-brain__controls-container {
-  height: 70%;
+  height: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 90%;
+  margin: 0 auto 0 auto;
 }
 
 .sequencer-brain__mute-solo-container {
@@ -88,6 +92,10 @@
   height: 15px !important;
 }
 
+/* #panSlider > div > div > div:last-of-type::after {
+  content: '-';
+} */
+
 #panSlider > div > div > div:nth-child(2) {
   background: RGBA(35, 35, 39, 0.5) !important;
 }
@@ -102,13 +110,13 @@
   border-radius: 2px;
 }
 
-#volumeSlider > div > div > div:nth-child(2) {
-  background: RGBA(35, 35, 39, 0.5) !important;
-}
-
 #volumeSlider > div > div > div:last-of-type {
   border-radius: 2px !important;
   height: 15px !important;
+}
+
+#volumeSlider > div > div > div:nth-child(2) {
+  background: RGBA(35, 35, 39, 0.5) !important;
 }
 
 #pitchSlider > div > div > div {

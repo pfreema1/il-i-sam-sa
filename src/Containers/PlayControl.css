@@ -76,7 +76,7 @@
 }
 
 .play-control__play-pause-button {
-  width: 25%;
+  width: 20%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -85,6 +85,7 @@
   transition: all 0.5s;
   border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
+  box-sizing: border-box;
 }
 
 .play-control__play-mode-selected {
@@ -93,7 +94,7 @@
 }
 
 .play-control__stop-button {
-  width: 25%;
+  width: 20%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -101,10 +102,12 @@
   border: 1px solid black;
   border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
+  box-sizing: border-box;
 }
 
 .play-control__stop-button-icon {
   height: 20px;
   width: 20px;
   background: RGBA(130, 130, 123, 1);
+  border-radius: 2px;
 }

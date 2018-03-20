@@ -19,6 +19,7 @@ import SongModeContainer from './Containers/SongModeContainer';
 import StateTreeManager from './Containers/StateTreeManager';
 import './songMode.css';
 import MixerScreenContainer from './Containers/MixerScreenContainer';
+import AddSequencerDropContainer from './Containers/AddSequencerDropContainer';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -1112,7 +1113,7 @@ const reducer = (state = initialState, action) => {
 
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
-        'Pattern ' + (state.patternsArr.length + 1)
+        'PATTERN ' + (state.patternsArr.length + 1)
       );
 
       //update state.currentPatternIndex
@@ -1838,9 +1839,11 @@ class App extends Component {
             <ToolbarContainer />
             <Sequencers />
 
+            <AddSequencerDropContainer />
+
             <AddSequencerButtonContainer />
 
-            <StateTreeManager />
+            {/*<StateTreeManager />*/}
 
             <SongModeContainer />
 

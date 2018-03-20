@@ -27,7 +27,7 @@ const TriggerWrapperComponent = ({
               attributes={{ id: trigger.id }}
               collect={props => props}
               holdToDisplay={1000}
-              disable="true"
+              disable={true}
             >
               <Tooltip
                 html={
