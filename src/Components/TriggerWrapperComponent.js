@@ -2,7 +2,7 @@ import React from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import Trigger from '../Containers/Trigger';
 import { Tooltip } from 'react-tippy';
-import TriggerHoverContainer from '../Containers/TriggerHoverContainer';
+import TriggerHoverComponent from './TriggerHoverComponent';
 
 const TriggerWrapperComponent = ({
   sequencerToRender,
@@ -30,7 +30,7 @@ const TriggerWrapperComponent = ({
             >
               <Tooltip
                 html={
-                  <TriggerHoverContainer
+                  <TriggerHoverComponent
                     handleMenuItemClick={handleMenuItemClick}
                     handleSliceMenuItemClick={handleSliceMenuItemClick}
                     handleUnSliceMenuItemClick={handleUnSliceMenuItemClick}
@@ -41,6 +41,7 @@ const TriggerWrapperComponent = ({
                 position="bottom"
                 trigger="mouseenter"
                 interactive="true"
+                unmountHTMLWhenHide="true"
               >
                 <Trigger
                   sequencerId={sequencerId}

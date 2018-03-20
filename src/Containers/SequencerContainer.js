@@ -6,7 +6,7 @@ import '../react-contextmenu.css';
 import './SequencerContainer.css';
 import SequencerComponent from '../Components/SequencerComponent';
 import { Tooltip } from 'react-tippy';
-import TriggerHoverContainer from './TriggerHoverContainer';
+import TriggerHoverComponent from '../Components/TriggerHoverComponent';
 
 /*****************************/
 
@@ -90,7 +90,7 @@ class SequencerContainer extends Component {
       >
         <Tooltip
           html={
-            <TriggerHoverContainer
+            <TriggerHoverComponent
               handleMenuItemClick={this.handleMenuItemClick}
               handleSliceMenuItemClick={this.handleSliceMenuItemClick}
               handleUnSliceMenuItemClick={this.handleUnSliceMenuItemClick}
