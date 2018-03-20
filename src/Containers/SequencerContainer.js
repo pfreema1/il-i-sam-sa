@@ -97,10 +97,11 @@ class SequencerContainer extends Component {
               triggerId={trigger.id}
             />
           }
-          useContext
           position="bottom"
           trigger="mouseenter"
           interactive="true"
+          unmountHTMLWhenHide="true"
+          hideOnClick="false"
         >
           <div className="sequencer__sliced-trigger-container">
             {arrayOfWidths.map((width, index) => {

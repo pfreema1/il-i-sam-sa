@@ -37,11 +37,11 @@ const TriggerWrapperComponent = ({
                     triggerId={trigger.id}
                   />
                 }
-                useContext
                 position="bottom"
                 trigger="mouseenter"
                 interactive="true"
                 unmountHTMLWhenHide="true"
+                hideOnClick="false"
               >
                 <Trigger
                   sequencerId={sequencerId}

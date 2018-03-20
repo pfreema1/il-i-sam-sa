@@ -29,24 +29,16 @@ const row = {
   // marginBottom: '40px'
 };
 
+/*****************************/
+
 const TriggerHoverComponent = ({
   handleMenuItemClick,
   handleSliceMenuItemClick,
   handleUnSliceMenuItemClick,
   triggerId
 }) => {
-  // state = { isHidden: false };
-
-  // handleClick = () => {
-  //   this.setState({ isHidden: !this.state.isHidden });
-  // };
-
   return (
-    <div
-      // className={isHidden ? 'hide-trigger-hover' : ''}
-      // onClick={handleClick}
-      style={ContainerStyling}
-    >
+    <div onClick={() => console.log('hoverrrrrrring')} style={ContainerStyling}>
       <div style={row}>
         <div
           onClick={handleMenuItemClick.bind(null, triggerId, 1)}
