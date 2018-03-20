@@ -35,8 +35,18 @@ const TriggerHoverComponent = ({
   handleUnSliceMenuItemClick,
   triggerId
 }) => {
+  // state = { isHidden: false };
+
+  // handleClick = () => {
+  //   this.setState({ isHidden: !this.state.isHidden });
+  // };
+
   return (
-    <div style={ContainerStyling}>
+    <div
+      // className={isHidden ? 'hide-trigger-hover' : ''}
+      // onClick={handleClick}
+      style={ContainerStyling}
+    >
       <div style={row}>
         <div
           onClick={handleMenuItemClick.bind(null, triggerId, 1)}
