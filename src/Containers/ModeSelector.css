@@ -4,9 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
-  color: black;
   cursor: pointer;
+  color: white;
 }
 
 .mode-selector__option {
@@ -17,9 +16,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
 }
 
 .mode-selector__option--selected {
-  background: black;
-  color: white;
+  background: RGBA(192, 32, 11, 1);
 }
