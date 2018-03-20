@@ -87,6 +87,7 @@ class SequencerContainer extends Component {
         attributes={{ id: trigger.id }}
         collect={props => props}
         holdToDisplay={1000}
+        disable="true"
       >
         <Tooltip
           html={
