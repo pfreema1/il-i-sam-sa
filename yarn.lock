@@ -5534,9 +5534,9 @@ react-swipeable-views@^0.12.12:
     react-swipeable-views-utils "^0.12.11"
     warning "^3.0.0"
 
-react-tippy@^1.2.2:
+react-tippy@pfreema1/react-tippy:
   version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-tippy/-/react-tippy-1.2.2.tgz#061467d34d29e7a5a9421822d125c451d6bb5153"
+  resolved "https://codeload.github.com/pfreema1/react-tippy/tar.gz/c215f859e8c85f039892a54799e0af8b57053ffd"
   dependencies:
     popper.js "^1.11.1"
 
