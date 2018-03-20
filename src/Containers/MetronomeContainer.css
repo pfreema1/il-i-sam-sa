@@ -1,11 +1,11 @@
 .metronome__container {
-  width: 130px;
+  width: 160px;
   height: 45px;
   border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
+
   cursor: pointer;
 }
 
@@ -17,12 +17,17 @@
   align-items: center;
   border: 1px solid black;
   transition: all 0.5s;
+  background: RGBA(26, 26, 26, 1);
+  border-radius: 2px;
+  border: 1px solid RGBA(130, 130, 123, 1);
+}
+
+.metronome__icon-container > img {
+  height: 25px;
 }
 
 .metronome-on {
-  background: black;
-  color: white;
-  transform: scale(1.1);
+  background: RGBA(196, 35, 14, 1);
 }
 
 .metronome__control-container {
@@ -40,6 +45,10 @@
   justify-content: center;
   align-items: center;
   cursor: ns-resize;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
+  background: RGBA(26, 26, 26, 1);
+  color: RGBA(252, 253, 248, 1);
 }
 
 .metronome__increase-decrease-container {
@@ -49,4 +58,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
+}
+
+.metronome__increase-button {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid RGBA(130, 130, 123, 1);
+}
+
+.metronome__increase-button > img {
+  height: 10px;
+}
+
+.metronome__decrease-button > img {
+  height: 10px;
+  transform: rotate(180deg);
+}
+
+.metronome__decrease-button {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid RGBA(130, 130, 123, 1); */
 }

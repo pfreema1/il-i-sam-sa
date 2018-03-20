@@ -1,4 +1,6 @@
 import React from 'react';
+import metronomeIcon from '../../icons/metronomeIcon.svg';
+import arrowIcon from '../../icons/arrowIcon.svg';
 
 const MetronomeComponent = ({
   handleMetronomeIconClick,
@@ -18,7 +20,7 @@ const MetronomeComponent = ({
         'metronome__icon-container ' + (isMetronomeOn ? 'metronome-on' : '')
       }
     >
-      []
+      <img src={metronomeIcon} alt="metronome icon" />
     </div>
     <div className="metronome__control-container">
       <div
@@ -29,20 +31,20 @@ const MetronomeComponent = ({
         onDragOver={handleOnDragOver}
         className="metronome__bpm-readout"
       >
-        {bpm + ' bpm'}
+        {bpm + ' BPM'}
       </div>
       <div className="metronome__increase-decrease-container">
         <div
           onClick={handleMetronomeIncreaseClick}
           className="metronome__increase-button"
         >
-          ^
+          <img src={arrowIcon} alt="arrow icon" />
         </div>
         <div
           onClick={handleMetronomeDecreaseClick}
           className="metronome__decrease-button"
         >
-          ^
+          <img src={arrowIcon} alt="arrow icon" />
         </div>
       </div>
     </div>

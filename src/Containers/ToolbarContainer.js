@@ -7,7 +7,8 @@ import PlayControl from './PlayControl';
 import PatternIndicator from './PatternIndicator';
 
 const ToolbarStyleObj = {
-  height: '60px'
+  height: '60px',
+  background: 'RGBA(26, 26, 26, 1.00)'
 };
 
 /*****************************/
