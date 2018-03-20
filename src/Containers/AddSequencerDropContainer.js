@@ -13,7 +13,8 @@ const wrapperStyling = {
   flexDirection: 'column',
   justifyContent: 'space-around',
   alignItems: 'center',
-  fontSize: '10px'
+  fontSize: '10px',
+  marginTop: '10px'
 };
 
 /*****************************/
