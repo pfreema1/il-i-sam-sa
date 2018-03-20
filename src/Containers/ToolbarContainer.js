@@ -24,7 +24,7 @@ class ToolbarContainer extends Component {
     return (
       <div className="toolbar-container">
         <Toolbar style={ToolbarStyleObj}>
-          <ToolbarGroup firstChild={true}>
+          <ToolbarGroup>
             <MetronomeContainer />
           </ToolbarGroup>
 

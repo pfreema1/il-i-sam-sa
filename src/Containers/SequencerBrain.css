@@ -1,12 +1,13 @@
 .sequencer-brain__container {
   display: inline-block;
-  width: 100px;
-  background: RGBA(42, 94, 94, 1);
+  width: 120px;
+  min-width: 120px;
+  background: RGBA(130, 130, 123, 1);
   vertical-align: top;
   height: 90px;
   padding: 5px;
   margin: 0 5px 0 5px;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 
 .sequencer-brain__name-container {
@@ -18,7 +19,8 @@
   white-space: nowrap;
   overflow: hidden;
   border: 1px solid black;
-  background: RGBA(58, 61, 63, 1);
+  background: RGBA(35, 35, 39, 1);
+  font-family: 'Oswald', sans-serif;
 }
 
 .sequencer-brain__controls-container {
@@ -34,30 +36,35 @@
   height: 100%;
   justify-content: space-around;
   align-items: center;
+  font-family: 'Oswald', sans-serif;
 }
 
 .sequencer-brain__mute-button {
   height: 20px;
   width: 20px;
-  border: 1px solid black;
+  border: 1px solid RGBA(35, 35, 39, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 2px;
   transition: all 0.5s;
   cursor: pointer;
+  color: black;
+  font-size: 10px;
 }
 
 .sequencer-brain__solo-button {
   height: 20px;
   width: 20px;
-  border: 1px solid black;
+  border: 1px solid RGBA(35, 35, 39, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 2px;
   transition: all 0.5s;
   cursor: pointer;
+  color: black;
+  font-size: 10px;
 }
 
 .sequencer-brain__sliders > div > div {
@@ -66,7 +73,59 @@
 }
 
 .sequencer-brain__button--active {
-  transform: scale(1.1);
-  background: white;
+  /* transform: scale(1.1); */
+  background: RGBA(177, 49, 31, 1);
   color: black;
+}
+
+#panSlider > div > div > div {
+  background: RGBA(35, 35, 39, 1) !important;
+  border-radius: 2px;
+}
+
+#panSlider > div > div > div:last-of-type {
+  border-radius: 2px !important;
+  height: 15px !important;
+}
+
+#panSlider > div > div > div:nth-child(2) {
+  background: RGBA(35, 35, 39, 0.5) !important;
+}
+
+#volumeSlider > div > div > div {
+  background: RGBA(35, 35, 39, 1) !important;
+  border-radius: 2px;
+}
+
+#volumeSlider > div > div > div {
+  background: RGBA(35, 35, 39, 1) !important;
+  border-radius: 2px;
+}
+
+#volumeSlider > div > div > div:nth-child(2) {
+  background: RGBA(35, 35, 39, 0.5) !important;
+}
+
+#volumeSlider > div > div > div:last-of-type {
+  border-radius: 2px !important;
+  height: 15px !important;
+}
+
+#pitchSlider > div > div > div {
+  background: RGBA(35, 35, 39, 1) !important;
+  border-radius: 2px;
+}
+
+#pitchSlider > div > div > div {
+  background: RGBA(35, 35, 39, 1) !important;
+  border-radius: 2px;
+}
+
+#pitchSlider > div > div > div:last-of-type {
+  border-radius: 2px !important;
+  height: 15px !important;
+}
+
+#pitchSlider > div > div > div:nth-child(2) {
+  background: RGBA(35, 35, 39, 0.5) !important;
 }

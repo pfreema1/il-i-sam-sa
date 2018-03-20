@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="146px" height="146px" viewBox="0 0 146 146" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>plus sign</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-7" transform="translate(-824.000000, -948.000000)" fill="#82827B">
+            <g id="plus-sign" transform="translate(824.000000, 948.000000)">
+                <rect id="Rectangle-2-Copy-4" x="51" y="0" width="38" height="146" rx="5"></rect>
+                <path d="M59,3 L87,3 C89.7614237,3 92,5.23857625 92,8 L92,144 C92,146.761424 89.7614237,149 87,149 L59,149 C56.2385763,149 54,146.761424 54,144 L54,67.24 L54,8 C54,5.23857625 56.2385763,3 59,3 Z" id="Rectangle-2-Copy-5" transform="translate(73.000000, 76.000000) rotate(90.000000) translate(-73.000000, -76.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

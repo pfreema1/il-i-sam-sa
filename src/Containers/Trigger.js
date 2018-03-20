@@ -5,12 +5,12 @@ import TriggerView from '../Components/TriggerView';
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
-    return '#BEEBD1';
+    return 'RGBA(192, 32, 11, 1.00)';
   } else {
     if (barStarter) {
-      return '#6863B2';
+      return 'RGBA(52, 51, 51, 1.00)';
     } else {
-      return '#405790';
+      return 'RGBA(38, 38, 38, 1.00)';
     }
   }
 };

@@ -19,7 +19,7 @@
   transition: all 0.5s;
   background: RGBA(26, 26, 26, 1);
   border-radius: 2px;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
 }
 
 .metronome__icon-container > img {
@@ -45,7 +45,7 @@
   justify-content: center;
   align-items: center;
   cursor: ns-resize;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
   background: RGBA(26, 26, 26, 1);
   color: RGBA(252, 253, 248, 1);
@@ -58,7 +58,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
 }
 

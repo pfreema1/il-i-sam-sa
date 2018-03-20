@@ -39,7 +39,7 @@
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
 }
 
@@ -50,7 +50,7 @@
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
   border-top: none;
 }
@@ -83,7 +83,7 @@
   align-items: center;
   border: 1px solid black;
   transition: all 0.5s;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
 }
 
@@ -99,7 +99,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid black;
-  border: 1px solid RGBA(130, 130, 123, 1);
+  border: 1px solid RGBA(130, 130, 123, 0.5);
   border-radius: 2px;
 }
 

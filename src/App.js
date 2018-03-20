@@ -386,7 +386,7 @@ const initialState = {
   },
   playBackMode: 'pattern',
   UiMode: 'pattern',
-  patternsArr: ['Pattern 1'],
+  patternsArr: ['PATTERN 1'],
   currentPatternIndex: 0,
   songArr: [],
   returnSongPatternStartTimesArr: [],

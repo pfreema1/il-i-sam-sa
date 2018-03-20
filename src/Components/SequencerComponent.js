@@ -8,7 +8,9 @@ import TriggerWrapperComponent from './TriggerWrapperComponent';
 
 const CardParentStyle = {
   width: '100vw',
-  minWidth: '950px'
+  minWidth: '950px',
+  background: 'RGBA(26, 26, 26, 1.00)',
+  boxShadow: 'none'
 };
 
 const CardContainerStyle = {
