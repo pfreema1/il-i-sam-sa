@@ -5,6 +5,8 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import '../react-contextmenu.css';
 import './SequencerContainer.css';
 import SequencerComponent from '../Components/SequencerComponent';
+import { Tooltip } from 'react-tippy';
+import TriggerHoverContainer from './TriggerHoverContainer';
 
 /*****************************/
 
@@ -86,24 +88,39 @@ class SequencerContainer extends Component {
         collect={props => props}
         holdToDisplay={1000}
       >
-        <div className="sequencer__sliced-trigger-container">
-          {arrayOfWidths.map((width, index) => {
-            let widthStr = width + '%';
+        <Tooltip
+          html={
+            <TriggerHoverContainer
+              handleMenuItemClick={this.handleMenuItemClick}
+              handleSliceMenuItemClick={this.handleSliceMenuItemClick}
+              handleUnSliceMenuItemClick={this.handleUnSliceMenuItemClick}
+              triggerId={trigger.id}
+            />
+          }
+          useContext
+          position="bottom"
+          trigger="mouseenter"
+          interactive="true"
+        >
+          <div className="sequencer__sliced-trigger-container">
+            {arrayOfWidths.map((width, index) => {
+              let widthStr = width + '%';
 
-            return (
-              <Trigger
-                sequencerId={this.props.sequencerId}
-                parentTriggerId={trigger.id}
-                id={index}
-                key={index}
-                width={widthStr}
-                height={heightStr}
-                isSlicee={true}
-                barStarter={index % 4 === 0 ? true : false}
-              />
-            );
-          })}
-        </div>
+              return (
+                <Trigger
+                  sequencerId={this.props.sequencerId}
+                  parentTriggerId={trigger.id}
+                  id={index}
+                  key={index}
+                  width={widthStr}
+                  height={heightStr}
+                  isSlicee={true}
+                  barStarter={index % 4 === 0 ? true : false}
+                />
+              );
+            })}
+          </div>
+        </Tooltip>
       </ContextMenuTrigger>
     );
   };

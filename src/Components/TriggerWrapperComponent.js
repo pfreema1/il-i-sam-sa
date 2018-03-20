@@ -41,7 +41,6 @@ const TriggerWrapperComponent = ({
                 position="bottom"
                 trigger="mouseenter"
                 interactive="true"
-                unmountHTMLWhenHide="true"
               >
                 <Trigger
                   sequencerId={sequencerId}
