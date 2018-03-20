@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Trigger.css';
 import TriggerView from '../Components/TriggerView';
-import { Tooltip } from 'react-tippy';
-import TriggerHoverContainer from './TriggerHoverContainer';
 
 const backgroundColorSetter = (isTriggered, barStarter) => {
   if (isTriggered) {
@@ -78,24 +76,16 @@ class Trigger extends Component {
     );
 
     return (
-      <Tooltip
-        html={<TriggerHoverContainer />}
-        useContext
-        position="bottom"
-        trigger="mouseenter"
-        interactive="true"
-      >
-        <TriggerView
-          bgColor={bgColor}
-          isTriggered={this.state.isTriggered}
-          barStarter={this.props.barStarter}
-          width={this.props.width}
-          height={this.props.height}
-          isSlicee={isSlicee}
-          handleTriggerClick={this.handleTriggerClick}
-          id={id}
-        />
-      </Tooltip>
+      <TriggerView
+        bgColor={bgColor}
+        isTriggered={this.state.isTriggered}
+        barStarter={this.props.barStarter}
+        width={this.props.width}
+        height={this.props.height}
+        isSlicee={isSlicee}
+        handleTriggerClick={this.handleTriggerClick}
+        id={id}
+      />
     );
   }
 }

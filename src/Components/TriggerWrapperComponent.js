@@ -1,6 +1,8 @@
 import React from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import Trigger from '../Containers/Trigger';
+import { Tooltip } from 'react-tippy';
+import TriggerHoverContainer from '../Containers/TriggerHoverContainer';
 
 const TriggerWrapperComponent = ({
   sequencerToRender,
@@ -23,16 +25,24 @@ const TriggerWrapperComponent = ({
               collect={props => props}
               holdToDisplay={1000}
             >
-              <Trigger
-                sequencerId={sequencerId}
-                id={trigger.id}
-                parentTriggerId={null}
-                key={trigger.id}
-                width={'100%'}
-                height={'100%'}
-                isSlicee={false}
-                barStarter={trigger.id % 4 === 0 ? true : false}
-              />
+              <Tooltip
+                html={<TriggerHoverContainer />}
+                useContext
+                position="bottom"
+                trigger="mouseenter"
+                interactive="true"
+              >
+                <Trigger
+                  sequencerId={sequencerId}
+                  id={trigger.id}
+                  parentTriggerId={null}
+                  key={trigger.id}
+                  width={'100%'}
+                  height={'100%'}
+                  isSlicee={false}
+                  barStarter={trigger.id % 4 === 0 ? true : false}
+                />
+              </Tooltip>
             </ContextMenuTrigger>
           );
         }
