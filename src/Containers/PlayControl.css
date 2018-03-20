@@ -1,10 +1,10 @@
 .play-control-wrapper {
-  width: 160px;
+  width: 250px;
   height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: white;
   /* background: white; */
   cursor: pointer;
 }
@@ -14,8 +14,15 @@
   background: black;
 }
 
+.play-control__indicator {
+  width: 15px;
+  height: 15px;
+  background: RGBA(52, 51, 51, 1);
+  transition: all 0.5s;
+}
+
 .play-control__song-pattern-select {
-  width: 50%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -31,15 +38,24 @@
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
 }
 
-.play-control__patttern-select {
+.play-control__pattern-select {
   height: 50%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
+  border-top: none;
+}
+
+.play-control__play-icon {
+  height: 20px;
 }
 
 .play-control__small-box-select {
@@ -66,11 +82,12 @@
   align-items: center;
   border: 1px solid black;
   transition: all 0.5s;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
 }
 
 .play-control__play-mode-selected {
-  color: white;
-  background: black;
+  background: RGBA(192, 32, 11, 1);
 }
 
 .play-control__stop-button {
@@ -80,4 +97,12 @@
   justify-content: center;
   align-items: center;
   border: 1px solid black;
+  border: 1px solid RGBA(130, 130, 123, 1);
+  border-radius: 2px;
+}
+
+.play-control__stop-button-icon {
+  height: 20px;
+  width: 20px;
+  background: RGBA(130, 130, 123, 1);
 }
