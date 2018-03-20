@@ -1,0 +1,11 @@
+.trigger-hover-icon-wrapper {
+  transition: all 0.5s;
+  opacity: 0.3;
+  -webkit-backface-visibility: hidden;
+  cursor: pointer;
+}
+
+.trigger-hover-icon-wrapper:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
