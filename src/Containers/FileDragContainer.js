@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './FileDragContainer.css';
-import FileDragLoadingComponent from '../Components/FileDragLoadingComponent';
 import FileDragComponent from '../Components/FileDragComponent';
 
-class FileDragContainer extends Component {
-  constructor(props) {
-    super(props);
+const wrapperStyling = {};
 
-    this.state = {
-      isLoadingFile: false
-    };
-  }
+/*****************************/
+
+class FileDragContainer extends Component {
+  // constructor(props) {
+  //   super(props);
+
+  //   this.state = {
+  //     isLoadingFile: false
+  //   };
+  // }
 
   handleDragEnd = e => {
     //remove all of the drag data
@@ -67,15 +69,17 @@ class FileDragContainer extends Component {
 
       //prevents flash back to original visual state after finished loading
       setTimeout(() => {
-        this.setState({ isLoadingFile: false });
+        // this.setState({ isLoadingFile: false });
+        this.props.handleIsLoading(false);
       }, 1000);
 
       //call function in parent to close dialog
-      this.props.handleDialogClose();
+      // this.props.handleDialogClose();
     };
 
     reader.onloadstart = () => {
-      this.setState({ isLoadingFile: true });
+      // this.setState({ isLoadingFile: true });
+      this.props.handleIsLoading(true);
     };
 
     //do work
@@ -88,17 +92,13 @@ class FileDragContainer extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.isLoadingFile ? (
-          <FileDragLoadingComponent />
-        ) : (
-          <FileDragComponent
-            onDragEnd={this.handleDragEnd}
-            onDragOver={this.handleDragOver}
-            onDrop={this.handleFileDrop}
-            onClick={this.handleClick}
-          />
-        )}
+      <div style={wrapperStyling}>
+        <FileDragComponent
+          onDragEnd={this.handleDragEnd}
+          onDragOver={this.handleDragOver}
+          onDrop={this.handleFileDrop}
+          onClick={this.handleClick}
+        />
       </div>
     );
   }

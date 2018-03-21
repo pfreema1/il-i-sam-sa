@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import './FileDragContainer.css';
+import FileDragContainer from '../Containers/FileDragContainer';
+import SampleSelectContainer from '../Containers/SampleSelectContainer';
+import FileDragLoadingComponent from '../Components/FileDragLoadingComponent';
 
 const wrapperStyling = {
   width: '130px',
@@ -20,18 +24,60 @@ const wrapperStyling = {
 /*****************************/
 
 class AddSequencerDropContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // addSequencerDialogOpen: false,
+      isLoadingFile: false,
+      dropDownMenuValue: 0,
+      menuItemsArr: []
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.samples !== this.props.samples) {
+      let items = [];
+
+      for (let sample in nextProps.samples) {
+        items.push(sample);
+      }
+
+      //prepend info as first item
+      items.unshift('Select Sample');
+
+      this.setState({ menuItemsArr: items });
+    }
+  }
+
+  handleIsLoading = isLoading => {
+    this.setState({ isLoadingFile: isLoading });
+  };
+
   render() {
     return (
       <div style={wrapperStyling}>
-        <div>DRAG SAMPLE HERE</div>
-        <div>OR</div> <div>SELECT SAMPLE</div>{' '}
+        {this.state.isLoadingFile ? (
+          <FileDragLoadingComponent />
+        ) : (
+          <div>
+            <FileDragContainer handleIsLoading={this.handleIsLoading} />
+            <SampleSelectContainer
+              // handleDialogClose={props.handleDialogClose}
+              menuItemsArr={this.state.menuItemsArr}
+              samples={this.props.samples}
+            />
+          </div>
+        )}
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
+const mapStateToProps = state => {
+  return {
+    samples: state.samples
+  };
+};
 
 export default connect(mapStateToProps)(AddSequencerDropContainer);

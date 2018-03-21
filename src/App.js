@@ -1841,7 +1841,7 @@ class App extends Component {
 
             <AddSequencerDropContainer />
 
-            <AddSequencerButtonContainer />
+            {/*<AddSequencerButtonContainer />*/}
 
             {/*<StateTreeManager />*/}
 
