@@ -36,28 +36,28 @@ class StateTreeManager extends Component {
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 24, sequencerId: 'snare1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 28, sequencerId: 'snare1' },
       { type: 'BLANK_PATTERN_ADDED' },
-      // {
-      //   type: 'PARENT_TRIGGER_CLICKED',
-      //   triggerId: 32,
-      //   sequencerId: 'closedHiHat1'
-      // },
-      // {
-      //   type: 'PARENT_TRIGGER_CLICKED',
-      //   triggerId: 36,
-      //   sequencerId: 'closedHiHat1'
-      // },
-      // {
-      //   type: 'PARENT_TRIGGER_CLICKED',
-      //   triggerId: 40,
-      //   sequencerId: 'closedHiHat1'
-      // },
-      // {
-      //   type: 'PARENT_TRIGGER_CLICKED',
-      //   triggerId: 44,
-      //   sequencerId: 'closedHiHat1'
-      // },
-      // { type: 'BLANK_PATTERN_ADDED' },
-      { type: 'COPIED_PATTERN_ADDED', patternToCopy: 'Pattern 2' }
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 32,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 36,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 40,
+        sequencerId: 'closedHiHat1'
+      },
+      {
+        type: 'PARENT_TRIGGER_CLICKED',
+        triggerId: 44,
+        sequencerId: 'closedHiHat1'
+      },
+      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'COPIED_PATTERN_ADDED', patternToCopy: 'PATTERN 3' }
     ];
   }
 

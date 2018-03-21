@@ -5,7 +5,7 @@ import SongModePatternSelectContainer from './SongModePatternSelectContainer';
 import SongBuilderContainer from './SongBuilderContainer';
 
 const styling = {
-  top: '60px' //height of toolbar
+  top: '100px' //height of toolbar
 };
 
 class SongModeContainer extends Component {

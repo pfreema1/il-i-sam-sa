@@ -13,6 +13,71 @@ const styling = {
 };
 
 class SongModePatternSelectContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.patternHeight = 50;
+    this.patternWidth = 136;
+    this.triggerWidth = this.patternWidth / 16;
+    this.sequencerAmount = props.sequencersIdArr.length + 1;
+    this.sequencerHeight = this.patternHeight / this.sequencerAmount;
+    this.arrayOfSequencerTriggerIds = [];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.triggerWidth = this.patternWidth / 16;
+    this.sequencerAmount = nextProps.sequencersIdArr.length + 1;
+    this.sequencerHeight = this.patternHeight / this.sequencerAmount;
+
+    this.arrayOfSequencerTriggerIds = this.createArrayOfTriggeredIds(nextProps);
+  }
+
+  createArrayOfTriggeredIds = nextProps => {
+    let arrayOfSequencerTriggerIds = nextProps.sequencersIdArr.map(
+      sequencer => {
+        let sequencerTriggers = nextProps.sequencers[sequencer].triggers
+          .filter(trigger => {
+            return trigger.isTriggered || trigger.isSliced;
+          })
+          .map(trigger => trigger.id);
+
+        return sequencerTriggers;
+      }
+    );
+
+    return arrayOfSequencerTriggerIds;
+  };
+
+  returnArrayOfPositionObjsForPattern = patternIndex => {
+    let startId = patternIndex * 16;
+    let endId = startId + 16;
+
+    let patternPositions = [];
+
+    //i tracks sequencer, j tracks trigger
+    for (let i = 0; i < this.arrayOfSequencerTriggerIds.length; i++) {
+      for (let j = 0; j < this.arrayOfSequencerTriggerIds[i].length; j++) {
+        if (
+          this.arrayOfSequencerTriggerIds[i][j] >= startId &&
+          this.arrayOfSequencerTriggerIds[i][j] < endId
+        ) {
+          //case trigger is relevant to pattern
+          let tempPosObj = {};
+          let normalizedId = this.arrayOfSequencerTriggerIds[i][j] - startId;
+
+          tempPosObj.top = i * this.sequencerHeight / this.patternHeight;
+
+          tempPosObj.left =
+            normalizedId * this.triggerWidth / this.patternWidth;
+
+          patternPositions.push(tempPosObj);
+        }
+      }
+    }
+
+    return patternPositions;
+  };
+
   render() {
     const { patternsArr } = this.props;
     return (
@@ -29,9 +94,23 @@ class SongModePatternSelectContainer extends Component {
         }}
         style={styling}
       >
-        {patternsArr.map((pattern, index) => (
-          <SongModePatternView key={index} patternName={pattern} />
-        ))}
+        {patternsArr.map((pattern, index) => {
+          let arrayOfPositions = this.returnArrayOfPositionObjsForPattern(
+            index
+          );
+
+          return (
+            <SongModePatternView
+              key={index}
+              patternName={pattern}
+              patternHeight={this.patternHeight}
+              patternWidth={this.patternWidth}
+              arrayOfPositions={arrayOfPositions}
+              triggerWidth={this.triggerWidth / this.patternWidth}
+              triggerHeight={this.sequencerHeight / this.patternHeight}
+            />
+          );
+        })}
       </ReactSortable>
     );
   }
@@ -42,7 +121,9 @@ function mapStateToProps(state) {
     patternsArr: state.patternsArr,
     songModeSelectedPattern: state.songModeSelectedPattern,
     songModeSelectedPatternSequenceIndex:
-      state.songModeSelectedPatternSequenceIndex
+      state.songModeSelectedPatternSequenceIndex,
+    sequencersIdArr: state.sequencersIdArr,
+    sequencers: state.sequencers
   };
 }
 
