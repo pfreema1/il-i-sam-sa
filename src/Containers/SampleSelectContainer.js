@@ -42,6 +42,11 @@ class SampleSelectContainer extends Component {
           maxHeight={300}
           value={this.state.dropDownMenuValue}
           onChange={this.handleDropDownMenuChange}
+          labelStyle={{
+            textOverflow: 'none',
+            fontFamily: '"Oswald", sans-serif'
+          }}
+          style={{ marginTop: '-20px' }}
         >
           {this.returnMenuItems()}
         </DropDownMenu>
