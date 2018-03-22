@@ -6,7 +6,7 @@ import SongBuilderOptionsArea from './SongBuilderOptionsArea';
 const styling = {
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
   height: '70vh'
 };
@@ -35,7 +35,17 @@ class SongBuilderContainer extends Component {
 
   onAddFn = evt => {
     const listIdArr = this.returnIdList(evt.to.children);
-    this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
+    this.props.dispatch({
+      type: 'SONG_UPDATED',
+      listIdArr,
+      newIndex: evt.newIndex
+    });
+    // this.props.dispatch({
+    //   type: 'SONG_MODE_PATTERN_SELECTED',
+    //   sequenceInSongIndex: evt.oldIndex,
+    //   patternName: evt.item.id,
+    //   patternDomRef: evt.item
+    // });
   };
 
   onChoose = evt => {
@@ -52,7 +62,17 @@ class SongBuilderContainer extends Component {
   //changed sorting within list
   onUpdateFn = evt => {
     const listIdArr = this.returnIdList(evt.to.children);
-    this.props.dispatch({ type: 'SONG_UPDATED', listIdArr });
+    this.props.dispatch({
+      type: 'SONG_UPDATED',
+      listIdArr,
+      newIndex: evt.newIndex
+    });
+    // this.props.dispatch({
+    //   type: 'SONG_MODE_PATTERN_SELECTED',
+    //   sequenceInSongIndex: evt.oldIndex,
+    //   patternName: evt.item.id,
+    //   patternDomRef: evt.item
+    // });
   };
 
   onRemove = evt => {

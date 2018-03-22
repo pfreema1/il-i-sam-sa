@@ -1,4 +1,39 @@
 .selected-pattern {
-  border: 1px solid black !important;
-  background: burlywood !important;
+  /* border: 5px solid RGBA(228, 148, 121, 1) !important; */
+  /* background: burlywood !important; */
+  box-shadow: inset 0px 0px 0px 2px RGBA(228, 148, 121, 1);
+  cursor: move !important;
 }
+
+.selected-pattern:before,
+.selected-pattern:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid RGBA(130, 130, 123, 0.2);
+  border-left: 3px solid RGBA(130, 130, 123, 0.2);
+  border-radius: 2px;
+  top: 50%;
+}
+
+.selected-pattern:before {
+  left: 10px;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.selected-pattern:after {
+  right: 10px;
+  transform: translateY(-50%) rotate(134deg);
+}
+
+.slight-opacity {
+  opacity: 0.5;
+  cursor: pointer !important;
+  /* border: 0px solid black !important; */
+}
+
+/* .sortable-chosen {
+  background: yellow !important;
+} */

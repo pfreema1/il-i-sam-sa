@@ -2,12 +2,14 @@ import React from 'react';
 import ReactSortable from 'react-sortablejs';
 
 const styling = {
-  height: '150px',
+  height: '80px',
   width: '70vw',
-  border: '5px solid black',
+  // border: '5px solid black',
+  background: 'RGBA(207, 193, 184, 1.00)',
   display: 'flex',
   justifyContent: 'flex-start',
-  alignItems: 'center'
+  alignItems: 'center',
+  borderRadius: '2px'
 };
 
 const SongBuilderDropArea = ({

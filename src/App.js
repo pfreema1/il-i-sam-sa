@@ -325,7 +325,9 @@ const updateSongBuilderPatternIcons = (
       let clonedReplacer = elReplacerParent.cloneNode(true);
       //handle class disappearing
       if (index === songModeSelectedPatternSequenceIndex) {
-        clonedReplacer.classList.add('selected-pattern');
+        clonedReplacer.className = 'selected-pattern';
+      } else {
+        clonedReplacer.className = 'slight-opacity';
       }
 
       songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
@@ -338,7 +340,9 @@ const updateSongBuilderPatternIcons = (
       let clonedReplacer = elReplacerParent.cloneNode(true);
       //handle class disappearing
       if (index === songModeSelectedPatternSequenceIndex) {
-        clonedReplacer.classList.add('selected-pattern');
+        clonedReplacer.className = 'selected-pattern';
+      } else {
+        clonedReplacer.className = 'slight-opacity';
       }
 
       songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
@@ -1125,6 +1129,8 @@ const reducer = (state = initialState, action) => {
     }
     case 'SONG_UPDATED': {
       const songListIdArr = action.listIdArr;
+      const newIndex = action.newIndex;
+
       const songPatternStartTimesArr = returnSongPatternStartTimesArr(
         songListIdArr,
         state.patternsArr
@@ -1144,11 +1150,16 @@ const reducer = (state = initialState, action) => {
         buildSongTimeline(songListPatternIndexArr);
       }
 
+      let newSelectedPatternId =
+        state.patternsArr[songListPatternIndexArr[newIndex]];
+
       return {
         ...state,
         songArr: songListPatternIndexArr,
         songPatternStartTimesArr: songPatternStartTimesArr,
-        isPlaying: false
+        isPlaying: false,
+        songModeSelectedPatternSequenceIndex: newIndex,
+        songModeSelectedPattern: newSelectedPatternId
       };
     }
     case 'BLANK_PATTERN_ADDED': {
@@ -1751,9 +1762,8 @@ const reducer = (state = initialState, action) => {
 
       //iterate through the children (patterns in song) and remove any 'selected-pattern' styling class
       Array.from(songBuilderDropArea.childNodes).forEach((childNode, index) => {
-        songBuilderDropArea.childNodes
-          .item(index)
-          .classList.remove('selected-pattern');
+        // .classList.remove('selected-pattern');
+        songBuilderDropArea.childNodes.item(index).className = 'slight-opacity';
       });
 
       //add 'selected-pattern' styling to element that was clicked
@@ -1761,7 +1771,8 @@ const reducer = (state = initialState, action) => {
         sequenceInSongIndex
       );
 
-      elemClicked.classList.add('selected-pattern');
+      // elemClicked.classList.add('selected-pattern');
+      elemClicked.className = 'selected-pattern';
 
       return {
         ...state,
@@ -1800,7 +1811,8 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'MAKE_UNIQUE_IN_SONG_MODE': {
-      const nodeToChange = state.songModeSelectedPatternDomRef;
+      // const nodeToChange = state.songModeSelectedPatternDomRef;
+      const nodeToChange = document.querySelector('.selected-pattern');
 
       const newPatternName = state.patternsArr[state.patternsArr.length - 1];
 

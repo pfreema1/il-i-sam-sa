@@ -7,9 +7,10 @@ const styling = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '100vw',
-  height: '120px',
-  background: 'RGBA(55, 57, 62, 1.00)'
+  width: '70vw',
+  // height: '80px',
+  // background: 'RGBA(55, 57, 62, 1.00)',
+  margin: '40px auto 0 auto'
 };
 
 class SongModePatternSelectContainer extends Component {
