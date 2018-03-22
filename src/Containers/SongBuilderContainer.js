@@ -39,6 +39,8 @@ class SongBuilderContainer extends Component {
   };
 
   onChoose = evt => {
+    // evt.item.classList.remove('selected-pattern');
+
     this.props.dispatch({
       type: 'SONG_MODE_PATTERN_SELECTED',
       sequenceInSongIndex: evt.oldIndex,

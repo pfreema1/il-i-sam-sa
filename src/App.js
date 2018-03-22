@@ -307,7 +307,11 @@ const returnUpdatedTimingAndIdTriggers = (
 };
 
 //called everytime songBuilderDropArea updates
-const updateSongBuilderPatternIcons = (currentPatternIndex, updateAll) => {
+const updateSongBuilderPatternIcons = (
+  currentPatternIndex,
+  updateAll,
+  songModeSelectedPatternSequenceIndex
+) => {
   let songBuilderDropAreaEl = document.getElementById('songBuilderDropArea');
   let patternSelectAreaEl = document.getElementById('songModePatternSelect');
   let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1);
@@ -319,6 +323,10 @@ const updateSongBuilderPatternIcons = (currentPatternIndex, updateAll) => {
       )[0];
 
       let clonedReplacer = elReplacerParent.cloneNode(true);
+      //handle class disappearing
+      if (index === songModeSelectedPatternSequenceIndex) {
+        clonedReplacer.classList.add('selected-pattern');
+      }
 
       songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
     } else {
@@ -328,6 +336,10 @@ const updateSongBuilderPatternIcons = (currentPatternIndex, updateAll) => {
       )[0];
 
       let clonedReplacer = elReplacerParent.cloneNode(true);
+      //handle class disappearing
+      if (index === songModeSelectedPatternSequenceIndex) {
+        clonedReplacer.classList.add('selected-pattern');
+      }
 
       songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
     }
@@ -1033,7 +1045,8 @@ const reducer = (state = initialState, action) => {
     case 'PATTERN_SELECT_RERENDERED': {
       updateSongBuilderPatternIcons(
         state.currentPatternIndex,
-        action.updateAll
+        action.updateAll,
+        state.songModeSelectedPatternSequenceIndex
       );
 
       return {
@@ -1754,20 +1767,28 @@ const reducer = (state = initialState, action) => {
         ...state,
         songModeSelectedPattern: patternName,
         songModeSelectedPatternSequenceIndex: sequenceInSongIndex,
-        songModeSelectedPatternDomRef: action.patternDomRef
+        songModeSelectedPatternDomRef: /* elemClicked */ action.patternDomRef
       };
     }
     case 'REMOVE_PATTERN_FROM_SONG': {
-      let elemToRemove = state.songModeSelectedPatternDomRef;
+      // const elemToRemove = state.songModeSelectedPatternDomRef;
+
+      const elemToRemove = document.querySelector('.selected-pattern');
       //remove DOM element
       elemToRemove.remove();
 
       handleStopButtonClick();
 
       //this function returns the song array based on the ui in drop area
-      let newSongArr = returnSongPatternIndexArr(state);
+      const newSongArr = returnSongPatternIndexArr(state);
 
       buildSongTimeline(newSongArr);
+
+      // updateSongBuilderPatternIcons(
+      //   state.currentPatternIndex,
+      //   true,
+      //   state.songModeSelectedPatternSequenceIndex
+      // );
 
       return {
         ...state,

@@ -82,7 +82,9 @@ class SongModePatternSelectContainer extends Component {
           let tempPosObj = {};
           let normalizedId = this.arrayOfSequencerTriggerIds[i][j] - startId;
 
-          tempPosObj.top = i * this.sequencerHeight / this.patternHeight;
+          tempPosObj.top =
+            i * this.sequencerHeight / this.patternHeight +
+            3 / this.patternHeight;
 
           tempPosObj.left =
             normalizedId * this.triggerWidth / this.patternWidth;
@@ -96,7 +98,6 @@ class SongModePatternSelectContainer extends Component {
   };
 
   render() {
-    console.log('RENDERING!');
     const { patternsArr } = this.props;
     return (
       <ReactSortable
