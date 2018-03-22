@@ -22,14 +22,28 @@ class SongModePatternSelectContainer extends Component {
     this.sequencerAmount = props.sequencersIdArr.length + 1;
     this.sequencerHeight = this.patternHeight / this.sequencerAmount;
     this.arrayOfSequencerTriggerIds = [];
+
+    // using key to force a re-render -- needed to update the
+    // pattern icon in the pattern select container
+    this.state = {
+      key: Math.random()
+    };
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.songArr != this.props.songArr) {
+      this.setState({ key: Math.random() });
+    }
+
     this.triggerWidth = this.patternWidth / 16;
     this.sequencerAmount = nextProps.sequencersIdArr.length + 1;
     this.sequencerHeight = this.patternHeight / this.sequencerAmount;
 
     this.arrayOfSequencerTriggerIds = this.createArrayOfTriggeredIds(nextProps);
+  }
+
+  componentDidUpdate() {
+    this.props.dispatch({ type: 'PATTERN_SELECT_RERENDERED' });
   }
 
   createArrayOfTriggeredIds = nextProps => {
@@ -79,9 +93,11 @@ class SongModePatternSelectContainer extends Component {
   };
 
   render() {
+    console.log('RENDERING!');
     const { patternsArr } = this.props;
     return (
       <ReactSortable
+        key={this.state.key}
         id="songModePatternSelect"
         options={{
           animation: 150,
@@ -123,7 +139,8 @@ function mapStateToProps(state) {
     songModeSelectedPatternSequenceIndex:
       state.songModeSelectedPatternSequenceIndex,
     sequencersIdArr: state.sequencersIdArr,
-    sequencers: state.sequencers
+    sequencers: state.sequencers,
+    songArr: state.songArr
   };
 }
 

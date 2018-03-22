@@ -306,6 +306,33 @@ const returnUpdatedTimingAndIdTriggers = (
   return newClonedTriggers;
 };
 
+const updateSongBuilderPatternIcons = currentPatternIndex => {
+  let songBuilderDropAreaEl = document.getElementById('songBuilderDropArea');
+  let patternSelectAreaEl = document.getElementById('songModePatternSelect');
+  let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1);
+
+  // to reference pattern select icons:  patternSelectAreaEl.childNodes[x]
+  songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
+    if (replaceeEl.id === changedPatternId) {
+      let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
+        elReplacer => elReplacer.id === replaceeEl.id
+      )[0];
+
+      //clear current replacee children
+      // while(replaceeEl.firstChild) {
+      //   replaceeEl.removeChild(replaceeEl.firstChild);
+      // }
+
+      //insert elReplacerParents' children into replaceeEl
+
+      /*****************************/
+      let clonedReplacer = elReplacerParent.cloneNode(true);
+
+      songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
+    }
+  });
+};
+
 const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
   let triggersToCopyArr = [];
 
@@ -932,6 +959,8 @@ const reducer = (state = initialState, action) => {
         }
       );
 
+      // updateSongBuilderPatternIcons(state.currentPatternIndex);
+
       return {
         ...state,
         sequencers: {
@@ -987,6 +1016,8 @@ const reducer = (state = initialState, action) => {
         }
       });
 
+      // updateSongBuilderPatternIcons(state.currentPatternIndex);
+
       return {
         ...state,
         sequencers: {
@@ -996,6 +1027,13 @@ const reducer = (state = initialState, action) => {
             triggers: newTriggers
           }
         }
+      };
+    }
+    case 'PATTERN_SELECT_RERENDERED': {
+      updateSongBuilderPatternIcons(state.currentPatternIndex);
+
+      return {
+        ...state
       };
     }
     case 'PLAY_BUTTON_CLICKED': {

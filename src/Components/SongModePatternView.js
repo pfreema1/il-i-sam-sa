@@ -30,9 +30,10 @@ const SongModePatternView = ({
         width: patternWidth + 'px'
       }}
     >
-      {arrayOfPositions.map(pos => {
+      {arrayOfPositions.map((pos, index) => {
         return (
           <div
+            key={index}
             style={{
               background: 'red',
               position: 'absolute',
