@@ -43,7 +43,10 @@ class SongModePatternSelectContainer extends Component {
   }
 
   componentDidUpdate() {
-    this.props.dispatch({ type: 'PATTERN_SELECT_RERENDERED' });
+    this.props.dispatch({
+      type: 'PATTERN_SELECT_RERENDERED',
+      updateAll: false
+    });
   }
 
   createArrayOfTriggeredIds = nextProps => {

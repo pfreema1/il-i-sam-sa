@@ -30,8 +30,10 @@ class SampleSelectContainer extends Component {
         sample: sample
       });
 
-      // this.setState({ addSequencerDialogOpen: false });
-      // this.props.handleDialogClose();
+      this.props.dispatch({
+        type: 'PATTERN_SELECT_RERENDERED',
+        updateAll: true
+      });
     }
   };
 

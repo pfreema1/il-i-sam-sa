@@ -306,26 +306,27 @@ const returnUpdatedTimingAndIdTriggers = (
   return newClonedTriggers;
 };
 
-const updateSongBuilderPatternIcons = currentPatternIndex => {
+//called everytime songBuilderDropArea updates
+const updateSongBuilderPatternIcons = (currentPatternIndex, updateAll) => {
   let songBuilderDropAreaEl = document.getElementById('songBuilderDropArea');
   let patternSelectAreaEl = document.getElementById('songModePatternSelect');
   let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1);
 
-  // to reference pattern select icons:  patternSelectAreaEl.childNodes[x]
   songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
-    if (replaceeEl.id === changedPatternId) {
+    if (replaceeEl.id === changedPatternId && !updateAll) {
       let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
         elReplacer => elReplacer.id === replaceeEl.id
       )[0];
 
-      //clear current replacee children
-      // while(replaceeEl.firstChild) {
-      //   replaceeEl.removeChild(replaceeEl.firstChild);
-      // }
+      let clonedReplacer = elReplacerParent.cloneNode(true);
 
-      //insert elReplacerParents' children into replaceeEl
+      songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
+    } else {
+      //update all
+      let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
+        elReplacer => elReplacer.id === replaceeEl.id
+      )[0];
 
-      /*****************************/
       let clonedReplacer = elReplacerParent.cloneNode(true);
 
       songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
@@ -1030,7 +1031,10 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PATTERN_SELECT_RERENDERED': {
-      updateSongBuilderPatternIcons(state.currentPatternIndex);
+      updateSongBuilderPatternIcons(
+        state.currentPatternIndex,
+        action.updateAll
+      );
 
       return {
         ...state

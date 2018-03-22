@@ -81,6 +81,11 @@ class FileDragContainer extends Component {
         sample: shortenedURL
       });
 
+      this.props.dispatch({
+        type: 'PATTERN_SELECT_RERENDERED',
+        updateAll: true
+      });
+
       //prevents flash back to original visual state after finished loading
       setTimeout(() => {
         // this.setState({ isLoadingFile: false });
