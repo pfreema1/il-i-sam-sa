@@ -1,0 +1,17 @@
+.options-area__button--remove:hover {
+  transform: scale(1.05);
+  -webkit-backface-visibility: hidden;
+  background: RGBA(255, 154, 115, 1) !important;
+}
+
+.options-area__button--unique:hover {
+  transform: scale(1.05);
+  -webkit-backface-visibility: hidden;
+  background: RGBA(157, 132, 128, 1) !important;
+}
+
+.options-area__button--goto:hover {
+  transform: scale(1.05);
+  -webkit-backface-visibility: hidden;
+  background: RGBA(176, 176, 174, 1) !important;
+}

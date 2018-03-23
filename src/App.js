@@ -1047,11 +1047,13 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'PATTERN_SELECT_RERENDERED': {
-      updateSongBuilderPatternIcons(
-        state.currentPatternIndex,
-        action.updateAll,
-        state.songModeSelectedPatternSequenceIndex
-      );
+      if (state.songArr.length > 0) {
+        updateSongBuilderPatternIcons(
+          state.currentPatternIndex,
+          action.updateAll,
+          state.songModeSelectedPatternSequenceIndex
+        );
+      }
 
       return {
         ...state

@@ -1,4 +1,5 @@
 import React from 'react';
+import './SongBuilderOptionsAreaView.css';
 
 const styling = {
   // background: 'lightgrey',
@@ -8,7 +9,7 @@ const styling = {
   // flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: '40px',
+  // marginTop: '40px',
   border: '1px solid RGBA(130, 130, 123, 0.5)',
   borderRadius: '2px'
 };
@@ -26,7 +27,8 @@ const buttonStyling = {
   alignItems: 'center',
   cursor: 'pointer',
   marginLeft: '50px',
-  marginRight: '50px'
+  marginRight: '50px',
+  transition: 'all .5s'
 };
 
 const removeFromSongStyling = {
@@ -61,18 +63,21 @@ const SongBuilderOptionsAreaView = ({
           <div style={styling}>
             <div
               style={{ ...buttonStyling, ...removeFromSongStyling }}
+              className="options-area__button--remove"
               onClick={handleRemoveFromSongClick}
             >
               REMOVE FROM SONG
             </div>
             <div
               style={{ ...buttonStyling, ...makeUniqueStyling }}
+              className="options-area__button--unique"
               onClick={handleMakeUniqueClick}
             >
               MAKE UNIQUE
             </div>
             <div
               style={{ ...buttonStyling, ...goToPattern }}
+              className="options-area__button--goto"
               onClick={handleGoToPatternClick}
             >
               GO TO PATTERN

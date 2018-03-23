@@ -12,6 +12,18 @@ const styling = {
   borderRadius: '2px'
 };
 
+const instructionsStyling = {
+  fontFamily: "'Oswald', sans-serif",
+  position: 'absolute',
+  width: '70vw',
+  height: '80px',
+  border: '1px solid black',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  pointerEvents: 'none'
+};
+
 const SongBuilderDropArea = ({
   songArr,
   onAdd,
@@ -20,22 +32,29 @@ const SongBuilderDropArea = ({
   onRemove
 }) => {
   return (
-    <ReactSortable
-      id="songBuilderDropArea"
-      style={styling}
-      options={{
-        animation: 150,
-        group: {
-          name: 'clone1',
-          pull: true,
-          put: true
-        },
-        onAdd: onAdd,
-        onUpdate: onUpdate,
-        onChoose: onChoose,
-        onRemove: onRemove
-      }}
-    />
+    <div>
+      {songArr.length === 0 ? (
+        <div style={instructionsStyling}>Drop Patterns Here to Build Song</div>
+      ) : (
+        ''
+      )}
+      <ReactSortable
+        id="songBuilderDropArea"
+        style={styling}
+        options={{
+          animation: 150,
+          group: {
+            name: 'clone1',
+            pull: true,
+            put: true
+          },
+          onAdd: onAdd,
+          onUpdate: onUpdate,
+          onChoose: onChoose,
+          onRemove: onRemove
+        }}
+      />
+    </div>
   );
 };
 
