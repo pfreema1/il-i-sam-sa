@@ -5,6 +5,10 @@
   cursor: move !important;
 }
 
+.selected-pattern > div:first-child {
+  opacity: 0.9 !important;
+}
+
 .selected-pattern:before,
 .selected-pattern:after {
   content: '';
@@ -12,8 +16,8 @@
   position: absolute;
   width: 10px;
   height: 10px;
-  border-top: 3px solid RGBA(130, 130, 123, 0.2);
-  border-left: 3px solid RGBA(130, 130, 123, 0.2);
+  border-top: 3px solid RGBA(130, 130, 123, 0.6);
+  border-left: 3px solid RGBA(130, 130, 123, 0.6);
   border-radius: 2px;
   top: 50%;
 }

@@ -13,6 +13,20 @@ const styling = {
   borderRadius: '2px'
 };
 
+const hoverOverlayStyling = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontFamily: '"Oswald", sans-serif',
+  height: '100%',
+  width: '100%',
+  // background: 'RGBA(0,0,0,0.3)',
+  color: 'white',
+  opacity: '0.3'
+};
+
+/*****************************/
+
 const SongModePatternView = ({
   patternName,
   patternHeight,
@@ -30,6 +44,7 @@ const SongModePatternView = ({
         width: patternWidth + 'px'
       }}
     >
+      <div style={hoverOverlayStyling}>{patternName}</div>
       {arrayOfPositions.map((pos, index) => {
         return (
           <div
@@ -41,7 +56,8 @@ const SongModePatternView = ({
               left: pos.left * 100 + '%',
               width: triggerWidth * 100 + '%',
               height: triggerHeight * 100 + '%',
-              borderRadius: '2px'
+              borderRadius: '2px',
+              opacity: '0.3'
             }}
           />
         );
