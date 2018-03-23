@@ -38,22 +38,22 @@ const TriggerHoverComponent = ({
   triggerId
 }) => {
   return (
-    <div onClick={() => console.log('hoverrrrrrring')} style={ContainerStyling}>
+    <div style={ContainerStyling}>
       <div style={row}>
         <div
-          onClick={handleMenuItemClick.bind(null, triggerId, 1)}
+          onClick={handleMenuItemClick.bind(null, triggerId, 0)}
           className="trigger-hover-icon-wrapper"
         >
           <img alt="velocity-icon" style={imgStyling} src={velocityIcon} />
         </div>
         <div
-          onClick={handleMenuItemClick.bind(null, triggerId, 2)}
+          onClick={handleMenuItemClick.bind(null, triggerId, 1)}
           className="trigger-hover-icon-wrapper"
         >
           <img alt="duration-icon" style={imgStyling} src={durationIcon} />
         </div>
         <div
-          onClick={handleMenuItemClick.bind(null, triggerId, 3)}
+          onClick={handleMenuItemClick.bind(null, triggerId, 2)}
           className="trigger-hover-icon-wrapper"
         >
           <img alt="nudge-icon" style={imgStyling} src={nudgeIcon} />

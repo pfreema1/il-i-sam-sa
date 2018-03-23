@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PatternIndicatorView from '../Components/Toolbar/PatternIndicatorView';
 import './PatternIndicator.css';
-import '../Components/AddPatternDialog';
+
 import AddPatternDialog from '../Components/AddPatternDialog';
 
 class PatternIndicator extends React.Component {

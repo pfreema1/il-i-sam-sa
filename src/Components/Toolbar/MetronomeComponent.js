@@ -1,6 +1,7 @@
 import React from 'react';
 import metronomeIcon from '../../icons/metronomeIcon.svg';
 import arrowIcon from '../../icons/arrowIcon.svg';
+import redMetronomeIcon from '../../icons/redMetronomeIcon.svg';
 
 const MetronomeComponent = ({
   handleMetronomeIconClick,
@@ -16,11 +17,13 @@ const MetronomeComponent = ({
   <div className="metronome__container">
     <div
       onClick={handleMetronomeIconClick}
-      className={
-        'metronome__icon-container ' + (isMetronomeOn ? 'metronome-on' : '')
-      }
+      className={'metronome__icon-container '}
     >
-      <img src={metronomeIcon} alt="metronome icon" />
+      {isMetronomeOn ? (
+        <img src={redMetronomeIcon} alt="red metronome icon" />
+      ) : (
+        <img src={metronomeIcon} alt="metronome icon" />
+      )}
     </div>
     <div className="metronome__control-container">
       <div

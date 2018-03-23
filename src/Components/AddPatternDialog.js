@@ -7,8 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const DialogStyling = {
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
+  // flexDirection: 'column',
+  justifyContent: 'space-between',
   alignItems: 'center',
   width: '720px',
   height: '350px'
@@ -30,17 +30,25 @@ const AddPatternDialog = ({
     open={addPatternDialogOpen}
     onRequestClose={handleDialogClose}
   >
-    <h1>Add Pattern</h1>
-    <RaisedButton
-      label="New Pattern"
-      primary={true}
-      onClick={handleNewPatternClick}
-    />
-    <RaisedButton
-      label="Copy Pattern"
-      secondary={true}
-      onClick={handleCopyPatternClick}
-    />
+    <div>
+      <h1 className="add-pattern-header">Add Pattern</h1>
+    </div>
+    <div>
+      <RaisedButton
+        label="New Pattern"
+        primary={true}
+        onClick={handleNewPatternClick}
+        className="new-pattern-button"
+      />
+    </div>
+    <div>
+      <RaisedButton
+        label="Copy Pattern"
+        secondary={true}
+        onClick={handleCopyPatternClick}
+        className="copy-pattern-button"
+      />
+    </div>
     <Popover
       anchorEl={anchorEl}
       open={copyPatternPopoverOpen}

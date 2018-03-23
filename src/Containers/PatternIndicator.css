@@ -29,3 +29,34 @@
 .pattern-indicator__plus-sign-icon {
   height: 20px;
 }
+
+.new-pattern-button > button > div > div,
+.copy-pattern-button > button > div > div {
+  height: 50px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.new-pattern-button > button {
+  background: RGBA(143, 123, 119, 1) !important;
+  font-family: 'Oswald', sans-serif !important;
+  width: 170px !important;
+  height: 50px !important;
+}
+
+.copy-pattern-button > button {
+  background: RGBA(166, 166, 164, 1) !important;
+  font-family: 'Oswald', sans-serif !important;
+  width: 170px !important;
+  height: 50px !important;
+}
+
+.new-pattern-button > button > div > div > span,
+.copy-pattern-button > button > div > div > span {
+  color: white !important;
+}
+
+.add-pattern-header {
+  font-family: 'Oswald', sans-serif !important;
+}
