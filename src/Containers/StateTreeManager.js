@@ -30,12 +30,12 @@ class StateTreeManager extends Component {
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 4, sequencerId: 'kick1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 8, sequencerId: 'kick1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 12, sequencerId: 'kick1' },
-      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'BLANK_PATTERN_ADDED', switchToPattern: false },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 16, sequencerId: 'snare1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 20, sequencerId: 'snare1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 24, sequencerId: 'snare1' },
       { type: 'PARENT_TRIGGER_CLICKED', triggerId: 28, sequencerId: 'snare1' },
-      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'BLANK_PATTERN_ADDED', switchToPattern: false },
       {
         type: 'PARENT_TRIGGER_CLICKED',
         triggerId: 32,
@@ -56,7 +56,7 @@ class StateTreeManager extends Component {
         triggerId: 44,
         sequencerId: 'closedHiHat1'
       },
-      { type: 'BLANK_PATTERN_ADDED' },
+      { type: 'BLANK_PATTERN_ADDED', switchToPattern: false },
       { type: 'COPIED_PATTERN_ADDED', patternToCopy: 'PATTERN 3' }
     ];
   }

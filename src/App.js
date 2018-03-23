@@ -1243,7 +1243,8 @@ const reducer = (state = initialState, action) => {
         sequencers: newSequencersObj,
         patternsArr: newPatternsArr,
         currentPatternIndex: newCurrentPatternIndex,
-        isPlaying: false
+        isPlaying: false,
+        UiMode: action.switchToPattern ? 'pattern' : 'song'
       };
     }
     case 'COPIED_PATTERN_ADDED': {

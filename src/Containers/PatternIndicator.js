@@ -1,9 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
-import PatternIndicatorView from "../Components/Toolbar/PatternIndicatorView";
-import "./PatternIndicator.css";
-import "../Components/AddPatternDialog";
-import AddPatternDialog from "../Components/AddPatternDialog";
+import React from 'react';
+import { connect } from 'react-redux';
+import PatternIndicatorView from '../Components/Toolbar/PatternIndicatorView';
+import './PatternIndicator.css';
+import '../Components/AddPatternDialog';
+import AddPatternDialog from '../Components/AddPatternDialog';
 
 class PatternIndicator extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class PatternIndicator extends React.Component {
   }
 
   handlePatternChange = (e, index, value) => {
-    this.props.dispatch({ type: "PATTERN_CHANGED", patternIndex: value });
+    this.props.dispatch({ type: 'PATTERN_CHANGED', patternIndex: value });
   };
 
   handleAddPatternClick = () => {
@@ -32,7 +32,10 @@ class PatternIndicator extends React.Component {
   };
 
   handleNewPatternClick = () => {
-    this.props.dispatch({ type: "BLANK_PATTERN_ADDED" });
+    this.props.dispatch({
+      type: 'BLANK_PATTERN_ADDED',
+      switchToPattern: true
+    });
 
     this.handleDialogClose();
   };
@@ -51,9 +54,12 @@ class PatternIndicator extends React.Component {
   };
 
   handlePopoverPatternSelect = patternName => {
-    this.props.dispatch({ type: "BLANK_PATTERN_ADDED" });
     this.props.dispatch({
-      type: "COPIED_PATTERN_ADDED",
+      type: 'BLANK_PATTERN_ADDED',
+      switchToPattern: true
+    });
+    this.props.dispatch({
+      type: 'COPIED_PATTERN_ADDED',
       patternToCopy: patternName
     });
     this.handlePopoverClose();
