@@ -318,7 +318,27 @@ const updateSongBuilderPatternIcons = (
   let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1);
 
   songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
-    if (replaceeEl.id === changedPatternId && !updateAll) {
+    if (true /* updateAll */) {
+      cloneAndReplacePatternIcon(
+        patternSelectAreaEl,
+        replaceeEl,
+        songModeSelectedPatternSequenceIndex,
+        songBuilderDropAreaEl,
+        index
+      );
+    } else if (replaceeEl.id === changedPatternId) {
+      cloneAndReplacePatternIcon(
+        patternSelectAreaEl,
+        replaceeEl,
+        songModeSelectedPatternSequenceIndex,
+        songBuilderDropAreaEl,
+        index
+      );
+    }
+
+    /*****************************/
+
+    /*     if (replaceeEl.id === changedPatternId && !updateAll) {
       cloneAndReplacePatternIcon(
         patternSelectAreaEl,
         replaceeEl,
@@ -335,7 +355,7 @@ const updateSongBuilderPatternIcons = (
         songBuilderDropAreaEl,
         index
       );
-    }
+    } */
   });
 };
 
@@ -353,12 +373,23 @@ const cloneAndReplacePatternIcon = (
   let clonedReplacer = elReplacerParent.cloneNode(true);
   //handle class disappearing
   if (index === songModeSelectedPatternSequenceIndex) {
-    clonedReplacer.className = 'selected-pattern';
+    replaceeEl.className = 'selected-pattern';
   } else {
-    clonedReplacer.className = 'slight-opacity';
+    replaceeEl.className = 'slight-opacity';
   }
 
-  songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
+  let arrayOfChildren = Array.from(clonedReplacer.children).map(child => child);
+
+  while (replaceeEl.firstChild) {
+    replaceeEl.removeChild(replaceeEl.firstChild);
+  }
+
+  arrayOfChildren.forEach(elem => {
+    replaceeEl.appendChild(elem);
+  });
+
+  // original solution
+  // songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
 };
 
 const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
