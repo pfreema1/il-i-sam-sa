@@ -104,7 +104,7 @@ class Velocity extends Component {
   render() {
     return (
       <div>
-        <h1>Set Trigger Velocity</h1>
+        {/* <h1>Set Trigger Velocity</h1> */}
         {this.renderSliders()}
       </div>
     );

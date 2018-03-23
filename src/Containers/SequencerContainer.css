@@ -22,3 +22,212 @@
 .sequencer-card > div > div {
   display: flex !important;
 }
+
+.dialog-root > div > div > div > div > div > div {
+  background: none !important;
+}
+
+.dialog-root > div > div > div > div > div > div > button > div > div {
+  color: white !important;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.dialog-root > div > div > div > div > div > div:nth-of-type(2) {
+  background: RGBA(255, 255, 255, 0.2) !important;
+  border-radius: 2px !important;
+  height: 2px !important;
+  /* margin-bottom: 40px; */
+}
+
+.dialog-root > div > div > div > div > div > div:nth-of-type(2) > div {
+  background: RGBA(196, 36, 14, 1) !important;
+  height: 5px !important;
+  border-radius: 2px !important;
+}
+
+/* velocity slider button */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div.velocity-slider
+  > div
+  > div
+  > div:nth-child(3) {
+  border-radius: 2px !important;
+  width: 38px !important;
+  height: 32px !important;
+  background: RGBA(35, 35, 39, 1) !important;
+}
+
+/* duration slider button */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div.duration-slider
+  > div
+  > div
+  > div:nth-child(3) {
+  border-radius: 2px !important;
+  width: 38px !important;
+  height: 32px !important;
+  background: RGBA(35, 35, 39, 1) !important;
+}
+
+/* nudge slider button */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(3)
+  > div
+  > div
+  > div
+  > div.nudge-slider
+  > div
+  > div
+  > div:nth-child(3) {
+  border-radius: 2px !important;
+  width: 38px !important;
+  height: 32px !important;
+  background: RGBA(35, 35, 39, 1) !important;
+}
+
+/* duration unslide portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div.duration-slider
+  > div
+  > div
+  > div:nth-child(2) {
+  background: RGBA(255, 255, 255, 0.1) !important;
+  border-radius: 2px !important;
+}
+
+/* velocity unslide portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div.velocity-slider
+  > div
+  > div
+  > div:nth-child(2) {
+  background: RGBA(255, 255, 255, 0.1) !important;
+  border-radius: 2px !important;
+}
+
+/* nudge unslide portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(3)
+  > div
+  > div
+  > div
+  > div.nudge-slider
+  > div
+  > div
+  > div:nth-child(2) {
+  background: RGBA(255, 255, 255, 0.1) !important;
+  border-radius: 2px !important;
+}
+
+/* duration slide covered portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div.duration-slider
+  > div
+  > div
+  > div:nth-child(1) {
+  background: RGBA(255, 255, 255, 0.5) !important;
+  border-radius: 2px !important;
+}
+
+/* velocity slide covered portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div.velocity-slider
+  > div
+  > div
+  > div:nth-child(1) {
+  background: RGBA(255, 255, 255, 0.5) !important;
+  border-radius: 2px !important;
+}
+
+/* nudge slide covered portion */
+.dialog-root
+  > div:nth-child(1)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(3)
+  > div:nth-child(3)
+  > div
+  > div
+  > div
+  > div.nudge-slider
+  > div
+  > div
+  > div:nth-child(1) {
+  background: RGBA(255, 255, 255, 0.5) !important;
+  border-radius: 2px !important;
+}

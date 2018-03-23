@@ -2,15 +2,15 @@
   width: 70px;
   height: 70px;
   border-radius: 5px;
-  background-color: #405790;
+  background-color: RGBA(255, 255, 255, 0.2);
 }
 
 .bar-starter {
-  background-color: #6863b2;
+  background-color: RGBA(255, 255, 255, 0.4);
 }
 
 .is-triggered {
-  background-color: #beebd1;
+  background-color: RGBA(177, 49, 31, 1);
 }
 
 .disabled {

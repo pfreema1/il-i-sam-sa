@@ -101,7 +101,7 @@ class Nudge extends Component {
 
     return (
       <div>
-        <h1>Set Nudge Amount</h1>
+        {/* <h1>Set Nudge Amount</h1> */}
         <div>
           {triggersToRender.map((trigger, index) => {
             //create different sliderMinValue if first trigger

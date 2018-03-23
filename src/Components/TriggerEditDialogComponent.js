@@ -18,9 +18,9 @@ const TriggerEditDialogComponent = ({
     className="dialog-root"
   >
     <Tabs initialSelectedIndex={menuItemClicked}>
-      <Tab label="note">
+      {/* <Tab label="note">
         <TriggerEditNote />
-      </Tab>
+      </Tab> */}
       <Tab label="velocity">
         <Velocity />
       </Tab>

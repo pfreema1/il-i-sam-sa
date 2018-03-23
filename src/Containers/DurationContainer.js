@@ -90,7 +90,7 @@ class DurationContainer extends Component {
     const { triggersToRender, isSlicee, durationValAsPercentArr } = this.state;
     return (
       <div>
-        <h1>Set Trigger Duration</h1>
+        {/* <h1>Set Trigger Duration</h1> */}
         <div>
           {triggersToRender.map((trigger, index) => {
             return (

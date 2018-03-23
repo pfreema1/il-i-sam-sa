@@ -21,6 +21,7 @@ import './songMode.css';
 import MixerScreenContainer from './Containers/MixerScreenContainer';
 import AddSequencerDropContainer from './Containers/AddSequencerDropContainer';
 import SongModePatternSelectContainer from './Containers/SongModePatternSelectContainer';
+// import merge from 'lodash.merge';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -1930,6 +1931,14 @@ const timelineLogger = ({ getState }) => {
 /*****************************/
 
 const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
+
+// const muiTheme = {
+//   slider: {
+//     handleFillColor: 'yellow'
+//   }
+// };
+
+// const theme = merge(darkBaseTheme, muiTheme);
 
 class App extends Component {
   componentDidMount() {

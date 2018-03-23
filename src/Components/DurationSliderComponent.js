@@ -27,6 +27,7 @@ const DurationSliderComponent = ({
     defaultValue={durationValAsPercentArr[index]}
     onChange={handleSliderChange.bind(null, index)}
     step={1}
+    disableFocusRipple={true}
   />
 );
 
