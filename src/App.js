@@ -20,6 +20,7 @@ import StateTreeManager from './Containers/StateTreeManager';
 import './songMode.css';
 import MixerScreenContainer from './Containers/MixerScreenContainer';
 import AddSequencerDropContainer from './Containers/AddSequencerDropContainer';
+import SongModePatternSelectContainer from './Containers/SongModePatternSelectContainer';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -318,36 +319,46 @@ const updateSongBuilderPatternIcons = (
 
   songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
     if (replaceeEl.id === changedPatternId && !updateAll) {
-      let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
-        elReplacer => elReplacer.id === replaceeEl.id
-      )[0];
-
-      let clonedReplacer = elReplacerParent.cloneNode(true);
-      //handle class disappearing
-      if (index === songModeSelectedPatternSequenceIndex) {
-        clonedReplacer.className = 'selected-pattern';
-      } else {
-        clonedReplacer.className = 'slight-opacity';
-      }
-
-      songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
+      cloneAndReplacePatternIcon(
+        patternSelectAreaEl,
+        replaceeEl,
+        songModeSelectedPatternSequenceIndex,
+        songBuilderDropAreaEl,
+        index
+      );
     } else {
       //update all
-      let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
-        elReplacer => elReplacer.id === replaceeEl.id
-      )[0];
-
-      let clonedReplacer = elReplacerParent.cloneNode(true);
-      //handle class disappearing
-      if (index === songModeSelectedPatternSequenceIndex) {
-        clonedReplacer.className = 'selected-pattern';
-      } else {
-        clonedReplacer.className = 'slight-opacity';
-      }
-
-      songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
+      cloneAndReplacePatternIcon(
+        patternSelectAreaEl,
+        replaceeEl,
+        songModeSelectedPatternSequenceIndex,
+        songBuilderDropAreaEl,
+        index
+      );
     }
   });
+};
+
+const cloneAndReplacePatternIcon = (
+  patternSelectAreaEl,
+  replaceeEl,
+  songModeSelectedPatternSequenceIndex,
+  songBuilderDropAreaEl,
+  index
+) => {
+  let elReplacerParent = Array.from(patternSelectAreaEl.childNodes).filter(
+    elReplacer => elReplacer.id === replaceeEl.id
+  )[0];
+
+  let clonedReplacer = elReplacerParent.cloneNode(true);
+  //handle class disappearing
+  if (index === songModeSelectedPatternSequenceIndex) {
+    clonedReplacer.className = 'selected-pattern';
+  } else {
+    clonedReplacer.className = 'slight-opacity';
+  }
+
+  songBuilderDropAreaEl.replaceChild(clonedReplacer, replaceeEl);
 };
 
 const returnTriggersToCopyArr = (patternToCopyIndex, state) => {
