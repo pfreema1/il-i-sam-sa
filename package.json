@@ -2,6 +2,7 @@
   "name": "tone.js-sandbox",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://paulfreeman.design/il-i-sam-sa",
   "dependencies": {
     "immutability-helper": "^2.6.5",
     "jsdom-quokka-plugin": "^1.0.10",
@@ -10,7 +11,8 @@
     "lodash.merge": "^4.6.1",
     "material-auto-rotating-carousel": "^1.7.0",
     "material-ui": "^0.20.0",
-    "material-ui-build": "https://github.com/pfreema1/material-ui/tarball/master",
+    "material-ui-build":
+      "https://github.com/pfreema1/material-ui/tarball/master",
     "react": "^16.2.0",
     "react-addons-update": "^15.6.2",
     "react-contextmenu": "^2.9.2",
