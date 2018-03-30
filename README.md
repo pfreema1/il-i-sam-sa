@@ -1,4 +1,4 @@
-#il-i-sam-sa - [demo](http://paulfreeman.design/il-i-sam-sa) - **WIP**
+# il-i-sam-sa - [demo](http://paulfreeman.design/il-i-sam-sa) - **WIP**
 
 ## What is it?!?!?
 
