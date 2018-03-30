@@ -11,3 +11,7 @@ il-i-sam-sa is an in-browser drum machine/sequencer
 * sample duration, velocity, and time-nudge controls
 * pattern builder -> song builder
 * individual sequencer mixer (volume, pan, pitch, mute, solo)
+
+## Target Browser
+
+chrome - desktop (for now)

@@ -1972,7 +1972,7 @@ class App extends Component {
 
             {/*<AddSequencerButtonContainer />*/}
 
-            <StateTreeManager />
+            {/* <StateTreeManager /> */}
 
             <SongModeContainer />
 
