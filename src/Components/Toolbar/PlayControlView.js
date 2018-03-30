@@ -1,5 +1,6 @@
 import React from 'react';
 import playIcon from '../../icons/playIcon.svg';
+import pauseIcon from '../../icons/pauseIcon.svg';
 
 const PlayControlView = ({
   handlePlayButtonClick,
@@ -47,13 +48,15 @@ const PlayControlView = ({
 
     <div
       onClick={handlePlayButtonClick}
-      className={
-        'play-control__play-pause-button ' +
-        (isPlaying ? 'play-control__is-playing' : '')
-      }
+      className={'play-control__play-pause-button '}
     >
       {isPlaying ? (
-        '||'
+        <img
+          className="play-control__play-icon"
+          src={pauseIcon}
+          alt="pause icon"
+          style={{ marginLeft: '-2px' }}
+        />
       ) : (
         <img
           className="play-control__play-icon"
