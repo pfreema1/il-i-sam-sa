@@ -236,8 +236,7 @@ const setupNewSequencer = (sequencerId, state, sampleRef) => {
     pitchVal: synthComponentRefObj.pitch.pitch,
     triggers: returnTriggers(amountOfTriggers),
     isMuted: false,
-    isSoloed: false,
-    fxArray: []
+    isSoloed: false
   };
 
   return sequencers;
@@ -1972,7 +1971,7 @@ class App extends Component {
 
             {/*<AddSequencerButtonContainer />*/}
 
-            {/* <StateTreeManager /> */}
+            {process.env.REACT_APP_ENV === 'dev' && <StateTreeManager />}
 
             <SongModeContainer />
 

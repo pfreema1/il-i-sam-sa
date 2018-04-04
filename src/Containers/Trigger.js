@@ -15,7 +15,7 @@ const backgroundColorSetter = (isTriggered, barStarter) => {
   }
 };
 
-class Trigger extends Component {
+export class Trigger extends Component {
   constructor(props) {
     super(props);
 
