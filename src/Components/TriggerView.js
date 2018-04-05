@@ -9,8 +9,6 @@ const ButtonContainerStyle = {
 
 const TriggerView = ({
   bgColor,
-  isTriggered,
-  barStarter,
   width,
   height,
   isSlicee,

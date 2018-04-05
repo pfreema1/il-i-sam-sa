@@ -78,8 +78,6 @@ class Trigger extends Component {
     return (
       <TriggerView
         bgColor={bgColor}
-        isTriggered={this.state.isTriggered}
-        barStarter={this.props.barStarter}
         width={this.props.width}
         height={this.props.height}
         isSlicee={isSlicee}
