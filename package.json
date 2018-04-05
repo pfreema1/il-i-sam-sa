@@ -13,8 +13,8 @@
     "lodash.merge": "^4.6.1",
     "material-auto-rotating-carousel": "^1.7.0",
     "material-ui": "^0.20.0",
-    "material-ui-build":
-      "https://github.com/pfreema1/material-ui/tarball/master",
+    "material-ui-build": "https://github.com/pfreema1/material-ui/tarball/master",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-addons-update": "^15.6.2",
     "react-contextmenu": "^2.9.2",

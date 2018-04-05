@@ -2,7 +2,7 @@ import React from 'react';
 import metronomeIcon from '../../icons/metronomeIcon.svg';
 import arrowIcon from '../../icons/arrowIcon.svg';
 import redMetronomeIcon from '../../icons/redMetronomeIcon.svg';
-import TouchRipple from 'material-ui/internal/TouchRipple';
+
 const MetronomeComponent = ({
   handleMetronomeIconClick,
   isMetronomeOn,

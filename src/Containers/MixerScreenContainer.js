@@ -56,7 +56,7 @@ class MixerScreenContainer extends Component {
   };
 
   render() {
-    const { sequencersIdArr, sequencers } = this.props;
+    const { sequencersIdArr } = this.props;
 
     return (
       <Drawer

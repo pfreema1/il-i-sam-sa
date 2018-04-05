@@ -4,6 +4,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import PropTypes from 'prop-types';
 
 const DialogStyling = {
   display: 'flex',
@@ -14,17 +15,20 @@ const DialogStyling = {
   height: '350px'
 };
 
-const AddPatternDialog = ({
-  addPatternDialogOpen,
-  handleDialogClose,
-  patternsArr,
-  handleNewPatternClick,
-  handleCopyPatternClick,
-  copyPatternPopoverOpen,
-  handlePopoverClose,
-  anchorEl,
-  handlePopoverPatternSelect
-}) => (
+const AddPatternDialog = (
+  {
+    addPatternDialogOpen,
+    handleDialogClose,
+    patternsArr,
+    handleNewPatternClick,
+    handleCopyPatternClick,
+    copyPatternPopoverOpen,
+    handlePopoverClose,
+    anchorEl,
+    handlePopoverPatternSelect
+  },
+  context
+) => (
   <Dialog
     bodyStyle={DialogStyling}
     open={addPatternDialogOpen}
@@ -39,6 +43,7 @@ const AddPatternDialog = ({
         primary={true}
         onClick={handleNewPatternClick}
         className="new-pattern-button"
+        disableTouchRipple={context.mobileViewportContext}
       />
     </div>
     <div>
@@ -47,6 +52,7 @@ const AddPatternDialog = ({
         secondary={true}
         onClick={handleCopyPatternClick}
         className="copy-pattern-button"
+        disableTouchRipple={context.mobileViewportContext}
       />
     </div>
     <Popover
@@ -67,5 +73,9 @@ const AddPatternDialog = ({
     </Popover>
   </Dialog>
 );
+
+AddPatternDialog.contextTypes = {
+  mobileViewportContext: PropTypes.bool
+};
 
 export default AddPatternDialog;

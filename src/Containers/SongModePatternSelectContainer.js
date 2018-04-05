@@ -32,7 +32,7 @@ class SongModePatternSelectContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.songArr != this.props.songArr) {
+    if (nextProps.songArr !== this.props.songArr) {
       this.setState({ key: Math.random() });
     }
 

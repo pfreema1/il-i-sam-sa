@@ -14,14 +14,12 @@ import ToolbarContainer from './Containers/ToolbarContainer';
 import Sequencers from './Containers/Sequencers';
 import highClick from './samples/clickHigh.wav';
 import lowClick from './samples/click.wav';
-import AddSequencerButtonContainer from './Containers/AddSequencerButtonContainer';
 import SongModeContainer from './Containers/SongModeContainer';
 import StateTreeManager from './Containers/StateTreeManager';
 import './songMode.css';
 import MixerScreenContainer from './Containers/MixerScreenContainer';
 import AddSequencerDropContainer from './Containers/AddSequencerDropContainer';
-import SongModePatternSelectContainer from './Containers/SongModePatternSelectContainer';
-// import merge from 'lodash.merge';
+import PropTypes from 'prop-types';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -315,7 +313,7 @@ const updateSongBuilderPatternIcons = (
 ) => {
   let songBuilderDropAreaEl = document.getElementById('songBuilderDropArea');
   let patternSelectAreaEl = document.getElementById('songModePatternSelect');
-  let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1);
+  let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1, 10);
 
   songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
     if (true /* updateAll */) {
@@ -1880,6 +1878,25 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPattern: songModeSelectedPattern
       };
     }
+    case 'VIEW_MOBILE': {
+      const viewportDimension = {
+        width: action.width,
+        height: action.height
+      };
+
+      let viewMobile;
+
+      if (viewportDimension.width <= 1024 || viewportDimension.height <= 1024) {
+        viewMobile = true;
+      } else {
+        viewMobile = false;
+      }
+
+      return {
+        ...state,
+        viewMobile
+      };
+    }
     case 'GO_TO_PATTERN_CLICKED': {
       let newCurrentPatternIndex = state.patternsArr.reduce(
         (prevVal, pattern, index) => {
@@ -1957,6 +1974,42 @@ class App extends Component {
       sequencerId: 'kick1',
       sample: kick1
     });
+
+    store.dispatch({
+      type: 'VIEW_MOBILE',
+      width: Math.max(
+        document.documentElement.clientWidth,
+        window.innerWidth || 0
+      ),
+      height: Math.max(
+        document.documentElement.clientHeight,
+        window.innerHeight || 0
+      )
+    });
+
+    // this.setViewportContext();
+  }
+
+  getChildContext() {
+    const width = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+
+    const height = Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    );
+
+    let mobileViewportContext;
+
+    if (width <= 1024 || height <= 1024) {
+      // mobileViewportContext = React.createContext(true);
+      return { mobileViewportContext: true };
+    } else {
+      // mobileViewportContext = React.createContext(false);
+      return { mobileViewportContext: false };
+    }
   }
 
   render() {
@@ -1969,8 +2022,6 @@ class App extends Component {
 
             <AddSequencerDropContainer />
 
-            {/*<AddSequencerButtonContainer />*/}
-
             {process.env.REACT_APP_ENV === 'dev' && <StateTreeManager />}
 
             <SongModeContainer />
@@ -1982,5 +2033,9 @@ class App extends Component {
     );
   }
 }
+
+App.childContextTypes = {
+  mobileViewportContext: PropTypes.bool
+};
 
 export default App;
