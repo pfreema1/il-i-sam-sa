@@ -25,7 +25,7 @@ describe('<TriggerView />', () => {
 });
 
 describe('<PlayControlView />', () => {
-  const tempProps = {
+  const testProps = {
     isPlaying: true,
     handlePlayBackModeClick: jest.fn(),
     handleStopButtonClick: jest.fn(),
@@ -33,7 +33,7 @@ describe('<PlayControlView />', () => {
     playBackMode: 'song'
   };
 
-  const wrapper = shallow(<PlayControlView {...tempProps} />);
+  const wrapper = shallow(<PlayControlView {...testProps} />);
 
   it('renders only one play button', () => {
     expect(wrapper.find('.play-control__play-pause-button').length).toBe(1);
@@ -47,5 +47,16 @@ describe('<PlayControlView />', () => {
     expect(wrapper.find('.play-control__play-mode-selected').length).toBe(1);
 
     expect(wrapper.find('.play-control__play-mode-selected').length).toBe(1);
+  });
+
+  it('pause icon is offset correctly', () => {
+    let imgElWrapper = wrapper.find('.play-control__play-icon');
+
+    expect(imgElWrapper.length).toBe(1);
+
+    // expect(imgElWrapper.prop('style'))
+    const imgElInlineStyleObj = imgElWrapper.prop('style');
+    console.log(imgElInlineStyleObj.marginLeft);
+    expect(imgElInlineStyleObj.marginLeft).toBe('-2px');
   });
 });
