@@ -1882,25 +1882,7 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPattern: songModeSelectedPattern
       };
     }
-    case 'VIEW_MOBILE': {
-      const viewportDimension = {
-        width: action.width,
-        height: action.height
-      };
 
-      let viewMobile;
-
-      if (viewportDimension.width <= 1024 || viewportDimension.height <= 1024) {
-        viewMobile = true;
-      } else {
-        viewMobile = false;
-      }
-
-      return {
-        ...state,
-        viewMobile
-      };
-    }
     case 'GO_TO_PATTERN_CLICKED': {
       let newCurrentPatternIndex = state.patternsArr.reduce(
         (prevVal, pattern, index) => {
@@ -1978,20 +1960,6 @@ class App extends Component {
       sequencerId: 'kick1',
       sample: kick1
     });
-
-    store.dispatch({
-      type: 'VIEW_MOBILE',
-      width: Math.max(
-        document.documentElement.clientWidth,
-        window.innerWidth || 0
-      ),
-      height: Math.max(
-        document.documentElement.clientHeight,
-        window.innerHeight || 0
-      )
-    });
-
-    // this.setViewportContext();
   }
 
   getChildContext() {
@@ -2007,12 +1975,12 @@ class App extends Component {
 
     let mobileViewportContext;
 
-    if (width <= 1024 || height <= 1024) {
+    if (width > 1024 || height > 1024) {
       // mobileViewportContext = React.createContext(true);
-      return { mobileViewportContext: true };
+      return { mobileViewportContext: false };
     } else {
       // mobileViewportContext = React.createContext(false);
-      return { mobileViewportContext: false };
+      return { mobileViewportContext: true };
     }
   }
 

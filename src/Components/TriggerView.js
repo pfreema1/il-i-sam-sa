@@ -24,7 +24,9 @@ const TriggerView = (
     }}
     className={'trigger-button ' + (isSlicee ? 'slicee' : '')}
     onMouseDown={
-      context.mobileViewportContext ? '' : handleTriggerClick.bind(null, id)
+      context.mobileViewportContext
+        ? () => {}
+        : handleTriggerClick.bind(null, id)
     }
     onTouchStart={handleTriggerClick.bind(null, id)}
     // onClick={handleTriggerClick.bind(null, id)}

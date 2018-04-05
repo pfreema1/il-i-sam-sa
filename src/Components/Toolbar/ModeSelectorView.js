@@ -1,9 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const ModeSelectorView = ({ UiMode, handleModeSelectorClick }) => (
+const ModeSelectorView = ({ UiMode, handleModeSelectorClick }, context) => (
   <div className="mode-selector-wrapper">
     <div
-      onClick={handleModeSelectorClick.bind(null, 'song')}
+      onMouseDown={
+        context.mobileViewportContext
+          ? () => {}
+          : handleModeSelectorClick.bind(null, 'song')
+      }
+      onTouchStart={handleModeSelectorClick.bind(null, 'song')}
       className={
         'mode-selector__option ' +
         (UiMode === 'song' ? 'mode-selector__option--selected' : '')
@@ -12,7 +18,12 @@ const ModeSelectorView = ({ UiMode, handleModeSelectorClick }) => (
       SONG
     </div>
     <div
-      onClick={handleModeSelectorClick.bind(null, 'pattern')}
+      onMouseDown={
+        context.mobileViewportContext
+          ? () => {}
+          : handleModeSelectorClick.bind(null, 'pattern')
+      }
+      onTouchStart={handleModeSelectorClick.bind(null, 'pattern')}
       className={
         'mode-selector__option ' +
         (UiMode === 'pattern' ? 'mode-selector__option--selected' : '')
@@ -31,5 +42,9 @@ const ModeSelectorView = ({ UiMode, handleModeSelectorClick }) => (
     </div>*/}
   </div>
 );
+
+ModeSelectorView.contextTypes = {
+  mobileViewportContext: PropTypes.bool
+};
 
 export default ModeSelectorView;

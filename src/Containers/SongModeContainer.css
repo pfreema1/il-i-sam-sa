@@ -1,0 +1,32 @@
+.sortable-drag {
+  transform: translateY(-100px);
+  touch-action: none;
+  display: none;
+}
+
+#songModePatternSelect {
+  min-height: 55px;
+}
+
+.song-mode__arrow-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+}
+
+.song-mode__arrow-wrapper img {
+  width: 25px;
+  height: 25px;
+}
+
+@media (min-width: 1025px), (min-height: 1025px) {
+  .song-mode__arrow-wrapper {
+    margin: 40px;
+  }
+
+  .song-mode__arrow-wrapper img {
+    width: 50px;
+    height: 50px;
+  }
+}

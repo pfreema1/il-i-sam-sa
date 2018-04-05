@@ -10,7 +10,8 @@ const styling = {
   transition: 'all 0.5s',
   // margin: '15px',
   position: 'relative',
-  borderRadius: '2px'
+  borderRadius: '2px',
+  touchAction: 'none'
 };
 
 const hoverOverlayStyling = {
