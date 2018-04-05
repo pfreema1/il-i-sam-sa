@@ -3,16 +3,20 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import Trigger from '../Containers/Trigger';
 import { Tooltip } from 'react-tippy';
 import TriggerHoverComponent from './TriggerHoverComponent';
+import PropTypes from 'prop-types';
 
-const TriggerWrapperComponent = ({
-  sequencerToRender,
-  returnSlicedTriggers,
-  sequencerId,
-  triggersToRender,
-  handleMenuItemClick,
-  handleSliceMenuItemClick,
-  handleUnSliceMenuItemClick
-}) => (
+const TriggerWrapperComponent = (
+  {
+    sequencerToRender,
+    returnSlicedTriggers,
+    sequencerId,
+    triggersToRender,
+    handleMenuItemClick,
+    handleSliceMenuItemClick,
+    handleUnSliceMenuItemClick
+  },
+  context
+) => (
   <div className="sequencer__trigger-wrapper">
     {triggersToRender &&
       triggersToRender.map(trigger => {
@@ -30,6 +34,7 @@ const TriggerWrapperComponent = ({
               disable={true}
             >
               <Tooltip
+                disabled={context.mobileViewportContext}
                 html={
                   <TriggerHoverComponent
                     handleMenuItemClick={handleMenuItemClick}
@@ -61,5 +66,9 @@ const TriggerWrapperComponent = ({
       })}
   </div>
 );
+
+TriggerWrapperComponent.contextTypes = {
+  mobileViewportContext: PropTypes.bool
+};
 
 export default TriggerWrapperComponent;

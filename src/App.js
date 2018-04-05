@@ -985,9 +985,11 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'PARENT_TRIGGER_CLICKED': {
-      const { triggerId, sequencerId } = action;
+      const { triggerId, sequencerId, isTurningOn } = action;
 
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
+
+      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       const newTriggers = state.sequencers[sequencerId].triggers.map(
         trigger => {
@@ -1000,16 +1002,16 @@ const reducer = (state = initialState, action) => {
               state
             );
 
-            if (tempTrigger.isTriggered && !state.isPlaying) {
-              playClickedTrigger(
-                tempTrigger,
-                sequencerId,
-                synthesizerRef,
-                null,
-                triggerId,
-                false
-              );
-            }
+            // if (tempTrigger.isTriggered && !state.isPlaying) {
+            //   playClickedTrigger(
+            //     tempTrigger,
+            //     sequencerId,
+            //     synthesizerRef,
+            //     null,
+            //     triggerId,
+            //     false
+            //   );
+            // }
           }
 
           return tempTrigger;
@@ -1030,8 +1032,10 @@ const reducer = (state = initialState, action) => {
       };
     }
     case 'SLICEE_TRIGGER_CLICKED': {
-      const { triggerId, sequencerId, parentTriggerId } = action;
+      const { triggerId, sequencerId, parentTriggerId, isTurningOn } = action;
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
+
+      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         let tempTrigger = { ...trigger };
@@ -1049,16 +1053,16 @@ const reducer = (state = initialState, action) => {
                   state
                 );
 
-                if (tempSlicedTrigger.isTriggered && !state.isPlaying) {
-                  playClickedTrigger(
-                    tempSlicedTrigger,
-                    sequencerId,
-                    synthesizerRef,
-                    parentTriggerId,
-                    triggerId,
-                    true
-                  );
-                }
+                // if (tempSlicedTrigger.isTriggered && !state.isPlaying) {
+                //   playClickedTrigger(
+                //     tempSlicedTrigger,
+                //     sequencerId,
+                //     synthesizerRef,
+                //     parentTriggerId,
+                //     triggerId,
+                //     true
+                //   );
+                // }
               }
 
               return tempSlicedTrigger;

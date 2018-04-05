@@ -56,13 +56,15 @@ class Trigger extends Component {
         type: 'SLICEE_TRIGGER_CLICKED',
         triggerId: id,
         sequencerId: this.props.sequencerId,
-        parentTriggerId: this.props.parentTriggerId
+        parentTriggerId: this.props.parentTriggerId,
+        isTurningOn: !this.state.isTriggered
       });
     } else {
       this.props.dispatch({
         type: 'PARENT_TRIGGER_CLICKED',
         triggerId: id,
-        sequencerId: this.props.sequencerId
+        sequencerId: this.props.sequencerId,
+        isTurningOn: !this.state.isTriggered
       });
     }
   };
