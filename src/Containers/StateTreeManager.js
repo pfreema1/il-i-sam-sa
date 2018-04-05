@@ -79,11 +79,32 @@ class StateTreeManager extends Component {
     }, 50);
   };
 
+  handleMakePostRequestClick = () => {
+    const payloadBody = JSON.stringify(this.props.sequencers);
+
+    fetch('http://localhost:4000/save-it', {
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      method: 'post',
+      mode: 'cors',
+      body: payloadBody
+    })
+      .then(res => res.text())
+      .then(text => console.log(text))
+      .catch(err => console.log(err));
+  };
+
   render() {
     return (
       <div style={wrapperStyling}>
         <div onClick={this.handleSaveStateClick} style={saveStateStyling}>
           SAVE STATE
+        </div>
+
+        <div onClick={this.handleMakePostRequestClick} style={saveStateStyling}>
+          SEND POST REQ
         </div>
 
         <div onClick={this.handleLoadStateClick} style={loadStateStyling}>
@@ -95,7 +116,8 @@ class StateTreeManager extends Component {
 }
 function mapStateToProps(state) {
   return {
-    state: state
+    state: state,
+    sequencers: state.sequencers
   };
 }
 
