@@ -50,7 +50,10 @@ class Trigger extends Component {
     }
   }
 
-  handleTriggerClick = id => {
+  handleTriggerClick = (id, e) => {
+    e.preventDefault();
+
+    console.log('handleTriggerClick running!');
     if (this.props.isSlicee) {
       this.props.dispatch({
         type: 'SLICEE_TRIGGER_CLICKED',

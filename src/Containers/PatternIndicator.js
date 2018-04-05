@@ -31,7 +31,9 @@ class PatternIndicator extends React.Component {
     });
   };
 
-  handleNewPatternClick = () => {
+  handleNewPatternClick = e => {
+    e.preventDefault();
+    console.log('handleNewPatternClick rnning');
     this.props.dispatch({
       type: 'BLANK_PATTERN_ADDED',
       switchToPattern: true
@@ -41,6 +43,7 @@ class PatternIndicator extends React.Component {
   };
 
   handleCopyPatternClick = e => {
+    e.preventDefault();
     this.setState({
       copyPatternPopoverOpen: true,
       anchorEl: e.currentTarget
