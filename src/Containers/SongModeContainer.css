@@ -1,7 +1,7 @@
 .sortable-drag {
-  transform: translateY(-100px);
+  /* transform: translateY(-100px); */
   touch-action: none;
-  display: none;
+  /* display: none; */
 }
 
 #songModePatternSelect {
