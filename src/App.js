@@ -989,7 +989,9 @@ const reducer = (state = initialState, action) => {
 
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
 
-      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
+      isTurningOn &&
+        !state.isPlaying &&
+        synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       const newTriggers = state.sequencers[sequencerId].triggers.map(
         trigger => {
@@ -1035,7 +1037,9 @@ const reducer = (state = initialState, action) => {
       const { triggerId, sequencerId, parentTriggerId, isTurningOn } = action;
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
 
-      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
+      isTurningOn &&
+        !state.isPlaying &&
+        synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         let tempTrigger = { ...trigger };
@@ -1983,13 +1987,16 @@ class App extends Component {
     //   console.log('MOBILE SCREEN');
     //   return { mobileViewportContext: true };
     // }
-    console.log(window.orientation);
+    let tempObj;
 
     if (typeof window.orientation !== 'undefined') {
-      return { mobileViewportContext: true };
+      tempObj = { mobileViewportContext: true };
     } else {
-      return { mobileViewportContext: false };
+      tempObj = { mobileViewportContext: false };
     }
+
+    console.log(tempObj);
+    return tempObj;
   }
 
   render() {
