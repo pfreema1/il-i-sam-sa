@@ -19,7 +19,10 @@ class PatternIndicator extends React.Component {
     this.props.dispatch({ type: 'PATTERN_CHANGED', patternIndex: value });
   };
 
-  handleAddPatternClick = () => {
+  handleAddPatternClick = (test, e) => {
+    this.addPatternRef.classList.remove('click-flasher');
+    void this.addPatternRef.offsetWidth;
+    this.addPatternRef.classList.add('click-flasher');
     this.setState({
       addPatternDialogOpen: true
     });
@@ -77,6 +80,7 @@ class PatternIndicator extends React.Component {
           handlePatternChange={this.handlePatternChange}
           handleAddPatternClick={this.handleAddPatternClick}
           patternsArr={this.props.patternsArr}
+          addPatternRef={el => (this.addPatternRef = el)}
         />
 
         <AddPatternDialog

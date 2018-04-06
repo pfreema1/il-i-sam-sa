@@ -13,7 +13,8 @@ const PatternIndicatorView = ({
   currentPatternIndex,
   handlePatternChange,
   handleAddPatternClick,
-  patternsArr
+  patternsArr,
+  addPatternRef
 }) => (
   <div className="pattern-indicator-wrapper">
     <DropDownMenu
@@ -37,6 +38,7 @@ const PatternIndicatorView = ({
       })}
     </DropDownMenu>
     <div
+      ref={addPatternRef}
       onClick={handleAddPatternClick}
       className="pattern-indicator__add-pattern"
     >
