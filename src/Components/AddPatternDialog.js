@@ -41,7 +41,9 @@ const AddPatternDialog = (
       <RaisedButton
         label="New Pattern"
         primary={true}
-        onMouseDown={handleNewPatternClick}
+        onMouseDown={
+          context.mobileViewportContext ? () => {} : handleNewPatternClick
+        }
         onTouchStart={handleNewPatternClick}
         className="new-pattern-button"
         disableTouchRipple={context.mobileViewportContext}

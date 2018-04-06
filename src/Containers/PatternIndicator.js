@@ -32,7 +32,7 @@ class PatternIndicator extends React.Component {
   };
 
   handleNewPatternClick = e => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log('handleNewPatternClick rnning');
     this.props.dispatch({
       type: 'BLANK_PATTERN_ADDED',
