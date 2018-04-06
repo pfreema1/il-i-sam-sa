@@ -11,10 +11,16 @@ class PlayControl extends Component {
   }
 
   handlePlayButtonClick = () => {
+    this.playButtonRef.classList.remove('click-flasher');
+    void this.playButtonRef.offsetWidth;
+    this.playButtonRef.classList.add('click-flasher');
     this.props.dispatch({ type: 'PLAY_BUTTON_CLICKED' });
   };
 
   handleStopButtonClick = () => {
+    this.stopButtonRef.classList.remove('click-flasher');
+    void this.stopButtonRef.offsetWidth;
+    this.stopButtonRef.classList.add('click-flasher');
     this.props.dispatch({ type: 'STOP_BUTTON_CLICKED' });
   };
 
@@ -33,6 +39,8 @@ class PlayControl extends Component {
         handlePlayBackModeClick={this.handlePlayBackModeClick}
         isPlaying={this.props.isPlaying}
         playBackMode={this.props.playBackMode}
+        stopButtonRef={el => (this.stopButtonRef = el)}
+        playButtonRef={el => (this.playButtonRef = el)}
       />
     );
   }

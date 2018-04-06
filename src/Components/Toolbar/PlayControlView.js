@@ -9,7 +9,9 @@ const PlayControlView = (
     handleStopButtonClick,
     handlePlayBackModeClick,
     isPlaying,
-    playBackMode
+    playBackMode,
+    stopButtonRef,
+    playButtonRef
   },
   context
 ) => (
@@ -61,6 +63,7 @@ const PlayControlView = (
     </div>
 
     <div
+      ref={playButtonRef}
       onMouseDown={
         context.mobileViewportContext ? () => {} : handlePlayButtonClick
       }
@@ -84,6 +87,7 @@ const PlayControlView = (
     </div>
 
     <div
+      ref={stopButtonRef}
       onMouseDown={
         context.mobileViewportContext ? () => {} : handleStopButtonClick
       }

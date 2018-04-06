@@ -14,6 +14,19 @@
   background: black;
 }
 
+@keyframes click-flash-anim {
+  0% {
+    background: RGBA(177, 49, 31, 1);
+  }
+  100% {
+    background: RGBA(26, 26, 26, 1);
+  }
+}
+
+.click-flasher {
+  animation: click-flash-anim 0.5s ease-out;
+}
+
 .play-control__indicator {
   width: 15px;
   height: 15px;
