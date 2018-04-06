@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
-import logger from "redux-logger";
-import Tone from "tone";
-import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import "./App.css";
-import kick1 from "./samples/kick1.wav";
-import snare1 from "./samples/snare1.wav";
-import closedHiHat1 from "./samples/closedHiHat1.wav";
-import ToolbarContainer from "./Containers/ToolbarContainer";
-import Sequencers from "./Containers/Sequencers";
-import highClick from "./samples/clickHigh.wav";
-import lowClick from "./samples/click.wav";
-import SongModeContainer from "./Containers/SongModeContainer";
-import StateTreeManager from "./Containers/StateTreeManager";
-import "./songMode.css";
-import MixerScreenContainer from "./Containers/MixerScreenContainer";
-import AddSequencerDropContainer from "./Containers/AddSequencerDropContainer";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import logger from 'redux-logger';
+import Tone from 'tone';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import './App.css';
+import kick1 from './samples/kick1.wav';
+import snare1 from './samples/snare1.wav';
+import closedHiHat1 from './samples/closedHiHat1.wav';
+import ToolbarContainer from './Containers/ToolbarContainer';
+import Sequencers from './Containers/Sequencers';
+import highClick from './samples/clickHigh.wav';
+import lowClick from './samples/click.wav';
+import SongModeContainer from './Containers/SongModeContainer';
+import StateTreeManager from './Containers/StateTreeManager';
+import './songMode.css';
+import MixerScreenContainer from './Containers/MixerScreenContainer';
+import AddSequencerDropContainer from './Containers/AddSequencerDropContainer';
+import PropTypes from 'prop-types';
 
 const returnTriggers = (amount = 16) => {
   let tempTriggersArr = [];
@@ -31,8 +31,8 @@ const returnTriggers = (amount = 16) => {
       nudgeValue: 0,
       scheduleId: null,
       isTriggered: false,
-      note: "C2",
-      duration: "192i", //full = 192
+      note: 'C2',
+      duration: '192i', //full = 192
       velocity: 1,
       isSliced: false,
       sliceAmount: 0,
@@ -190,8 +190,8 @@ const returnSingleSlicedTrigger = () => {
     scheduleId: null,
     isTriggered: false,
     nudgeValue: 0,
-    note: "C2",
-    duration: "192i",
+    note: 'C2',
+    duration: '192i',
     velocity: 1,
     isSliced: false,
     sliceAmount: 0
@@ -248,7 +248,7 @@ const deepCopy = obj => {
   let rv;
 
   switch (typeof obj) {
-    case "object":
+    case 'object':
       if (obj === null) {
         rv = null;
       } else {
@@ -260,7 +260,7 @@ const deepCopy = obj => {
           rv = obj;
         } else {
           switch (Object.prototype.toString.call(obj)) {
-            case "[object Array]":
+            case '[object Array]':
               //it's an array, create a new array with
               // deep copies of the entries
               rv = obj.map(deepCopy);
@@ -311,9 +311,9 @@ const updateSongBuilderPatternIcons = (
   updateAll,
   songModeSelectedPatternSequenceIndex
 ) => {
-  let songBuilderDropAreaEl = document.getElementById("songBuilderDropArea");
-  let patternSelectAreaEl = document.getElementById("songModePatternSelect");
-  let changedPatternId = "PATTERN " + parseInt(currentPatternIndex + 1, 10);
+  let songBuilderDropAreaEl = document.getElementById('songBuilderDropArea');
+  let patternSelectAreaEl = document.getElementById('songModePatternSelect');
+  let changedPatternId = 'PATTERN ' + parseInt(currentPatternIndex + 1, 10);
 
   songBuilderDropAreaEl.childNodes.forEach((replaceeEl, index) => {
     if (true /* updateAll */) {
@@ -371,9 +371,9 @@ const cloneAndReplacePatternIcon = (
   let clonedReplacer = elReplacerParent.cloneNode(true);
   //handle class disappearing
   if (index === songModeSelectedPatternSequenceIndex) {
-    replaceeEl.className = "selected-pattern";
+    replaceeEl.className = 'selected-pattern';
   } else {
-    replaceeEl.className = "slight-opacity";
+    replaceeEl.className = 'slight-opacity';
   }
 
   let arrayOfChildren = Array.from(clonedReplacer.children).map(child => child);
@@ -421,12 +421,12 @@ const returnNewMetronomeScheduleIdArr = (scheduleArray, clickSamplerRef) => {
     let iValue = 192 * index;
     if (index === 0) {
       return Tone.Transport.schedule(time => {
-        clickSamplerRef.triggerAttackRelease("C3", "192i", time, 1);
-      }, iValue + "i");
+        clickSamplerRef.triggerAttackRelease('C3', '192i', time, 1);
+      }, iValue + 'i');
     } else {
       return Tone.Transport.schedule(time => {
-        clickSamplerRef.triggerAttackRelease("C2", "192i", time, 1);
-      }, iValue + "i");
+        clickSamplerRef.triggerAttackRelease('C2', '192i', time, 1);
+      }, iValue + 'i');
     }
   });
 };
@@ -469,9 +469,9 @@ const initialState = {
     clickSamplerRef: returnClickSamplerRef(),
     scheduleArray: [null, null, null, null]
   },
-  playBackMode: "pattern",
-  UiMode: "pattern",
-  patternsArr: ["PATTERN 1"],
+  playBackMode: 'pattern',
+  UiMode: 'pattern',
+  patternsArr: ['PATTERN 1'],
   currentPatternIndex: 0,
   songArr: [],
   returnSongPatternStartTimesArr: [],
@@ -498,7 +498,7 @@ const buildPatternTimeline = currentPatternIndex => {
 
     let newScheduleId = new Tone.Event(time => {
       synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
-    }).start(normalizedTimingValue + "i");
+    }).start(normalizedTimingValue + 'i');
 
     trigger.scheduleId = newScheduleId;
   });
@@ -520,7 +520,7 @@ const buildSongTimeline = songArr => {
 
       let newScheduleId = new Tone.Event(time => {
         synthesizerRef.triggerAttackRelease(note, duration, time, velocity);
-      }).start(normalizedTimingValue + index * 768 + "i");
+      }).start(normalizedTimingValue + index * 768 + 'i');
 
       trigger.scheduleId = newScheduleId;
     });
@@ -529,7 +529,7 @@ const buildSongTimeline = songArr => {
 
 //this function returns the song array based on the ui in drop area
 const returnSongPatternIndexArr = state => {
-  const songBuilderDropArea = document.getElementById("songBuilderDropArea");
+  const songBuilderDropArea = document.getElementById('songBuilderDropArea');
 
   return Array.from(songBuilderDropArea.childNodes)
     .map((childNode, index) => {
@@ -553,25 +553,25 @@ const addPatternTriggerToArr = (patternTrigger, currentPatternIndex) => {
 
 //set the transport to repeat
 // Tone.Transport.loopEnd = '1m';
-Tone.Transport.loopStart = "0i";
-Tone.Transport.loopEnd = "768i";
+Tone.Transport.loopStart = '0i';
+Tone.Transport.loopEnd = '768i';
 Tone.Transport.loop = true;
 Tone.Transport.bpm.value = 120;
 
 const setTransportLoopStartEnd = state => {
-  if (state.playBackMode === "pattern") {
-    Tone.Transport.loopStart = "0i";
-    Tone.Transport.loopEnd = "768i";
-  } else if (state.playBackMode === "song") {
+  if (state.playBackMode === 'pattern') {
+    Tone.Transport.loopStart = '0i';
+    Tone.Transport.loopEnd = '768i';
+  } else if (state.playBackMode === 'song') {
     let transportEnd = state.songArr.length * 768;
-    Tone.Transport.loopStart = "0i";
-    Tone.Transport.loopEnd = transportEnd + "i";
+    Tone.Transport.loopStart = '0i';
+    Tone.Transport.loopEnd = transportEnd + 'i';
   }
 };
 
 const handlePlayButtonClick = play => {
   if (play) {
-    Tone.Transport.start("+0.1");
+    Tone.Transport.start('+0.1');
   } else {
     Tone.Transport.pause();
   }
@@ -609,7 +609,7 @@ const returnClearedTrigger = (trigger, synthRef, currentPatternIndex) => {
 
   trigger.isTriggered = false;
   trigger.scheduleId = null;
-  trigger.note = "C2";
+  trigger.note = 'C2';
 
   return trigger;
 };
@@ -617,8 +617,8 @@ const returnClearedTrigger = (trigger, synthRef, currentPatternIndex) => {
 const returnSetTrigger = (
   trigger,
   synthesizerRef,
-  note = "C2",
-  duration = "192i",
+  note = 'C2',
+  duration = '192i',
   velocity = 1,
   isSample,
   state
@@ -632,7 +632,7 @@ const returnSetTrigger = (
   });
 
   trigger.scheduleId.start(
-    returnNormalizedTimingValue(iValue, state.currentPatternIndex) + "i"
+    returnNormalizedTimingValue(iValue, state.currentPatternIndex) + 'i'
   );
 
   let patternTrigger = returnPatternTrigger(
@@ -732,7 +732,7 @@ const returnHandledSampleTrigger = (trigger, synthesizerRef, state) => {
     trigger = returnSetTrigger(
       trigger,
       synthesizerRef,
-      "C2",
+      'C2',
       trigger.duration,
       trigger.velocity,
       true,
@@ -761,7 +761,7 @@ const retriggerScheduledTriggers = (
       tempSlicedTrigger = returnSetTrigger(
         tempSlicedTrigger,
         synthesizerRef,
-        "C2",
+        'C2',
         tempSlicedTrigger.duration,
         tempSlicedTrigger.velocity,
         true,
@@ -882,7 +882,7 @@ const returnSlicedTriggersArr = (
   for (let i = 0; i < numOfSlicedTriggers; i++) {
     // push new triggers onto newTriggers array
     let tempSlicedTrigger = returnSingleSlicedTrigger();
-    tempSlicedTrigger.id = "trigger" + triggerId + "slice" + i;
+    tempSlicedTrigger.id = 'trigger' + triggerId + 'slice' + i;
     tempSlicedTrigger.timingValue =
       i * iValueScale +
       state.sequencers[sequencerId].triggers[triggerId].timingValue;
@@ -963,7 +963,7 @@ const returnSlicedParentTrigger = (
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_NEW_SEQUENCER": {
+    case 'ADD_NEW_SEQUENCER': {
       //payload should include:  sequencerId, sample
       const { sequencerId, sample } = action;
 
@@ -984,12 +984,12 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case "PARENT_TRIGGER_CLICKED": {
+    case 'PARENT_TRIGGER_CLICKED': {
       const { triggerId, sequencerId, isTurningOn } = action;
 
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
 
-      isTurningOn && synthesizerRef.triggerAttackRelease("C2", 1, undefined, 1);
+      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       const newTriggers = state.sequencers[sequencerId].triggers.map(
         trigger => {
@@ -1031,11 +1031,11 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "SLICEE_TRIGGER_CLICKED": {
+    case 'SLICEE_TRIGGER_CLICKED': {
       const { triggerId, sequencerId, parentTriggerId, isTurningOn } = action;
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
 
-      isTurningOn && synthesizerRef.triggerAttackRelease("C2", 1, undefined, 1);
+      isTurningOn && synthesizerRef.triggerAttackRelease('C2', 1, undefined, 1);
 
       let newTriggers = state.sequencers[sequencerId].triggers.map(trigger => {
         let tempTrigger = { ...trigger };
@@ -1090,7 +1090,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "PATTERN_SELECT_RERENDERED": {
+    case 'PATTERN_SELECT_RERENDERED': {
       if (state.songArr.length > 0) {
         updateSongBuilderPatternIcons(
           state.currentPatternIndex,
@@ -1103,7 +1103,7 @@ const reducer = (state = initialState, action) => {
         ...state
       };
     }
-    case "PLAY_BUTTON_CLICKED": {
+    case 'PLAY_BUTTON_CLICKED': {
       setTransportLoopStartEnd(state);
 
       handlePlayButtonClick(!state.isPlaying);
@@ -1113,7 +1113,7 @@ const reducer = (state = initialState, action) => {
         isPlaying: !state.isPlaying
       };
     }
-    case "STOP_BUTTON_CLICKED": {
+    case 'STOP_BUTTON_CLICKED': {
       handleStopButtonClick();
 
       return {
@@ -1121,14 +1121,14 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
-    case "PLAYBACK_MODE_CLICKED": {
+    case 'PLAYBACK_MODE_CLICKED': {
       const playBackMode = action.playBackMode;
 
       handleStopButtonClick();
 
-      if (playBackMode === "song") {
+      if (playBackMode === 'song') {
         buildSongTimeline(state.songArr);
-      } else if (playBackMode === "pattern") {
+      } else if (playBackMode === 'pattern') {
         buildPatternTimeline(state.currentPatternIndex);
       }
 
@@ -1138,15 +1138,15 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
-    case "MODE_SELECTOR_CLICKED": {
+    case 'MODE_SELECTOR_CLICKED': {
       const mode = action.mode;
       let isPlaying = false;
 
       handleStopButtonClick();
 
-      if (mode === "song") {
+      if (mode === 'song') {
         buildSongTimeline(state.songArr);
-      } else if (mode === "pattern") {
+      } else if (mode === 'pattern') {
         buildPatternTimeline(state.currentPatternIndex);
       }
 
@@ -1157,7 +1157,7 @@ const reducer = (state = initialState, action) => {
         isPlaying: isPlaying
       };
     }
-    case "PATTERN_CHANGED": {
+    case 'PATTERN_CHANGED': {
       const patternIndex = action.patternIndex;
 
       //stop playback
@@ -1167,13 +1167,13 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        playBackMode: "pattern",
-        UiMode: "pattern",
+        playBackMode: 'pattern',
+        UiMode: 'pattern',
         currentPatternIndex: patternIndex,
         isPlaying: false
       };
     }
-    case "SONG_UPDATED": {
+    case 'SONG_UPDATED': {
       const songListIdArr = action.listIdArr;
       const newIndex = action.newIndex;
 
@@ -1192,7 +1192,7 @@ const reducer = (state = initialState, action) => {
         }, null);
       });
 
-      if (state.playBackMode === "song") {
+      if (state.playBackMode === 'song') {
         buildSongTimeline(songListPatternIndexArr);
       }
 
@@ -1208,7 +1208,7 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPattern: newSelectedPatternId
       };
     }
-    case "BLANK_PATTERN_ADDED": {
+    case 'BLANK_PATTERN_ADDED': {
       const startTimeValue = state.patternsArr.length * 768;
       const startIdNum = state.patternsArr.length * 16;
       let arrayOfNewSequencers = returnArrayOfNewSequencers(
@@ -1225,7 +1225,7 @@ const reducer = (state = initialState, action) => {
 
       //update state.patternsArr
       let newPatternsArr = state.patternsArr.concat(
-        "PATTERN " + (state.patternsArr.length + 1)
+        'PATTERN ' + (state.patternsArr.length + 1)
       );
 
       //update state.currentPatternIndex
@@ -1246,10 +1246,10 @@ const reducer = (state = initialState, action) => {
         patternsArr: newPatternsArr,
         currentPatternIndex: newCurrentPatternIndex,
         isPlaying: false,
-        UiMode: action.switchToPattern ? "pattern" : "song"
+        UiMode: action.switchToPattern ? 'pattern' : 'song'
       };
     }
-    case "COPIED_PATTERN_ADDED": {
+    case 'COPIED_PATTERN_ADDED': {
       let { patternToCopy } = action;
 
       let patternToCopyIndex = returnIndexOfPattern(
@@ -1292,7 +1292,7 @@ const reducer = (state = initialState, action) => {
         sequencers: newSequencersObj
       };
     }
-    case "EDITING_TRIGGER": {
+    case 'EDITING_TRIGGER': {
       return {
         ...state,
         isEditingTrigger: action.isEditingTrigger,
@@ -1300,18 +1300,18 @@ const reducer = (state = initialState, action) => {
         sequencerBeingEditedId: action.sequencerBeingEditedId
       };
     }
-    case "EDITING_SYNTHESIZER": {
+    case 'EDITING_SYNTHESIZER': {
       return {
         ...state,
         sequencerBeingEditedId: action.sequencerBeingEditedId
       };
     }
-    case "SYNTHESIZER_CHANGED": {
+    case 'SYNTHESIZER_CHANGED': {
       return {
         ...state
       };
     }
-    case "EDIT_TRIGGER_NOTE": {
+    case 'EDIT_TRIGGER_NOTE': {
       const sequencerId = state.sequencerBeingEditedId;
 
       const newTriggers = state.sequencers[sequencerId].triggers.map(
@@ -1361,7 +1361,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "TRIGGER_SLICED": {
+    case 'TRIGGER_SLICED': {
       const sequencerId = action.sequencerBeingEditedId;
       const triggerId = action.triggerBeingEditedId;
       const synthesizerRef = state.sequencers[sequencerId].synthesizerRef;
@@ -1394,14 +1394,14 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "TRIGGER_UNSLICED": {
+    case 'TRIGGER_UNSLICED': {
       const sequencerId = action.sequencerBeingEditedId;
       const triggerId = action.triggerBeingEditedId;
       const synthRef = state.sequencers[sequencerId].synthesizerRef;
 
       //check if unable to unslice further
       if (state.sequencers[sequencerId].triggers[triggerId].sliceAmount === 0) {
-        console.log("cant unslice anymore!");
+        console.log('cant unslice anymore!');
         return {
           ...state
         };
@@ -1434,7 +1434,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_NOTE_DURATION": {
+    case 'CHANGE_NOTE_DURATION': {
       const { triggerId, newDurationStr, isSlicee, parentTriggerId } = action;
       const sequencerRef = state.sequencers[state.sequencerBeingEditedId];
       const sequencerId = state.sequencerBeingEditedId;
@@ -1464,7 +1464,7 @@ const reducer = (state = initialState, action) => {
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
-                    "C2",
+                    'C2',
                     newDurationStr,
                     tempSlicedTrigger.velocity,
                     true,
@@ -1484,7 +1484,7 @@ const reducer = (state = initialState, action) => {
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
-              "C2",
+              'C2',
               newDurationStr,
               tempTrigger.velocity,
               true,
@@ -1507,7 +1507,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_NOTE_VELOCITY": {
+    case 'CHANGE_NOTE_VELOCITY': {
       const { triggerId, parentTriggerId, isSlicee, newVelocity } = action;
       const sequencerRef = state.sequencers[state.sequencerBeingEditedId];
       const sequencerId = state.sequencerBeingEditedId;
@@ -1537,7 +1537,7 @@ const reducer = (state = initialState, action) => {
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
-                    "C2",
+                    'C2',
                     tempSlicedTrigger.duration,
                     newVelocity,
                     true,
@@ -1557,7 +1557,7 @@ const reducer = (state = initialState, action) => {
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
-              "C2",
+              'C2',
               tempTrigger.duration,
               newVelocity,
               true,
@@ -1580,7 +1580,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_NOTE_NUDGE": {
+    case 'CHANGE_NOTE_NUDGE': {
       const { triggerId, parentTriggerId, isSlicee, nudgeValue } = action;
       const sequencerRef = state.sequencers[state.sequencerBeingEditedId];
       const sequencerId = state.sequencerBeingEditedId;
@@ -1611,7 +1611,7 @@ const reducer = (state = initialState, action) => {
                   tempSlicedTrigger = returnSetTrigger(
                     tempSlicedTrigger,
                     synthesizerRef,
-                    "C2",
+                    'C2',
                     tempSlicedTrigger.duration,
                     tempSlicedTrigger.velocity,
                     true,
@@ -1632,7 +1632,7 @@ const reducer = (state = initialState, action) => {
             tempTrigger = returnSetTrigger(
               tempTrigger,
               synthesizerRef,
-              "C2",
+              'C2',
               tempTrigger.duration,
               tempTrigger.velocity,
               true,
@@ -1655,7 +1655,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_PAN_VALUE": {
+    case 'CHANGE_PAN_VALUE': {
       let { newPanVal, sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
 
@@ -1672,7 +1672,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_PITCH_VALUE": {
+    case 'CHANGE_PITCH_VALUE': {
       const { newPitchVal, sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
 
@@ -1689,7 +1689,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_VOLUME_VALUE": {
+    case 'CHANGE_VOLUME_VALUE': {
       const { newVolumeVal, sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
 
@@ -1706,7 +1706,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_MUTE_STATE": {
+    case 'CHANGE_MUTE_STATE': {
       const { sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
 
@@ -1723,7 +1723,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "CHANGE_SOLO_STATE": {
+    case 'CHANGE_SOLO_STATE': {
       const { sequencerId } = action;
       let sequencerRef = { ...state.sequencers[sequencerId] };
 
@@ -1740,7 +1740,7 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
-    case "INCREASE_BPM": {
+    case 'INCREASE_BPM': {
       let newBpm = state.bpm + 1;
 
       Tone.Transport.bpm.value = newBpm;
@@ -1754,7 +1754,7 @@ const reducer = (state = initialState, action) => {
         bpm: newBpm
       };
     }
-    case "DECREASE_BPM": {
+    case 'DECREASE_BPM': {
       let newBpm = state.bpm - 1;
 
       if (newBpm < 1) {
@@ -1768,7 +1768,7 @@ const reducer = (state = initialState, action) => {
         bpm: newBpm
       };
     }
-    case "TOGGLE_METRONOME": {
+    case 'TOGGLE_METRONOME': {
       let newMetronomeScheduleIdArr;
 
       if (state.isMetronomeOn) {
@@ -1797,7 +1797,7 @@ const reducer = (state = initialState, action) => {
         isMetronomeOn: !state.isMetronomeOn
       };
     }
-    case "SONG_MODE_PATTERN_SELECTED": {
+    case 'SONG_MODE_PATTERN_SELECTED': {
       let { sequenceInSongIndex, patternName } = action;
 
       /*
@@ -1805,12 +1805,12 @@ const reducer = (state = initialState, action) => {
         figure out how to show selected pattern any other way
       */
       // get reference to drop area
-      let songBuilderDropArea = document.getElementById("songBuilderDropArea");
+      let songBuilderDropArea = document.getElementById('songBuilderDropArea');
 
       //iterate through the children (patterns in song) and remove any 'selected-pattern' styling class
       Array.from(songBuilderDropArea.childNodes).forEach((childNode, index) => {
         // .classList.remove('selected-pattern');
-        songBuilderDropArea.childNodes.item(index).className = "slight-opacity";
+        songBuilderDropArea.childNodes.item(index).className = 'slight-opacity';
       });
 
       //add 'selected-pattern' styling to element that was clicked
@@ -1819,7 +1819,7 @@ const reducer = (state = initialState, action) => {
       );
 
       // elemClicked.classList.add('selected-pattern');
-      elemClicked.className = "selected-pattern";
+      elemClicked.className = 'selected-pattern';
 
       return {
         ...state,
@@ -1828,10 +1828,10 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPatternDomRef: /* elemClicked */ action.patternDomRef
       };
     }
-    case "REMOVE_PATTERN_FROM_SONG": {
+    case 'REMOVE_PATTERN_FROM_SONG': {
       // const elemToRemove = state.songModeSelectedPatternDomRef;
 
-      const elemToRemove = document.querySelector(".selected-pattern");
+      const elemToRemove = document.querySelector('.selected-pattern');
       //remove DOM element
       elemToRemove.remove();
 
@@ -1857,9 +1857,9 @@ const reducer = (state = initialState, action) => {
         isPlaying: false
       };
     }
-    case "MAKE_UNIQUE_IN_SONG_MODE": {
+    case 'MAKE_UNIQUE_IN_SONG_MODE': {
       // const nodeToChange = state.songModeSelectedPatternDomRef;
-      const nodeToChange = document.querySelector(".selected-pattern");
+      const nodeToChange = document.querySelector('.selected-pattern');
 
       const newPatternName = state.patternsArr[state.patternsArr.length - 1];
 
@@ -1882,7 +1882,7 @@ const reducer = (state = initialState, action) => {
         songModeSelectedPattern: songModeSelectedPattern
       };
     }
-    case "GO_TO_PATTERN_CLICKED": {
+    case 'GO_TO_PATTERN_CLICKED': {
       let newCurrentPatternIndex = state.patternsArr.reduce(
         (prevVal, pattern, index) => {
           if (pattern === state.songModeSelectedPattern) {
@@ -1900,9 +1900,9 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        UiMode: "pattern",
+        UiMode: 'pattern',
         currentPatternIndex: newCurrentPatternIndex,
-        playBackMode: "pattern",
+        playBackMode: 'pattern',
         isPlaying: false
       };
     }
@@ -1944,19 +1944,19 @@ const store = createStore(reducer, applyMiddleware(timelineLogger, logger));
 class App extends Component {
   componentDidMount() {
     store.dispatch({
-      type: "ADD_NEW_SEQUENCER",
-      sequencerId: "closedHiHat1",
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'closedHiHat1',
       sample: closedHiHat1
     });
 
     store.dispatch({
-      type: "ADD_NEW_SEQUENCER",
-      sequencerId: "snare1",
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'snare1',
       sample: snare1
     });
     store.dispatch({
-      type: "ADD_NEW_SEQUENCER",
-      sequencerId: "kick1",
+      type: 'ADD_NEW_SEQUENCER',
+      sequencerId: 'kick1',
       sample: kick1
     });
   }
@@ -1974,12 +1974,21 @@ class App extends Component {
 
     let mobileViewportContext;
 
-    if ((width <= 1024 && height <= 768) || (width <= 768 && height <= 1024)) {
-      // mobileViewportContext = React.createContext(true);
-      return { mobileViewportContext: false };
-    } else {
-      // mobileViewportContext = React.createContext(false);
+    // if ((width <= 1024 && height <= 768) || (width <= 768 && height <= 1024)) {
+    //   // mobileViewportContext = React.createContext(true);
+    //   console.log('NOT MOBILE');
+    //   return { mobileViewportContext: false };
+    // } else {
+    //   // mobileViewportContext = React.createContext(false);
+    //   console.log('MOBILE SCREEN');
+    //   return { mobileViewportContext: true };
+    // }
+    console.log(window.orientation);
+
+    if (typeof window.orientation !== 'undefined') {
       return { mobileViewportContext: true };
+    } else {
+      return { mobileViewportContext: false };
     }
   }
 
@@ -1993,7 +2002,7 @@ class App extends Component {
 
             <AddSequencerDropContainer />
 
-            {process.env.REACT_APP_ENV === "dev" && <StateTreeManager />}
+            {process.env.REACT_APP_ENV === 'dev' && <StateTreeManager />}
 
             <SongModeContainer />
 

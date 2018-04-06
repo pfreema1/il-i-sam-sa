@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import React from 'react';
 import playIcon from '../../icons/playIcon.svg';
 import pauseIcon from '../../icons/pauseIcon.svg';
 import PropTypes from 'prop-types';
-=======
-import React from "react";
-import playIcon from "../../icons/playIcon.svg";
-import pauseIcon from "../../icons/pauseIcon.svg";
-import PropTypes from "prop-types";
->>>>>>> foo2
 
 const PlayControlView = (
   {
@@ -26,25 +19,18 @@ const PlayControlView = (
         onMouseDown={
           context.mobileViewportContext
             ? () => {}
-<<<<<<< HEAD
             : handlePlayBackModeClick.bind(null, 'song')
         }
         onTouchStart={handlePlayBackModeClick.bind(null, 'song')}
         className={'play-control__song-select '}
-=======
-            : handlePlayBackModeClick.bind(null, "song")
-        }
-        onTouchStart={handlePlayBackModeClick.bind(null, "song")}
-        className={"play-control__song-select "}
->>>>>>> foo2
       >
         <div className="play-control__small-box-select">
           <div
             className={
-              "play-control__indicator " +
-              (playBackMode === "song"
-                ? "play-control__play-mode-selected"
-                : "")
+              'play-control__indicator ' +
+              (playBackMode === 'song'
+                ? 'play-control__play-mode-selected'
+                : '')
             }
           />
         </div>
@@ -55,25 +41,18 @@ const PlayControlView = (
         onMouseDown={
           context.mobileViewportContext
             ? () => {}
-<<<<<<< HEAD
             : handlePlayBackModeClick.bind(null, 'pattern')
         }
         onTouchStart={handlePlayBackModeClick.bind(null, 'pattern')}
         className={'play-control__pattern-select '}
-=======
-            : handlePlayBackModeClick.bind(null, "pattern")
-        }
-        onTouchStart={handlePlayBackModeClick.bind(null, "pattern")}
-        className={"play-control__pattern-select "}
->>>>>>> foo2
       >
         <div className="play-control__small-box-select">
           <div
             className={
-              "play-control__indicator " +
-              (playBackMode === "pattern"
-                ? "play-control__play-mode-selected"
-                : "")
+              'play-control__indicator ' +
+              (playBackMode === 'pattern'
+                ? 'play-control__play-mode-selected'
+                : '')
             }
           />
         </div>
@@ -86,18 +65,14 @@ const PlayControlView = (
         context.mobileViewportContext ? () => {} : handlePlayButtonClick
       }
       onTouchStart={handlePlayButtonClick}
-<<<<<<< HEAD
       className={'play-control__play-pause-button '}
-=======
-      className={"play-control__play-pause-button "}
->>>>>>> foo2
     >
       {isPlaying ? (
         <img
           className="play-control__play-icon"
           src={pauseIcon}
           alt="pause icon"
-          style={{ marginLeft: "-2px" }}
+          style={{ marginLeft: '-2px' }}
         />
       ) : (
         <img
